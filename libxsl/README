@@ -4,7 +4,7 @@ Installation is simple.  Follow the following steps:
 
 === Rubygems
 
-  gem install libxslt-ruby
+  gem install libxsl-ruby
 	
 === Tarball/zip	
 
@@ -24,11 +24,12 @@ Once installed, look at the test scripts (tests/*.rb), and run
 RDoc comments are included - run 'rake doc' to generate documentation.
 You can find the latest documentation at:
 
-* http://libxml.rubyforge.org/doc/xslt
+* http://libxsl.rubyforge.org/doc
 
 == USAGE EXAMPLE
 
-*Note*: To use libxslt, you have to require both 'xml/libxml' and 'xml/libxslt'.
+*Note*: To use libxsl-ruby, you have to require both 'xml/libxml' and 
+'xml/libxslt'.
 
   $ cd tests
   $ ruby fuzface.rb
