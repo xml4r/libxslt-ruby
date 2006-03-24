@@ -126,7 +126,7 @@ task :alltests => :compile
 desc "Create the RDOC documentation tree"
 rd = Rake::RDocTask.new(:doc) do |rdoc|
   rdoc.rdoc_dir = 'html'
-  rdoc.title    = "Libxslt-Ruby API"
+  rdoc.title    = "Libxsl-Ruby API"
   rdoc.options << '--main' << 'README'
   rdoc.rdoc_files.include('README', 'LICENSE', 'TODO')
   rdoc.rdoc_files.include('ext/xml/ruby_xslt*.c', 'ext/xml/libxslt.c', '*.rdoc')
@@ -140,7 +140,7 @@ task :pubdoc => [ :doc ] do
   require 'rake/contrib/sshpublisher'
   Rake::SshDirPublisher.new(
     "#{ENV['RUBYFORGE_ACCT']}@rubyforge.org",
-    "/var/www/gforge-projects/libxml/doc/xslt",
+    "/var/www/gforge-projects/libxsl",
     "html"
   ).upload
 end
@@ -189,7 +189,7 @@ else
     
     #### Basic information.
 
-    s.name = 'libxslt-ruby'
+    s.name = 'libxsl-ruby'
     s.version = PKG_VERSION
     s.summary = "LibXSLT bindings for Ruby"
     s.description = <<-EOF
@@ -211,7 +211,7 @@ else
     s.has_rdoc = true
     s.extra_rdoc_files = rd.rdoc_files.reject { |fn| fn =~ /\.rb$/ }.to_a
     s.rdoc_options <<
-      '--title' <<  'Libxslt-Ruby API' <<
+      '--title' <<  'Libxsl-Ruby API' <<
       '--main' << 'README' <<
       '-o' << 'rdoc'      
 
@@ -220,9 +220,9 @@ else
     #### Author and project details.
 
     s.author = "Sean Chittenden"
-    s.email = "libxml-devel@rubyforge.org"
-    s.homepage = "http://libxml.rubyforge.org"
-    s.rubyforge_project = "libxml"
+    s.email = "libxsl-devel@rubyforge.org"
+    s.homepage = "http://libxsl.rubyforge.org"
+    s.rubyforge_project = "libxsl"
   end
   
   # Quick fix for Ruby 1.8.3 / YAML bug
