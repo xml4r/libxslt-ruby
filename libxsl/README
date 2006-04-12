@@ -24,7 +24,7 @@ Once installed, look at the test scripts (tests/*.rb), and run
 RDoc comments are included - run 'rake doc' to generate documentation.
 You can find the latest documentation at:
 
-* http://libxsl.rubyforge.org/doc
+* http://libxsl.rubyforge.org
 
 == USAGE EXAMPLE
 
