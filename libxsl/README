@@ -29,10 +29,113 @@ You can find the latest documentation at:
 == USAGE EXAMPLE
 
 *Note*: To use libxsl-ruby, you have to require both 'xml/libxml' and 
-'xml/libxslt'.
+'xml/libxslt'. The following example is an abridged version of that 
+included with the distribution, which you can run with:
 
   $ cd tests
   $ ruby fuzface.rb
+  
+Given an XML file like:
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<?xml-stylesheet href="fuzface.xsl" type="text/xsl"?>
+	
+	<commentary>
+	  <meta>
+	    <author>       
+	      <first_name>Sean</first_name>
+	      <last_name>Chittenden</last_name>
+	      <email>sean@chittenden.org</email>
+	    </author>
+	    <version>$Version$</version>
+	    <date>$Date$</date>
+	    <id>$Id$</id>     <title>Fuzface...</title>
+	    <subtitle>The Internet's a big place and here's some proof...</subtitle>
+	  </meta>
+	
+	  <body>
+	    <para>
+	      I think it's a tragedy that I'm going to start off my new
+	      commentary by talking about facial hair and the Internet.
+	      Something about that just screams pathetic, but whatever: it's
+	      humor and that's life.
+	    </para>
+	  </body>
+	</commentary>
+
+And an XSLT like:
+
+	<?xml version="1.0" ?>
+	<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	<xsl:template match="/">
+	  <xsl:element name="html">
+	    <xsl:element name="head">
+	      <xsl:element name="title">Ramblings - <xsl:value-of select="commentary/meta/title" /> - <xsl:value-of select="commentary/meta/subtitle" /></xsl:element>
+	    </xsl:element>
+	
+	    <xsl:element name="body">
+	      <xsl:element name="h1"><xsl:value-of select="commentary/meta/title" /></xsl:element>
+	      <xsl:element name="h3"><xsl:value-of select="commentary/meta/subtitle" /></xsl:element>
+	      By: <xsl:value-of select="commentary/meta/author/first_name" /> <xsl:value-of select="commentary/meta/author/last_name" /><xsl:element name="br" />
+	      Date: <xsl:value-of select="commentary/meta/date" /><xsl:element name="br" />
+	
+	      <xsl:for-each select="./commentary/body">
+	        <xsl:apply-templates />
+	      </xsl:for-each>
+	
+	    </xsl:element>
+	  </xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="para">
+	  <xsl:element name="p">
+	    <xsl:value-of select="." />
+	  </xsl:element>
+	</xsl:template>
+	</xsl:stylesheet>
+
+We can easily transform the XML with the following ruby code:
+
+	# require 'rubygems'  # if installed via gems
+	require 'xml/libxml'
+	require 'xml/libxslt'
+	
+	# Create a new XSL Transform
+	xslt = XML::XSLT.file('fuzface.xsl')
+	xslt.doc = XML::Document.file('fuzface.xml')
+	
+	# Parse to create a stylesheet, then apply.
+	s = xslt.parse
+	s.apply
+	
+	# To save the result to a file:
+	File.open('fuzface.html', 'w') do |f|
+	  s.save(f) 
+	end
+	
+	# To output the result to stdout
+	s.print
+
+To give the following result:
+
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Ramblings - Fuzface... - The Internet's a big place and here's some proof...</title>
+	</head>
+	<body>
+	<h1>Fuzface...</h1>
+	<h3>The Internet's a big place and here's some proof...</h3>
+	      By: SeanChittenden<br>
+	      Date: $Date$<br>
+	    <p>
+	      I think it's a tragedy that I'm going to start off my new
+	      commentary by talking about facial hair and the Internet.
+	      Something about that just screams pathetic, but whatever: it's
+	      humor and that's life.
+	    </p>
+	  </body>
+	</html>
 
 == If you checked out from CVS
 
