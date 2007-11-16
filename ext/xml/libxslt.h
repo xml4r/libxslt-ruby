@@ -21,11 +21,11 @@
 #include "ruby_xslt_stylesheet.h"
 #include "ruby_xslt_transform_context.h"
 
-#define RUBY_LIBXSLT_VERSION  "0.3.6"
-#define RUBY_LIBXSLT_VERNUM   036
+#define RUBY_LIBXSLT_VERSION  "0.5.2.1"
+#define RUBY_LIBXSLT_VERNUM   521
 #define RUBY_LIBXSLT_VER_MAJ  0
-#define RUBY_LIBXSLT_VER_MIN  3
-#define RUBY_LIBXSLT_VER_MIC  6
+#define RUBY_LIBXSLT_VER_MIN  5
+#define RUBY_LIBXSLT_VER_MIC  2
 
 #define RUBY_LIBXSLT_SRC_TYPE_NULL    0
 #define RUBY_LIBXSLT_SRC_TYPE_FILE    1

@@ -28,7 +28,7 @@ ruby_xslt_doc_get(VALUE self) {
 VALUE
 ruby_xslt_doc_set(VALUE self, VALUE xml_doc_obj) {
   ruby_xslt *rxslt;
-  ruby_xml_document *rxd;
+  ruby_xml_document_t *rxd;
   ruby_xslt_transform_context *rxtc;
 
   if (rb_obj_is_kind_of(xml_doc_obj, cXMLDocument) == Qfalse)
@@ -37,7 +37,7 @@ ruby_xslt_doc_set(VALUE self, VALUE xml_doc_obj) {
   Data_Get_Struct(self, ruby_xslt, rxslt);
   rxslt->xml_doc_obj = xml_doc_obj;
 
-  Data_Get_Struct(xml_doc_obj, ruby_xml_document, rxd);
+  Data_Get_Struct(xml_doc_obj, ruby_xml_document_t, rxd);
   if (rxd->doc == NULL)
       return(Qnil);
 
@@ -162,7 +162,7 @@ ruby_xslt_new_file(VALUE class, VALUE filename) {
  */
 VALUE
 ruby_xslt_parse(VALUE self) {
-  ruby_xml_document *rxd;
+  ruby_xml_document_t *rxd;
   ruby_xslt *rxslt;
   ruby_xslt_stylesheet *xss;
   VALUE xssobj;
@@ -185,7 +185,7 @@ ruby_xslt_parse(VALUE self) {
         xssobj = Qnil;
 
   } else if (rxslt->xml_doc_obj != Qnil) {
-    Data_Get_Struct(rxslt->xml_doc_obj, ruby_xml_document, rxd);
+    Data_Get_Struct(rxslt->xml_doc_obj, ruby_xml_document_t, rxd);
     /*xssobj = ruby_xslt_stylesheet_new(cXSLTStylesheet,
 				      xsltParseStylesheetDoc(rxd->doc));*/
     sheet = xsltParseStylesheetDoc(rxd->doc);

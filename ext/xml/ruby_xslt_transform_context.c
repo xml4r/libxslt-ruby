@@ -29,7 +29,6 @@ ruby_xslt_transform_context_new(VALUE class, VALUE xslt,
 				      xsltTransformContextPtr ctxt) {
   ruby_xslt_transform_context *rxtc;
   rxtc = ALLOC(ruby_xslt_transform_context);
-  ruby_xml_parser_count++;
   rxtc->ctxt = ctxt;
   rxtc->xslt = xslt;
    //fprintf(stderr,"ruby_xslt_transform_context_new 2\n");

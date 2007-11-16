@@ -16,7 +16,7 @@ VALUE cXSLTStylesheet;
 VALUE
 ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   ruby_xslt_stylesheet *xss;
-  ruby_xml_document *rxd;
+  ruby_xml_document_t *rxd;
   const char **params;
   VALUE parameter, tmp;
   int i, len;
@@ -26,7 +26,7 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   if (NIL_P(xss->xml_doc_obj))
     rb_raise(rb_eArgError, "Need a document object");
 
-  Data_Get_Struct(xss->xml_doc_obj, ruby_xml_document, rxd);
+  Data_Get_Struct(xss->xml_doc_obj, ruby_xml_document_t, rxd);
 
   params = NULL;
 
@@ -67,7 +67,7 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
     rb_raise(rb_eArgError, "wrong number of arguments (0 or 1)");
   }
 
-  xss->parsed = ruby_xml_document_new(cXMLDocument,
+  xss->parsed = ruby_xml_document_new_native(cXMLDocument,
 				      xsltApplyStylesheet(xss->xsp,
 							  rxd->doc, params));
 
@@ -97,7 +97,7 @@ ruby_xslt_stylesheet_debug(int argc, VALUE *argv, VALUE self) {
   OpenFile *fptr;
   VALUE io;
   FILE *out;
-  ruby_xml_document *parsed;
+  ruby_xml_document_t *parsed;
   ruby_xslt_stylesheet *xss;
 
   Data_Get_Struct(self, ruby_xslt_stylesheet, xss);
@@ -117,7 +117,7 @@ ruby_xslt_stylesheet_debug(int argc, VALUE *argv, VALUE self) {
     rb_raise(rb_eArgError, "wrong number of arguments (0 or 1)");
   }
 
-  Data_Get_Struct(xss->parsed, ruby_xml_document, parsed);
+  Data_Get_Struct(xss->parsed, ruby_xml_document_t, parsed);
   if (parsed->doc == NULL)
     return(Qnil);
 
@@ -188,7 +188,7 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
   OpenFile *fptr;
   VALUE io;
   FILE *out;
-  ruby_xml_document *parsed;
+  ruby_xml_document_t *parsed;
   ruby_xslt_stylesheet *xss;
   int bytes;
 
@@ -209,7 +209,7 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
     rb_raise(rb_eArgError, "wrong number of arguments (0 or 1)");
   }
 
-  Data_Get_Struct(xss->parsed, ruby_xml_document, parsed);
+  Data_Get_Struct(xss->parsed, ruby_xml_document_t, parsed);
   if (parsed->doc == NULL)
     return(Qnil);
 
@@ -232,7 +232,7 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
  */
 VALUE
 ruby_xslt_stylesheet_to_s(VALUE self) {
-  ruby_xml_document *parsed;
+  ruby_xml_document_t *parsed;
   ruby_xslt_stylesheet *xss;
   xmlChar *str;
   int len;
@@ -240,7 +240,7 @@ ruby_xslt_stylesheet_to_s(VALUE self) {
   Data_Get_Struct(self, ruby_xslt_stylesheet, xss);
   if (NIL_P(xss->parsed))
     rb_raise(eXMLXSLTStylesheetRequireParsedDoc, "must have a parsed XML result");
-  Data_Get_Struct(xss->parsed, ruby_xml_document, parsed);
+  Data_Get_Struct(xss->parsed, ruby_xml_document_t, parsed);
   if (parsed->doc == NULL)
     return(Qnil);
 
@@ -262,7 +262,7 @@ ruby_xslt_stylesheet_to_s(VALUE self) {
  */
 VALUE
 ruby_xslt_stylesheet_save(VALUE self, VALUE io) {
-  ruby_xml_document *parsed;
+  ruby_xml_document_t *parsed;
   ruby_xslt_stylesheet *xss;
   OpenFile *fptr;
 
@@ -272,7 +272,7 @@ ruby_xslt_stylesheet_save(VALUE self, VALUE io) {
   GetOpenFile(io, fptr);
 
   Data_Get_Struct(self, ruby_xslt_stylesheet, xss);
-  Data_Get_Struct(xss->parsed, ruby_xml_document, parsed);
+  Data_Get_Struct(xss->parsed, ruby_xml_document_t, parsed);
 
   xsltSaveResultToFile(fptr->f, parsed->doc, xss->xsp);
 
