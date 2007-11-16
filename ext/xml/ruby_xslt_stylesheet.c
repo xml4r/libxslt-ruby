@@ -67,9 +67,8 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
     rb_raise(rb_eArgError, "wrong number of arguments (0 or 1)");
   }
 
-  xss->parsed = ruby_xml_document_new_native(cXMLDocument,
-				      xsltApplyStylesheet(xss->xsp,
-							  rxd->doc, params));
+  xss->parsed = ruby_xml_document_wrap2(xsltApplyStylesheet(xss->xsp,
+							   rxd->doc, params));
 
   if (params) {
     free(params);
