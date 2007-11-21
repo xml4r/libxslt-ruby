@@ -160,16 +160,17 @@ ruby_xslt_stylesheet_mark(ruby_xslt_stylesheet *xss) {
 VALUE
 ruby_xslt_stylesheet_new(VALUE class, xsltStylesheetPtr xsp) {
   ruby_xslt_stylesheet *xss;
+  VALUE rval;
 
-  xss = ALLOC(ruby_xslt_stylesheet);
+  rval=Data_Make_Struct(cXSLTStylesheet,ruby_xslt_stylesheet,ruby_xslt_stylesheet_mark,
+			ruby_xslt_stylesheet_free,xss);
   xss->xsp = xsp;
   xss->xml_doc_obj = Qnil;
   xss->parsed = Qnil;
   xss->data_type = RUBY_LIBXSLT_SRC_TYPE_NULL;
   xss->data = NULL;
 
-  return(Data_Wrap_Struct(cXSLTStylesheet, ruby_xslt_stylesheet_mark,
-			  ruby_xslt_stylesheet_free, xss));
+  return rval;
 }
 
 // TODO should this automatically apply the sheet if not already,
