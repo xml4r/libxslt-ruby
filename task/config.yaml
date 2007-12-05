@@ -1,10 +1,10 @@
 
 publish:
-  project: libxml
+  project: libxsl
   username: transami
 
 rdoc:
-  title   : LibXML-Ruby
+  title   : LibXSL-Ruby
   main    : README
   include : [ ext, README, LICENSE ]
 
