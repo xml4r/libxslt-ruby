@@ -1,0 +1,24 @@
+#!/usr/bin/env ratch
+
+# compile extensions
+
+main :compile do
+  cd("ext/libxslt/") do
+    ruby "extconf.rb"
+    make
+  end
+  puts "Compile complete."
+end
+
+#task :copy_files do
+#  cp "ext/xml/*.#{dlext}", "lib/xml/#{arch}/"
+#end
+
+def dlext
+  Config::CONFIG['DLEXT']
+end
+
+def arch
+  Config::CONFIG['arch']
+end
+
