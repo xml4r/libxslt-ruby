@@ -16,8 +16,10 @@
 #include <libxslt/xsltutils.h>
 #include <libexslt/exslt.h>
 
-#include "libxml-ruby/libxml.h"
-#include "libxml-ruby/ruby_xml_document.h"
+//#include "libxml-ruby/libxml.h"
+//#include "libxml-ruby/ruby_xml_document.h"
+#include "../libxml/libxml.h"
+#include "../libxml/ruby_xml_document.h"
 #include "ruby_xslt_stylesheet.h"
 #include "ruby_xslt_transform_context.h"
 

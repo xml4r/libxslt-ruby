@@ -35,11 +35,11 @@ else
 end
 
 unless (have_library('xml2', 'xmlXPtrNewRange') or
-        find_library('xml2', '/opt/lib', '/usr/local/lib', '/usr/lib')) and 
+        find_library('xml2', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
        (have_header('libxml/xmlversion.h') or
-        find_header('libxml/xmlversion.h', 
-                    '/opt/include/libxml2', 
-                    '/usr/local/include/libxml2', 
+        find_header('libxml/xmlversion.h',
+                    '/opt/include/libxml2',
+                    '/usr/local/include/libxml2',
                     '/usr/include/libxml2'))
   crash(<<EOL)
 need libxml2.
@@ -53,11 +53,11 @@ EOL
 end
 
 unless (have_library('xslt','xsltApplyStylesheet') or
-        find_library('xslt', '/opt/lib', '/usr/local/lib', '/usr/lib')) and 
+        find_library('xslt', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
        (have_header('xslt.h') or
-        find_header('xslt.h', 
-                    '/opt/include/libxslt', 
-                    '/usr/local/include/libxslt', 
+        find_header('xslt.h',
+                    '/opt/include/libxslt',
+                    '/usr/local/include/libxslt',
                     '/usr/include/libxslt'))
   crash(<<EOL)
 need libxslt.
@@ -70,7 +70,8 @@ need libxslt.
 EOL
 end
 
-unless have_header('libxml-ruby/libxml.h') 
+#unless have_header('libxml-ruby/libxml.h')
+unless have_header('../libxml/libxml.h')
   crash(<<EOL)
 need headers for libxml-ruby.
 
