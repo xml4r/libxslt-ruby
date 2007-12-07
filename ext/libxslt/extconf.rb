@@ -1,6 +1,6 @@
 #!/usr/local/bin/ruby -w
 
-# $Id$
+# $Id: extconf.rb 43 2007-12-07 12:38:59Z transami $
 #
 # See the LICENSE file for copyright and distribution information
 
@@ -71,7 +71,7 @@ EOL
 end
 
 #unless have_header('libxml-ruby/libxml.h')
-unless have_header('libxml/libxml.h')
+unless have_header('../libxml/libxml.h')
   crash(<<EOL)
 need headers for libxml-ruby.
 

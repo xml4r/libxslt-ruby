@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: libxslt.h 43 2007-12-07 12:38:59Z transami $ */
 
 /* Please see the LICENSE file for copyright and distribution information */
 
@@ -16,10 +16,11 @@
 #include <libxslt/xsltutils.h>
 #include <libexslt/exslt.h>
 
-//#include "libxml-ruby/libxml.h"
-//#include "libxml-ruby/ruby_xml_document.h"
-#include "libxml/libxml.h"
-#include "libxml/ruby_xml_document.h"
+#include "../libxml/libxml.h"
+#include "../libxml/ruby_xml_document.h"
+//#include "libxml/libxml.h"
+//#include "libxml/ruby_xml_document.h"
+
 #include "ruby_xslt_stylesheet.h"
 #include "ruby_xslt_transform_context.h"
 

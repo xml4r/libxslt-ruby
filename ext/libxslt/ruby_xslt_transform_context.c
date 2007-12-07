@@ -1,10 +1,10 @@
-/* $Id$ */
+/* $Id: ruby_xslt_transform_context.c 42 2007-12-07 06:09:35Z transami $ */
 
 /* Please see the LICENSE file for copyright and distribution information */
 
 #include "libxslt.h"
 #include "ruby_xslt_transform_context.h"
-#include "libxml-ruby/libxml.h"
+#include "../libxml/libxml.h"
 
 VALUE cXSLTTransformContext;
 

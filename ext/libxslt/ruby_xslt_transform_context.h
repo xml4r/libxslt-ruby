@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: ruby_xslt_transform_context.h 42 2007-12-07 06:09:35Z transami $ */
 
 /* Please see the LICENSE file for copyright and distribution information */
 

@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: ruby_xslt_stylesheet.c 42 2007-12-07 06:09:35Z transami $ */
 
 /* See the LICENSE file for copyright and distribution information. */
 
