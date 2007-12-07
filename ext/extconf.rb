@@ -71,7 +71,7 @@ EOL
 end
 
 #unless have_header('libxml-ruby/libxml.h')
-unless have_header('../libxml/libxml.h')
+unless have_header('libxml/libxml.h')
   crash(<<EOL)
 need headers for libxml-ruby.
 
@@ -95,4 +95,4 @@ $CFLAGS = '-g -Wall ' + $CFLAGS + ' ' + $INCFLAGS
 
 
 create_header()
-create_makefile("xml/libxslt")
+create_makefile("libxslt")
