@@ -4,7 +4,7 @@
 #
 # See the LICENSE file for copyright and distribution information
 
-require "mkmf"
+require 'mkmf'
 
 $preload = nil
 $LIBPATH.push(Config::CONFIG['libdir'])
@@ -14,9 +14,24 @@ def crash(str)
   exit 1
 end
 
+require 'rubygems'
+gem_specs = Gem::SourceIndex.from_installed_gems.search('libxml-ruby')
+if gem_specs.empty? 
+  crash(<<EOL)
+libxml-ruby bindings must be installed
+EOL
+end
+
+# Sort by version, newest first
+gem_specs = gem_specs.sort_by {|spec| spec.version}.reverse
+
+libxml_ruby_path = gem_specs.first.full_gem_path
+
+$INCFLAGS += " -I#{libxml_ruby_path}/ext"
+
+# Directories
 dir_config('xml2')
 dir_config('xslt')
-#dir_config('libxml-ruby', '../../../libxml', '../../../libxml/ext/xml')
 
 unless have_library('m', 'atan')
   # try again for gcc 4.0
@@ -35,7 +50,7 @@ else
 end
 
 unless (have_library('xml2', 'xmlXPtrNewRange') or
-        find_library('xml2', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
+        find_library('xml2', 'xmlXPtrNewRange', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
        (have_header('libxml/xmlversion.h') or
         find_header('libxml/xmlversion.h',
                     '/opt/include/libxml2',
@@ -53,7 +68,7 @@ EOL
 end
 
 unless (have_library('xslt','xsltApplyStylesheet') or
-        find_library('xslt', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
+        find_library('xslt', 'xsltApplyStylesheet', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
        (have_header('xslt.h') or
         find_header('xslt.h',
                     '/opt/include/libxslt',
@@ -70,8 +85,8 @@ need libxslt.
 EOL
 end
 
-#unless have_header('libxml-ruby/libxml.h')
-unless have_header('../libxml/libxml.h')
+unless have_header('libxml/ruby_libxml.h') and
+       have_header('libxml/ruby_xml_document.h')
   crash(<<EOL)
 need headers for libxml-ruby.
 
@@ -85,14 +100,5 @@ need headers for libxml-ruby.
 EOL
 end
 
-$LDFLAGS << ' -lexslt'
-#$LDFLAGS << ' -lxml'
-#$LDFLAGS << ' ' + `xslt-config --libs`.chomp
-#$LDFLAGS << ' ' + `xml2-config --libs`.chomp
-#$CFLAGS << ' ' + `xslt-config --cflags`.chomp
-#$CFLAGS << ' ' + `xml2-config --cflags`.chomp
-$CFLAGS = '-g -Wall ' + $CFLAGS + ' ' + $INCFLAGS
-
-
 create_header()
-create_makefile("libxslt")
+create_makefile("libxslt_ruby")
