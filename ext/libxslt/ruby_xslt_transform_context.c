@@ -4,7 +4,6 @@
 
 #include "libxslt.h"
 #include "ruby_xslt_transform_context.h"
-#include "../libxml/libxml.h"
 
 VALUE cXSLTTransformContext;
 
@@ -14,7 +13,7 @@ ruby_xslt_transform_context_free(ruby_xslt_transform_context *rxtc) {
     xsltFreeTransformContext(rxtc->ctxt);
     rxtc->ctxt = NULL;
   }
-  free(rxtc);
+  ruby_xfree(rxtc);
 }
 
 void

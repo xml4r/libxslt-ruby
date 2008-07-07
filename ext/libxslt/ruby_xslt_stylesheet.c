@@ -67,11 +67,11 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
     rb_raise(rb_eArgError, "wrong number of arguments (0 or 1)");
   }
 
-  xss->parsed = ruby_xml_document_wrap2(xsltApplyStylesheet(xss->xsp,
+  xss->parsed = ruby_xml_document_wrap(xsltApplyStylesheet(xss->xsp,
 							   rxd->doc, params));
 
   if (params) {
-    free(params);
+    ruby_xfree(params);
   }
 
   if (xss->parsed == Qnil)
@@ -139,7 +139,7 @@ ruby_xslt_stylesheet_free(ruby_xslt_stylesheet *xss) {
     xss->xsp = NULL;
   }
 
-  free(xss);
+  ruby_xfree(xss);
 }
 
 

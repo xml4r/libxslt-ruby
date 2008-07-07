@@ -5,6 +5,9 @@
 #include "libxslt.h"
 #include "libxml/xmlversion.h"
 
+VALUE mXML;
+VALUE cXMLDocument;
+
 VALUE cXSLT;
 VALUE eXMLXSLTStylesheetRequireParsedDoc;
 
@@ -92,7 +95,7 @@ ruby_xslt_filename_set(VALUE self, VALUE filename) {
 void
 ruby_xslt_free(ruby_xslt *rxslt) {
   if (rxslt != NULL)
-    free(rxslt);
+    ruby_xfree(rxslt);
 }
 
 
@@ -121,9 +124,8 @@ ruby_xslt_mark(ruby_xslt *rxslt) {
  */
 VALUE
 ruby_xslt_new(VALUE class) {
-  ruby_xslt *rxslt;
+  ruby_xslt *rxslt = ALLOC(ruby_xslt);
 
-  rxslt = (ruby_xslt *)malloc(sizeof(ruby_xslt));
   if (rxslt == NULL)
     rb_raise(rb_eNoMemError, "No memory left for XSLT struct");
 
@@ -172,9 +174,9 @@ ruby_xslt_parse(VALUE self) {
 
   if (rxslt->data_type == RUBY_LIBXSLT_SRC_TYPE_FILE) {
     /*xssobj = ruby_xslt_stylesheet_new(cXSLTStylesheet,
-				      xsltParseStylesheetFile((const xmlChar *)
-							      STR2CSTR(rxslt->data)));*/
-	sheet = xsltParseStylesheetFile((const xmlChar *) STR2CSTR(rxslt->data));
+              xsltParseStylesheetFile((const xmlChar *)
+                    STR2CSTR(rxslt->data)));*/
+  sheet = xsltParseStylesheetFile((const xmlChar *) STR2CSTR(rxslt->data));
 
     if (sheet) {
         xssobj = ruby_xslt_stylesheet_new(cXSLTStylesheet, sheet);
@@ -187,7 +189,7 @@ ruby_xslt_parse(VALUE self) {
   } else if (rxslt->xml_doc_obj != Qnil) {
     Data_Get_Struct(rxslt->xml_doc_obj, ruby_xml_document_t, rxd);
     /*xssobj = ruby_xslt_stylesheet_new(cXSLTStylesheet,
-				      xsltParseStylesheetDoc(rxd->doc));*/
+              xsltParseStylesheetDoc(rxd->doc));*/
     sheet = xsltParseStylesheetDoc(rxd->doc);
     if (sheet) {
         xssobj = ruby_xslt_stylesheet_new(cXSLTStylesheet,sheet);
@@ -203,13 +205,15 @@ ruby_xslt_parse(VALUE self) {
   return(xssobj);
 }
 
-#ifdef RDOC_NEVER_DEFINED
-  mXML = rb_define_module("XML");
+#if defined(_WIN32)
+__declspec(dllexport) 
 #endif
 
 void
-Init_libxslt(void) {
-  LIBXML_TEST_VERSION;  
+Init_libxslt_ruby(void) {
+  LIBXML_TEST_VERSION;
+  
+  // Must load libxml bindings to use xslst
   mXML = rb_const_get(rb_cObject, rb_intern("XML"));
   cXMLDocument = rb_const_get(mXML, rb_intern("Document"));
 
@@ -243,5 +247,5 @@ Init_libxslt(void) {
   rb_define_method(cXSLT, "filename=", ruby_xslt_filename_set, 1);
   rb_define_method(cXSLT, "parse", ruby_xslt_parse, 0);
 
-  exsltRegisterAll();
+  //exsltRegisterAll();
 }
