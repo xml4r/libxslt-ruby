@@ -16,25 +16,21 @@
 #include <libxslt/xsltutils.h>
 #include <libexslt/exslt.h>
 
-#include "../libxml/libxml.h"
-#include "../libxml/ruby_xml_document.h"
-//#include "libxml/libxml.h"
-//#include "libxml/ruby_xml_document.h"
+// Includes from libxml-ruby
+#include <libxml/ruby_libxml.h>
+#include <libxml/ruby_xml_document.h>
+
 
 #include "ruby_xslt_stylesheet.h"
 #include "ruby_xslt_transform_context.h"
 
-#define RUBY_LIBXSLT_VERSION  "0.5.2.1"
-#define RUBY_LIBXSLT_VERNUM   521
-#define RUBY_LIBXSLT_VER_MAJ  0
-#define RUBY_LIBXSLT_VER_MIN  5
-#define RUBY_LIBXSLT_VER_MIC  2
+#include "version.h"
 
 #define RUBY_LIBXSLT_SRC_TYPE_NULL    0
 #define RUBY_LIBXSLT_SRC_TYPE_FILE    1
 
 extern VALUE mXML;
-extern VALUE cXMLDocument;
+//extern VALUE cXMLDocument;
 
 extern VALUE cXSLT;
 extern VALUE eXMLXSLTStylesheetRequireParsedDoc;
