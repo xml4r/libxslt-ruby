@@ -1,153 +1,142 @@
+= libxslt-ruby
+
+== Overview
+
+The libxslt gem provides Ruby language bindings for GNOME's Libxslt
+toolkit. It is free software, released under the MIT License.
+
+
+== Requirements
+
+libxslt-ruby requires Ruby 1.8.4 or higher.  It is dependent on 
+the following libraries to function properly:
+
+* libm      (math routines: very standard)
+* libz      (zlib)
+* libiconv
+* libxml2
+* libxslt
+* libxml-ruby bindings
+
+If you are running Linux or Unix you'll need a C compiler so the extension
+can be compiled when it is installed.  If you are running Windows, then install the Windows specific RubyGem which
+includes an already built extension.
+
+!!!NOTE!!!  The libxml-ruby and libxslt-ruby bindings must absolutely, positively,
+without a doubt share the same libxml2 library.  This is because libxslt modifies
+XML documents created by libxml2.  If there are two copies of libxml2 on your 
+system, then when XML documents allocated in copy #1 are manipulated by copy #2,
+a segmentation fault will occur.  So make sure that your system has only one copy of libxml2
+installed.
+
+
 == INSTALLATION
 
-Installation is simple.  Follow the following steps:
+The easiest way to install libxslt-ruby is via Ruby Gems.  To install:
 
-=== Rubygems
+<tt>gem install libxslt-ruby</tt>
 
-  gem install libxsl-ruby
-	
-=== Tarball/zip	
+If you are running Windows, make sure to install the Win32 RubyGem which 
+includes an already built binary file.  The binary is built against
+libxml2 version 2.6.32, iconv version 1.12 and libxslt version 1.1.24.
+Binaries for libxml2 and iconv are provided in the libxml-ruby bindings,
+while a binary for libxslt is provided in the libxslt-ruby bindings. 
+These binaries should be put either in the libxslt/lib directory 
+or on the Windows path.
 
-  $ rake test
-  $ rake install
+The Windows binaries are biult with MingW.  The gem also includes 
+a Microsoft VC++ 2005 solution.  If you wish to run a debug version
+of libxml-ruby on Windows, then it is highly recommended
+you use VC++.
 
-If extconf yacks up an error, follow the instructions it provides.
-You will need to chdir to ext/xml and run 'ruby extconf.rb' to provide
-options, after which you can either use Rake for everything or 
-do with make (make && make install).
 
-Once installed, look at the test scripts (tests/*.rb), and run 
-'rake doc' to generate API documentation.
+== USAGE
+ 
+Given an XML file like:
+
+  <?xml version="1.0" encoding="UTF-8"?>
+  <?xml-stylesheet href="fuzface.xsl" type="text/xsl"?>
+  
+  <commentary>
+    <meta>
+      <author>       
+        <first_name>Sean</first_name>
+        <last_name>Chittenden</last_name>
+        <email>sean@chittenden.org</email>
+      </author>
+      <version>$Version$</version>
+      <date>$Date$</date>
+      <id>$Id$</id>     <title>Fuzface...</title>
+      <subtitle>The Internet's a big place and here's some proof...</subtitle>
+    </meta>
+  
+    <body>
+      <para>
+        I think it's a tragedy that I'm going to start off my new
+        commentary by talking about facial hair and the Internet.
+        Something about that just screams pathetic, but whatever: it's
+        humor and that's life.
+      </para>
+    </body>
+  </commentary>
+
+And an XSLT file like this:
+
+  <?xml version="1.0" ?>
+  <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:template match="/">
+    <xsl:element name="html">
+      <xsl:element name="head">
+        <xsl:element name="title">Ramblings - <xsl:value-of select="commentary/meta/title" /> - <xsl:value-of select="commentary/meta/subtitle" /></xsl:element>
+      </xsl:element>
+  
+      <xsl:element name="body">
+        <xsl:element name="h1"><xsl:value-of select="commentary/meta/title" /></xsl:element>
+        <xsl:element name="h3"><xsl:value-of select="commentary/meta/subtitle" /></xsl:element>
+        By: <xsl:value-of select="commentary/meta/author/first_name" /> <xsl:value-of select="commentary/meta/author/last_name" /><xsl:element name="br" />
+        Date: <xsl:value-of select="commentary/meta/date" /><xsl:element name="br" />
+  
+        <xsl:for-each select="./commentary/body">
+          <xsl:apply-templates />
+        </xsl:for-each>
+  
+      </xsl:element>
+    </xsl:element>
+  </xsl:template>
+  
+  <xsl:template match="para">
+    <xsl:element name="p">
+      <xsl:value-of select="." />
+    </xsl:element>
+  </xsl:template>
+  </xsl:stylesheet>
+
+We can easily transform the XML with the following ruby code:
+
+  require 'libxslt'
+  
+  # Create a new XSL Transform
+  stylesheet_doc = XML::Document.file('files/fuzface.xsl')
+  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
+
+  # Transform a xml document
+  xml_doc = XML::Document.file('files/fuzface.xml')
+  result = stylesheet.apply(xml_doc)
+   
+You can then print, save or manipulate the returned document.
+
+== License
+
+See LICENSE for license information.
 
 == DOCUMENTATION
 
 RDoc comments are included - run 'rake doc' to generate documentation.
 You can find the latest documentation at:
 
-* http://libxsl.rubyforge.org
+* http://libxsl.rubyforge.org/
 
-== USAGE EXAMPLE
+== MORE INFORMATION
 
-*Note*: To use libxsl-ruby, you have to require both 'xml/libxml' and 
-'xml/libxslt'. The following example is an abridged version of that 
-included with the distribution, which you can run with:
-
-  $ cd tests
-  $ ruby fuzface.rb
-  
-Given an XML file like:
-
-	<?xml version="1.0" encoding="UTF-8"?>
-	<?xml-stylesheet href="fuzface.xsl" type="text/xsl"?>
-	
-	<commentary>
-	  <meta>
-	    <author>       
-	      <first_name>Sean</first_name>
-	      <last_name>Chittenden</last_name>
-	      <email>sean@chittenden.org</email>
-	    </author>
-	    <version>$Version$</version>
-	    <date>$Date$</date>
-	    <id>$Id$</id>     <title>Fuzface...</title>
-	    <subtitle>The Internet's a big place and here's some proof...</subtitle>
-	  </meta>
-	
-	  <body>
-	    <para>
-	      I think it's a tragedy that I'm going to start off my new
-	      commentary by talking about facial hair and the Internet.
-	      Something about that just screams pathetic, but whatever: it's
-	      humor and that's life.
-	    </para>
-	  </body>
-	</commentary>
-
-And an XSLT like:
-
-	<?xml version="1.0" ?>
-	<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-	<xsl:template match="/">
-	  <xsl:element name="html">
-	    <xsl:element name="head">
-	      <xsl:element name="title">Ramblings - <xsl:value-of select="commentary/meta/title" /> - <xsl:value-of select="commentary/meta/subtitle" /></xsl:element>
-	    </xsl:element>
-	
-	    <xsl:element name="body">
-	      <xsl:element name="h1"><xsl:value-of select="commentary/meta/title" /></xsl:element>
-	      <xsl:element name="h3"><xsl:value-of select="commentary/meta/subtitle" /></xsl:element>
-	      By: <xsl:value-of select="commentary/meta/author/first_name" /> <xsl:value-of select="commentary/meta/author/last_name" /><xsl:element name="br" />
-	      Date: <xsl:value-of select="commentary/meta/date" /><xsl:element name="br" />
-	
-	      <xsl:for-each select="./commentary/body">
-	        <xsl:apply-templates />
-	      </xsl:for-each>
-	
-	    </xsl:element>
-	  </xsl:element>
-	</xsl:template>
-	
-	<xsl:template match="para">
-	  <xsl:element name="p">
-	    <xsl:value-of select="." />
-	  </xsl:element>
-	</xsl:template>
-	</xsl:stylesheet>
-
-We can easily transform the XML with the following ruby code:
-
-	# require 'rubygems'  # if installed via gems
-	require 'xml/libxml'
-	require 'xml/libxslt'
-	
-	# Create a new XSL Transform
-	xslt = XML::XSLT.file('fuzface.xsl')
-	xslt.doc = XML::Document.file('fuzface.xml')
-	
-	# Parse to create a stylesheet, then apply.
-	s = xslt.parse
-	s.apply
-	
-	# To save the result to a file:
-	File.open('fuzface.html', 'w') do |f|
-	  s.save(f) 
-	end
-	
-	# To output the result to stdout
-	s.print
-
-To give the following result:
-
-	<html>
-	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Ramblings - Fuzface... - The Internet's a big place and here's some proof...</title>
-	</head>
-	<body>
-	<h1>Fuzface...</h1>
-	<h3>The Internet's a big place and here's some proof...</h3>
-	      By: SeanChittenden<br>
-	      Date: $Date$<br>
-	    <p>
-	      I think it's a tragedy that I'm going to start off my new
-	      commentary by talking about facial hair and the Internet.
-	      Something about that just screams pathetic, but whatever: it's
-	      humor and that's life.
-	    </p>
-	  </body>
-	</html>
-
-== If you checked out from CVS
-
-If you checked out the source from CVS, you must install a copy of
-the current (or matching) libxml-ruby headers in:
-
-  ext/xml/libxml-ruby
-	
-prior to running the above. This can be done via rake, and will
-happen automatically if ../libxml/ext/xml is found, or the
-LIBXMLH=/path/to/headers commandline option is supplied.
-
-# $Id$
-
-# See the LICENSE file for copyright and distribution information
+For more information please refer to the documentation.  If you have any
+questions, please send email to libxml-devel@rubyforge.org.

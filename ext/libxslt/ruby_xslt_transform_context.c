@@ -52,6 +52,7 @@ ruby_xslt_transform_context_new3(VALUE xslt) {
 #ifdef RDOC_NEVER_DEFINED
   mXML = rb_define_module("XML");
   cXSLT = rb_define_class_under(mXML, "XSLT", rb_cObject);
+  cXScXSLTStylesheet = rb_define_class_under(cXSLTTransformContext, "TransformContext", rb_cObject);
 #endif
 
 void

@@ -8,6 +8,27 @@
 VALUE cXSLT;
 VALUE eXMLXSLTStylesheetRequireParsedDoc;
 
+#ifdef RDOC_NEVER_DEFINED
+  mXML = rb_define_module("XML");
+  cXSLT = rb_define_class_under(mXML, "XSLT", rb_cObject);
+#endif
+
+/*
+ * Document-class: XML::XSLT
+ * 
+ * The libxslt gem provides Ruby language bindings for GNOME's Libxslt
+ * toolkit. It is free software, released under the MIT License.
+ *
+ * Using the bindings is straightforward:
+ *
+ *  stylesheet_doc = XML::Document.file('stylesheet_file')
+ *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
+ *
+ *  xml_doc = XML::Document.file('xml_file')
+ *  result = stylesheet.apply(xml_doc)
+ * 
+ *
+*/
 
 
 #if defined(_WIN32)

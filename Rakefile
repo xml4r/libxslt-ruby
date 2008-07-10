@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'date'
 require 'rake/gempackagetask'
+require 'rake/rdoctask'
 require 'date'
 
 SO_NAME = "libxslt_ruby.so"
@@ -41,6 +42,7 @@ default_spec = Gem::Specification.new do |spec|
     end
   
   spec.author = "Charlie Savage"
+  spec.email = "libxml-devel@rubyforge.org"
   spec.add_dependency('libxml-ruby')
   spec.platform = Gem::Platform::RUBY
   spec.require_path = "lib" 
@@ -53,17 +55,7 @@ default_spec = Gem::Specification.new do |spec|
   spec.date = DateTime.now
   spec.rubyforge_project = 'libxslt-ruby'
   
-  # rdoc
   spec.has_rdoc = true
-  spec.rdoc_options << "--title" << "libxslt-ruby"
-  # Show source inline with line numbers
-  spec.rdoc_options << "--inline-source" << "--line-numbers"
-  # Make the readme file the start page for the generated html
-  #spec.rdoc_options << '--main' << 'README'
-  #spec.extra_rdoc_files = ['ext/libxslt/*.c',
-   #                        'README',
-    #                       'LICENSE']
-
 end
 
 # Rake task to build the default package
@@ -104,6 +96,23 @@ task :create_win32_gem do
     target = File.join(current_dir, 'lib', file_name)
     rm(target)
   end
+end
+
+# ---------  RDoc Documentation ------
+desc "Generate rdoc documentation"
+Rake::RDocTask.new("rdoc") do |rdoc|
+  rdoc.rdoc_dir = 'doc'
+  rdoc.title    = "libxml-xslt"
+  # Show source inline with line numbers
+  rdoc.options << "--inline-source" << "--line-numbers"
+  # Make the readme file the start page for the generated html
+  rdoc.options << '--main' << 'README'
+  rdoc.rdoc_files.include('doc/*.rdoc',
+                          'ext/**/*.c',
+                          'lib/**/*.rb',
+                          'CHANGES',
+                          'README',
+                          'LICENSE')
 end
 
 task :package => :create_win32_gem

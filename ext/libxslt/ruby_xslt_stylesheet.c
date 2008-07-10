@@ -5,6 +5,16 @@
 #include "libxslt.h"
 #include "ruby_xslt_stylesheet.h"
 
+/*
+ * Document-class: XML::XSLT::Stylesheet
+ * 
+ * The XML::XSLT::Stylesheet represents a XSL stylesheet that
+ * can be used to transform an XML document.  For usage information
+ * refer to XML::XSLT::Stylesheet#apply
+ *
+*/
+
+
 VALUE cXSLTStylesheet;
 
 VALUE
@@ -28,7 +38,7 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
                           
 
 /* call-seq:
- *    XSLT.new(document) -> XSLT::Stylesheet
+ *    XSLT::Stylesheet.new(document) -> XSLT::Stylesheet
  * 
  * Creates a new XSLT stylesheet based on the provided document.
  *
@@ -80,7 +90,7 @@ ruby_xslt_coerce_params(VALUE params) {
    
 
 /* call-seq: 
- *   sheet.apply(document) -> document
+ *   stylesheet.apply(document) -> XML::Document
  * 
  * Apply this stylesheet transformation to the provided document.
  *
@@ -223,6 +233,7 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
 #ifdef RDOC_NEVER_DEFINED
   mXML = rb_define_module("XML");
   cXSLT = rb_define_class_under(mXML, "XSLT", rb_cObject);
+  cXScXSLTStylesheet = rb_define_class_under(cXSLT, "Stylesheet", rb_cObject);
 #endif
 
 void

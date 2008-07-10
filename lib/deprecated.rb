@@ -1,7 +1,10 @@
-# These classes provide provide backwards compatibility with 
-# versions of libxslt-ruby prior to version 0.7.0
+# :enddoc:
+# These module and classes provide backwards compatibility with 
+# versions of libxslt-ruby prior to version 0.7.0.  New code
+# should not use these methods.
 
 module XML
+  
   module XSLT
     def self.new
       StylesheetDeprecated.new(nil)
