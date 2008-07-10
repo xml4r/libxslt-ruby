@@ -5,17 +5,12 @@
 #ifndef __RUBY_LIBXSLT_STYLESHEET__
 #define __RUBY_LIBXSLT_STYLESHEET__
 
+// Includes from libxml-ruby
+#include <libxml/ruby_libxml.h>
+#include <libxml/ruby_xml_document.h>
+
 extern VALUE cXSLTStylesheet;
 
-typedef struct ruby_xslt_stylesheet {
-  int data_type;
-  void *data;
-  VALUE parsed;      /* XML::Document # parsed xml document after xsl apply */
-  VALUE xml_doc_obj; /* XML::Document */
-  xsltStylesheetPtr xsp;
-} ruby_xslt_stylesheet;
-
 void ruby_init_xslt_stylesheet(void);
-VALUE ruby_xslt_stylesheet_new(VALUE class, xsltStylesheetPtr xsp);
 
-#endif /* __RUBY_LIBXSLT_STYLESHEET__ */
+#endif

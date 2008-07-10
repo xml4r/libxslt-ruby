@@ -11,7 +11,7 @@ class TC_XSLT_STYLESHEET < Test::Unit::TestCase
     @stylesheet = @xslt.parse
   end
   
-  def tear_down()
+  def tear_down
     @xslt = nil
     @stylesheet = nil
   end
@@ -20,7 +20,7 @@ class TC_XSLT_STYLESHEET < Test::Unit::TestCase
     #assert_instance_of(XML::XSLT::Stylesheet, @stylesheet)
   #end
 
-  def test_ruby_xslt_stylesheet_to_s()
+  def test_ruby_xslt_stylesheet_to_s
     @stylesheet.apply
     str = @stylesheet.to_s
     assert_instance_of(String, str)

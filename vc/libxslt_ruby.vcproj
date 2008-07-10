@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Development\msys\src\libiconv-1.12\include&quot;;&quot;C:\Development\ruby\lib\ruby\1.8\i386-mswin32&quot;;&quot;C:\Development\msys\src\libxml2-2.6.32\include&quot;;&quot;C:\Development\msys\src\libxslt-1.1.24&quot;;C:\Development\msys\src\rlibxml\ext"
+				AdditionalIncludeDirectories="&quot;C:\Development\msys\src\libiconv-1.12\include&quot;;&quot;C:\Development\ruby\lib\ruby\1.8\i386-mswin32&quot;;&quot;C:\Development\msys\src\libxml2-2.6.32\include&quot;;&quot;C:\Development\msys\src\libxslt-1.1.24&quot;;&quot;C:\Development\msys\src\libxml-ruby\trunk\ext&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;libxsl_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -177,7 +177,7 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{0B65CD1D-EEB9-41AE-93BB-75496E504152}"
-			RelativePathToProject="..\..\rlibxml\vc\libxml.vcproj"
+			RelativePathToProject="..\..\..\libxml-ruby\trunk\vc\libxml_ruby.vcproj"
 		/>
 	</References>
 	<Files>
