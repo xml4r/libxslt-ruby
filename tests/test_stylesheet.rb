@@ -4,12 +4,12 @@ require 'test/unit'
 class TestStylesheet < Test::Unit::TestCase
   include XML::XSLT
   
-  def setup()
+  def setup
     doc = XML::Document.file('files/fuzface.xsl')
     @stylesheet = Stylesheet.new(doc)
   end
   
-  def tear_down()
+  def tear_down
     @stylesheet = nil
   end
   
