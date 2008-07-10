@@ -16,7 +16,7 @@ FILES = FileList[
   'mingw/*.rake',
   'mingw/*.dll',
   'mingw/*.so',
-  'test/*',
+  'tests/**/*',
   'vc/*.sln',
   'vc/*.vcproj'
 ]
