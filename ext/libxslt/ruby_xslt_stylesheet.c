@@ -63,22 +63,16 @@ char **
 ruby_xslt_coerce_params(VALUE params) {
   char** result;
   size_t length;
-  int i;
+  size_t i;
 
-  if NIL_P(params)
-    params = rb_class_new_instance(0, NULL, rb_cArray);
-  else
-    params = rb_check_array_type(params);
-
-  /* Make sure the array is one dimensional */    
-  rb_funcall(params, rb_intern("flatten!"), 0);
-  
   length = RARRAY(params)->len;
   result = ALLOC_N(char *, length + 2);
 
-  for (i=0; i < length; i+2) {
-    result[i]   = rb_string_value_cstr(RARRAY(params)->ptr[i]);
-    result[i+1] = rb_string_value_cstr(RARRAY(params)->ptr[i+1]);
+  for (i=0; i<length; i++) {
+    VALUE str = rb_String(RARRAY(params)->ptr[i]);
+    result[i] = ALLOC_N(char, strLen + 1);
+    memset(result[i], 0, strLen + 1);
+    strncpy(result[i], RSTRING(str)->ptr, strLen);
   }
   
   /* Null terminate the array */
@@ -107,23 +101,32 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   xmlDocPtr result;
   VALUE document;
   VALUE params;
+  int i;
+  
   char** pParams;
 
   if (argc > 2 || argc < 1)
     rb_raise(rb_eArgError, "wrong number of arguments (need 1 or 2)");
     
   document = argv[0];
-  params = (argc == 2 ? argv[1]: Qnil);
-
+  
   if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
     rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
-    
+
+  /* Make sure params is a flat array */
+  params = (argc == 2 ? argv[1]: Qnil);
+  params = rb_Array(params);
+  rb_funcall(params, rb_intern("flatten!"), 0);
   pParams = ruby_xslt_coerce_params(params);
+  
   Data_Get_Struct(document, ruby_xml_document_t, rdocument);
   Data_Get_Struct(self, xsltStylesheet, xstylesheet);
   
   result = xsltApplyStylesheet(xstylesheet, rdocument->doc, pParams);
   
+  for (i=0; i<(RARRAY(params)->len+2); i++) {
+    ruby_xfree(pParams[i]);
+  }
   ruby_xfree(pParams);
     
   return ruby_xml_document_wrap(result);
