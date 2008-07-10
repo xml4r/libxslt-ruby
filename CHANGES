@@ -1,12 +1,14 @@
 == 0.7.0 / 2008-07-10 Charlie Savage
 
-* Complete rewrite, resulting in signicantly less code
-
 * Ability to reuse the same stylesheet multile times
 
 * Simpler api
 
 * Compatibility layer for pre-0.7.0 versions 
+
+* Major rewrite, resulting in significantly less code
+
+* Updated RDocs.
 
 
 == 0.6.0 / 2008-07-01 Charlie Savage
@@ -15,9 +17,7 @@
 
 * Windows support (both lots of memory fixes and binaries)
 
-* New libxslt.rb ruby wrapper, so programs can simply say:
-
-* Use of require 'libxslt' 
+* New libxslt.rb ruby wrapper, so programs can simply say require 'libxslt' 
 
 
 == 0.5.0 / 2006-02-27 Ross Bamford <rosco at roscopeco.co.uk>

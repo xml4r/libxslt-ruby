@@ -10,7 +10,6 @@ SO_NAME = "libxslt_ruby.so"
 FILES = FileList[
   'README',
   'LICENSE',
-  'bin/*',
   'doc/**/*',
   'lib/*',
   'ext/**/*',

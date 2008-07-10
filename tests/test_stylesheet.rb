@@ -2,45 +2,43 @@ require 'libxslt'
 require 'test/unit'
 
 class TestStylesheet < Test::Unit::TestCase
-  include XML::XSLT
+  def setup
+    doc = XML::Document.file('files/fuzface.xsl')
+    @stylesheet = XSLT::Stylesheet.new(doc)
+  end
   
-  #def setup
-    #doc = XML::Document.file('files/fuzface.xsl')
-    #@stylesheet = Stylesheet.new(doc)
-  #end
+  def tear_down
+    @stylesheet = nil
+  end
   
-  #def tear_down
-    #@stylesheet = nil
-  #end
-  
-  #def doc
-    #XML::Document.file('files/fuzface.xml')
-  #end
+  def doc
+    XML::Document.file('files/fuzface.xml')
+  end
       
-  #def test_class
-    #assert_instance_of(Stylesheet, @stylesheet)
-  #end
+  def test_class
+    assert_instance_of(XSLT::Stylesheet, @stylesheet)
+  end
 
-  #def test_apply
-    #result = @stylesheet.apply(doc)
-    #assert_instance_of(XML::Document, result)
+  def test_apply
+    result = @stylesheet.apply(doc)
+    assert_instance_of(XML::Document, result)
     
-    #paragraphs = result.find('//p')
-    #assert_equal(11, paragraphs.length)
-  #end
+    paragraphs = result.find('//p')
+    assert_equal(11, paragraphs.length)
+  end
 
-  #def test_apply_multiple
-    #10.times do
-      #test_apply
-    #end
-  #end
+  def test_apply_multiple
+    10.times do
+      test_apply
+    end
+  end
   
   def test_params
     sdoc = XML::Document.file('files/params.xsl')
-    stylesheet = Stylesheet.new(sdoc)
+    stylesheet = XSLT::Stylesheet.new(sdoc)
+    doc = XML::Document.file('files/params.xml')
     
     # Start with no params
-    doc = XML::Document.file('files/params.xml')
     result = stylesheet.apply(doc)
     assert_equal('<article>failure</article>', result.root.to_s)
     

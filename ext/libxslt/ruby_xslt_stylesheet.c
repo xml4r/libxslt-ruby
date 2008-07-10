@@ -6,11 +6,11 @@
 #include "ruby_xslt_stylesheet.h"
 
 /*
- * Document-class: XML::XSLT::Stylesheet
+ * Document-class: XSLT::Stylesheet
  * 
- * The XML::XSLT::Stylesheet represents a XSL stylesheet that
+ * The XSLT::Stylesheet represents a XSL stylesheet that
  * can be used to transform an XML document.  For usage information
- * refer to XML::XSLT::Stylesheet#apply
+ * refer to XSLT::Stylesheet#apply
  *
 */
 
@@ -70,12 +70,13 @@ ruby_xslt_coerce_params(VALUE params) {
 
   for (i=0; i<length; i++) {
     VALUE str = rb_String(RARRAY(params)->ptr[i]);
+    int strLen = RSTRING(str)->len;
     result[i] = ALLOC_N(char, strLen + 1);
     memset(result[i], 0, strLen + 1);
     strncpy(result[i], RSTRING(str)->ptr, strLen);
   }
   
-  /* Null terminate the array */
+  /* Null terminate the array - need to empty elements */
   result[i] = NULL;
   result[i+1] = NULL;
   
@@ -84,15 +85,25 @@ ruby_xslt_coerce_params(VALUE params) {
    
 
 /* call-seq: 
- *   stylesheet.apply(document) -> XML::Document
+ *   stylesheet.apply(document, {params}) -> XML::Document
  * 
  * Apply this stylesheet transformation to the provided document.
+ * This method may be invoked multiple times.
  *
+ * Params:
+ * 
+ * document = An instance of an XML::Document
+ * params = An optional hash table that specifies the values
+ *          for xsl:param values embedded in the stylesheet.
+ *
+ * Example:
+ * 
  *  stylesheet_doc = XML::Document.file('stylesheet_file')
  *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
  *
  *  xml_doc = XML::Document.file('xml_file')
  *  result = stylesheet.apply(xml_doc)
+ *  result = stylesheet.apply(xml_doc, {:foo => 'bar'})
  */
 VALUE
 ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
@@ -124,7 +135,9 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   
   result = xsltApplyStylesheet(xstylesheet, rdocument->doc, pParams);
   
-  for (i=0; i<(RARRAY(params)->len+2); i++) {
+  /* Free allocated array of *chars.  Note we don't have to
+     free the last array item since its set to NULL. */
+  for (i=0; i<(RARRAY(params)->len); i++) {
     ruby_xfree(pParams[i]);
   }
   ruby_xfree(pParams);
@@ -234,9 +247,8 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
 
 
 #ifdef RDOC_NEVER_DEFINED
-  mXML = rb_define_module("XML");
-  cXSLT = rb_define_class_under(mXML, "XSLT", rb_cObject);
-  cXScXSLTStylesheet = rb_define_class_under(cXSLT, "Stylesheet", rb_cObject);
+  cXSLT = rb_define_module("XSLT");
+  cXSLTStylesheet = rb_define_class_under(cXSLT, "Stylesheet", rb_cObject);
 #endif
 
 void

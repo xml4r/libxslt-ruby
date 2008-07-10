@@ -8,13 +8,8 @@
 VALUE cXSLT;
 VALUE eXMLXSLTStylesheetRequireParsedDoc;
 
-#ifdef RDOC_NEVER_DEFINED
-  mXML = rb_define_module("XML");
-  cXSLT = rb_define_class_under(mXML, "XSLT", rb_cObject);
-#endif
-
 /*
- * Document-class: XML::XSLT
+ * Document-class: XSLT
  * 
  * The libxslt gem provides Ruby language bindings for GNOME's Libxslt
  * toolkit. It is free software, released under the MIT License.
@@ -30,6 +25,10 @@ VALUE eXMLXSLTStylesheetRequireParsedDoc;
  *
 */
 
+#ifdef RDOC_NEVER_DEFINED
+  cXSLT = rb_define_module("XSLT");
+#endif
+
 
 #if defined(_WIN32)
 __declspec(dllexport) 
@@ -37,12 +36,9 @@ __declspec(dllexport)
 
 void
 Init_libxslt_ruby(void) {
-  VALUE mXML;
-  
   LIBXML_TEST_VERSION;
   
-  mXML = rb_const_get(rb_cObject, rb_intern("XML"));
-  cXSLT = rb_define_module_under(mXML, "XSLT");
+  cXSLT = rb_define_module("XSLT");
 
   rb_define_const(cXSLT, "MAX_DEPTH", INT2NUM(xsltMaxDepth));
   rb_define_const(cXSLT, "MAX_SORT", INT2NUM(XSLT_MAX_SORT));
@@ -61,6 +57,4 @@ Init_libxslt_ruby(void) {
 
   ruby_init_xslt_stylesheet();
   ruby_init_xslt_transform_context();
-
-  //exsltRegisterAll();
 }
