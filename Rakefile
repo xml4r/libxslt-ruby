@@ -2,6 +2,7 @@ require 'rubygems'
 require 'date'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
+require 'rake/testtask'
 require 'date'
 
 SO_NAME = "libxslt_ruby.so"
@@ -10,6 +11,7 @@ SO_NAME = "libxslt_ruby.so"
 FILES = FileList[
   'README',
   'LICENSE',
+  'setup.rb',
   'doc/**/*',
   'lib/*',
   'ext/**/*',
@@ -42,7 +44,7 @@ default_spec = Gem::Specification.new do |spec|
   
   spec.author = "Charlie Savage"
   spec.email = "libxml-devel@rubyforge.org"
-  spec.add_dependency('libxml-ruby','>=0.7.0')
+  spec.add_dependency('libxml-ruby','>=0.7.1')
   spec.platform = Gem::Platform::RUBY
   spec.require_path = "lib" 
   spec.bindir = "bin"
@@ -114,5 +116,15 @@ Rake::RDocTask.new("rdoc") do |rdoc|
                           'LICENSE')
 end
 
+task :package => :rdoc
 task :package => :create_win32_gem
 task :default => :package
+
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.libs << "ext"
+end
+
+if not RUBY_PLATFORM.match(/mswin32/i)
+  Rake::Task[:test].prerequisites << :extensions
+end
