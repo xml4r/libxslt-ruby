@@ -16,6 +16,7 @@
 
 
 VALUE cXSLTStylesheet;
+static ID doc_iv_id;
 
 VALUE
 ruby_xslt_stylesheet_document_klass() {
@@ -23,6 +24,16 @@ ruby_xslt_stylesheet_document_klass() {
   return rb_const_get(mXML, rb_intern("Document"));
 }
 
+void
+ruby_xslt_stylesheet_mark(xsltStylesheetPtr xstylesheet) {
+  VALUE self = Qnil;
+  VALUE document;
+  
+  self = (VALUE)xstylesheet->_private;
+  document = rb_ivar_get(self, doc_iv_id);
+  
+  rb_gc_mark(document);
+}
 
 void
 ruby_xslt_stylesheet_free(xsltStylesheetPtr xstylesheet) {
@@ -32,7 +43,7 @@ ruby_xslt_stylesheet_free(xsltStylesheetPtr xstylesheet) {
 VALUE
 ruby_xslt_stylesheet_alloc(VALUE klass) {
   return Data_Wrap_Struct(cXSLTStylesheet,
-                          NULL, ruby_xslt_stylesheet_free,
+                          ruby_xslt_stylesheet_mark, ruby_xslt_stylesheet_free,
                           NULL);
 }
                           
@@ -49,12 +60,21 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
 VALUE
 ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
   ruby_xml_document_t *rdocument;
+  xsltStylesheetPtr xstylesheet;
 
   if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
     rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
     
+  /* Parse the document and link the new stylesheet back to the ruby object. */
   Data_Get_Struct(document, ruby_xml_document_t, rdocument);
+  xstylesheet = xsltParseStylesheetDoc(rdocument->doc);
+  xstylesheet->_private = (void *)self;
+
+  /* Save the parsed stylesheet as well as a reference to the document. */  
   DATA_PTR(self) = xsltParseStylesheetDoc(rdocument->doc);
+  rb_ivar_set(self, doc_iv_id, document);
+  
+  /* Save a reference to the document as an attribute accessable to ruby*/
   return self;
 }
 
@@ -257,4 +277,7 @@ ruby_init_xslt_stylesheet(void) {
   rb_define_alloc_func(cXSLTStylesheet, ruby_xslt_stylesheet_alloc);
   rb_define_method(cXSLTStylesheet, "initialize", ruby_xslt_stylesheet_initialize, 1);
   rb_define_method(cXSLTStylesheet, "apply", ruby_xslt_stylesheet_apply, -1);
+  rb_define_attr(cXSLTStylesheet, "doc", 1, 0);
+  
+  doc_iv_id = rb_intern("@doc");
 }

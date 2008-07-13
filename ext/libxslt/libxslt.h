@@ -21,14 +21,10 @@
 
 #include "version.h"
 
-#define RUBY_LIBXSLT_SRC_TYPE_NULL    0
-#define RUBY_LIBXSLT_SRC_TYPE_FILE    1
-
-extern VALUE cXSLT;
-extern VALUE eXMLXSLTStylesheetRequireParsedDoc;
-
 #if ((RUBY_LIBXML_VER_MAJ != RUBY_LIBXSLT_VER_MAJ) || (RUBY_LIBXML_VER_MIN != RUBY_LIBXSLT_VER_MIN))
 #error "Incompatible LibXML-Ruby headers - please install same major/micro version"
 #endif
+
+extern VALUE cXSLT;
 
 #endif
