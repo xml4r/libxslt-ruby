@@ -66,4 +66,43 @@ class TestStylesheet < Test::Unit::TestCase
     result = stylesheet.apply(doc, ['bar'])
     assert_equal('<article>failure</article>', result.root.to_s)
   end
+  
+  # -- Memory Tests ----
+  def test_doc_ownership
+    10.times do 
+      filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
+      sdoc = XML::Document.file(filename)
+      stylesheet = XSLT::Stylesheet.new(sdoc)
+      
+      stylesheet = nil
+      GC.start
+      assert_equal(156, sdoc.to_s.length)
+    end
+  end 
+     
+  def test_stylesheet_ownership
+    10.times do 
+      filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
+      sdoc = XML::Document.file(filename)
+      stylesheet = XSLT::Stylesheet.new(sdoc)
+      
+      sdoc = nil
+      GC.start
+      
+      rdoc = stylesheet.apply(doc)
+      assert_equal(6011, rdoc.to_s.length)
+    end
+  end
+      
+  def test_result_ownership
+    10.times do 
+      filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
+      sdoc = XML::Document.file(filename)
+      stylesheet = XSLT::Stylesheet.new(sdoc)
+      
+      rdoc = stylesheet.apply(doc)
+      rdoc = nil
+      GC.start
+    end
+  end    
 end

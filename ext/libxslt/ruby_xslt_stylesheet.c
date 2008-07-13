@@ -14,9 +14,7 @@
  *
 */
 
-
 VALUE cXSLTStylesheet;
-static ID doc_iv_id;
 
 VALUE
 ruby_xslt_stylesheet_document_klass() {
@@ -25,25 +23,15 @@ ruby_xslt_stylesheet_document_klass() {
 }
 
 void
-ruby_xslt_stylesheet_mark(xsltStylesheetPtr xstylesheet) {
-  VALUE self = Qnil;
-  VALUE document;
-  
-  self = (VALUE)xstylesheet->_private;
-  document = rb_ivar_get(self, doc_iv_id);
-  
-  rb_gc_mark(document);
-}
-
-void
 ruby_xslt_stylesheet_free(xsltStylesheetPtr xstylesheet) {
+
   xsltFreeStylesheet(xstylesheet);
 }
 
 VALUE
 ruby_xslt_stylesheet_alloc(VALUE klass) {
   return Data_Wrap_Struct(cXSLTStylesheet,
-                          ruby_xslt_stylesheet_mark, ruby_xslt_stylesheet_free,
+                          NULL, ruby_xslt_stylesheet_free,
                           NULL);
 }
                           
@@ -51,7 +39,10 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
 /* call-seq:
  *    XSLT::Stylesheet.new(document) -> XSLT::Stylesheet
  * 
- * Creates a new XSLT stylesheet based on the provided document.
+ * Creates a new XSLT stylesheet based on the specified document.
+ * For memory management reasons, a copy of the specified document
+ * will be made, so its best to create a single copy of a stylesheet
+ * and use it multiple times.
  *
  *  stylesheet_doc = XML::Document.file('stylesheet_file')
  *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
@@ -60,19 +51,25 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
 VALUE
 ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
   ruby_xml_document_t *rdocument;
+  xmlDocPtr xcopy;
   xsltStylesheetPtr xstylesheet;
 
   if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
     rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
     
-  /* Parse the document and link the new stylesheet back to the ruby object. */
+  /* NOTE!! Since the stylesheet own the specified document, the easiest 
+  *  thing to do from a memory standpoint is too copy it and not expose
+  *  the copy to Ruby.  The other solution is expose a memory management
+  *  API on the document object for taking ownership of the document
+  *  and specifying when it has been freed.  Then the document class
+  *  has to be updated to always check and see if the document is 
+  *  still valid.  That's all doable, but seems like a pain, so 
+  *  just copy the document for now. */
   Data_Get_Struct(document, ruby_xml_document_t, rdocument);
-  xstylesheet = xsltParseStylesheetDoc(rdocument->doc);
+  xcopy = xmlCopyDoc(rdocument->doc, 1);
+  xstylesheet = xsltParseStylesheetDoc(xcopy);
   xstylesheet->_private = (void *)self;
-
-  /* Save the parsed stylesheet as well as a reference to the document. */  
-  DATA_PTR(self) = xsltParseStylesheetDoc(rdocument->doc);
-  rb_ivar_set(self, doc_iv_id, document);
+  DATA_PTR(self) = xstylesheet;
   
   /* Save a reference to the document as an attribute accessable to ruby*/
   return self;
@@ -154,6 +151,9 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   Data_Get_Struct(self, xsltStylesheet, xstylesheet);
   
   result = xsltApplyStylesheet(xstylesheet, rdocument->doc, pParams);
+  
+  if (!result)
+    rb_raise(eXSLTError, "Transformation failed");
   
   /* Free allocated array of *chars.  Note we don't have to
      free the last array item since its set to NULL. */
@@ -277,7 +277,4 @@ ruby_init_xslt_stylesheet(void) {
   rb_define_alloc_func(cXSLTStylesheet, ruby_xslt_stylesheet_alloc);
   rb_define_method(cXSLTStylesheet, "initialize", ruby_xslt_stylesheet_initialize, 1);
   rb_define_method(cXSLTStylesheet, "apply", ruby_xslt_stylesheet_apply, -1);
-  rb_define_attr(cXSLTStylesheet, "doc", 1, 0);
-  
-  doc_iv_id = rb_intern("@doc");
 }

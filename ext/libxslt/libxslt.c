@@ -6,7 +6,7 @@
 #include "libxml/xmlversion.h"
 
 VALUE cXSLT;
-VALUE eXMLXSLTStylesheetRequireParsedDoc;
+VALUE eXSLTError;
 
 /*
  * Document-class: XSLT
@@ -54,6 +54,8 @@ Init_libxslt_ruby(void) {
   rb_define_const(cXSLT, "NAMESPACE_SAXON", rb_str_new2((const char*)XSLT_SAXON_NAMESPACE));
   rb_define_const(cXSLT, "NAMESPACE_XT", rb_str_new2((const char*)XSLT_XT_NAMESPACE));
   rb_define_const(cXSLT, "NAMESPACE_XALAN", rb_str_new2((const char*)XSLT_XALAN_NAMESPACE));
+
+  eXSLTError = rb_define_class_under(cXSLT, "XSLTError", rb_eRuntimeError);
 
   ruby_init_xslt_stylesheet();
   ruby_init_xslt_transform_context();
