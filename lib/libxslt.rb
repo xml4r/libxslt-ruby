@@ -1,3 +1,3 @@
 require 'libxml'
-require 'libxslt_ruby.so'
+require 'libxslt_ruby'
 require 'deprecated'
