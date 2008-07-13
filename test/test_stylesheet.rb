@@ -3,7 +3,8 @@ require 'test/unit'
 
 class TestStylesheet < Test::Unit::TestCase
   def setup
-    doc = XML::Document.file('files/fuzface.xsl')
+    filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
+    doc = XML::Document.file(filename)
     @stylesheet = XSLT::Stylesheet.new(doc)
   end
   
@@ -12,7 +13,8 @@ class TestStylesheet < Test::Unit::TestCase
   end
   
   def doc
-    XML::Document.file('files/fuzface.xml')
+    filename = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
+    XML::Document.file(filename)
   end
       
   def test_class
@@ -34,9 +36,12 @@ class TestStylesheet < Test::Unit::TestCase
   end
   
   def test_params
-    sdoc = XML::Document.file('files/params.xsl')
+    filename = File.join(File.dirname(__FILE__), 'files/params.xsl')
+    sdoc = XML::Document.file(filename)
+    
+    filename = File.join(File.dirname(__FILE__), 'files/params.xml')
     stylesheet = XSLT::Stylesheet.new(sdoc)
-    doc = XML::Document.file('files/params.xml')
+    doc = XML::Document.file(filename)
     
     # Start with no params
     result = stylesheet.apply(doc)

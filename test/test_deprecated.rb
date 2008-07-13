@@ -3,9 +3,9 @@ require 'test/unit'
 
 class TestDeprecated < Test::Unit::TestCase
   def setup()
-    xsl_file = File.expand_path('files/fuzface.xsl')
-    xml_file = File.expand_path('files/fuzface.xml')
-
+    xsl_file = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
+    xml_file = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
+    
     @xslt = XML::XSLT.file(xsl_file)
     @xslt.doc = XML::Document.file(xml_file)
     @stylesheet = @xslt.parse
@@ -33,23 +33,21 @@ class TestDeprecated < Test::Unit::TestCase
     assert_instance_of(String, XML::XSLT::NAMESPACE_NORM_SAXON)
   end
   
-  def test_file
-    xsl_file = File.expand_path('files/fuzface.xsl')
-    xslt = XML::XSLT.file(xsl_file)
-    assert_instance_of(XML::XSLT::Stylesheet, xslt)
-  end
-
   def test_new
     xslt = XML::XSLT.new
     assert_instance_of(XML::XSLT::Stylesheet, xslt)
     
-    xslt.filename = File.expand_path('files/fuzface.xsl')
+    xslt.filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
     assert_instance_of(String, xslt.filename)
+  end
+  
+  def test_file_type
+    assert_instance_of(XML::XSLT::Stylesheet, @xslt)
   end
 
   def test_doc
-    xsl_file = File.expand_path('files/fuzface.xsl')
-    xml_file = File.expand_path('files/fuzface.xml')
+    xsl_file = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
+    xml_file = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
     
     xslt = XML::XSLT.file(xsl_file)
     xslt.doc = XML::Document.file(xml_file)
@@ -57,8 +55,8 @@ class TestDeprecated < Test::Unit::TestCase
   end
   
   def test_parse
-    xsl_file = File.expand_path('files/fuzface.xsl')
-    xml_file = File.expand_path('files/fuzface.xml')
+    xsl_file = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
+    xml_file = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
     
     xslt = XML::XSLT.file(xsl_file)
     stylesheet = xslt.parse
