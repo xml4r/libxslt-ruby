@@ -44,7 +44,7 @@ default_spec = Gem::Specification.new do |spec|
   
   spec.author = "Charlie Savage"
   spec.email = "libxml-devel@rubyforge.org"
-  spec.add_dependency('libxml-ruby','>=0.7.1')
+  spec.add_dependency('libxml-ruby','>=0.8.0')
   spec.platform = Gem::Platform::RUBY
   spec.require_paths = ["lib", "ext/libxslt"] 
  
