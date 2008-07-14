@@ -46,7 +46,8 @@ default_spec = Gem::Specification.new do |spec|
   spec.email = "libxml-devel@rubyforge.org"
   spec.add_dependency('libxml-ruby','>=0.7.1')
   spec.platform = Gem::Platform::RUBY
-  spec.require_path = "lib" 
+  spec.require_path = ["lib", "ext/libxslt"] 
+ 
   spec.bindir = "bin"
   spec.extensions = ["ext/libxslt/extconf.rb"]
   spec.files = FILES.to_a
@@ -61,6 +62,7 @@ end
 
 # Rake task to build the default package
 Rake::GemPackageTask.new(default_spec) do |pkg|
+  pkg.package_dir = 'admin/pkg'
   pkg.need_tar = true
   pkg.need_zip = true
 end
@@ -90,7 +92,7 @@ task :create_win32_gem do
   # Create the gem, then move it to pkg
   Gem::Builder.new(win_spec).build
   gem_file = "#{win_spec.name}-#{win_spec.version}-#{win_spec.platform}.gem"
-  mv(gem_file, "pkg/#{gem_file}")
+  mv(gem_file, "admin/pkg/#{gem_file}")
 
   # Remove win extension from top level directory  
   libraries.each do |file_name|
