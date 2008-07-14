@@ -150,7 +150,7 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   Data_Get_Struct(document, ruby_xml_document_t, rdocument);
   Data_Get_Struct(self, xsltStylesheet, xstylesheet);
   
-  result = xsltApplyStylesheet(xstylesheet, rdocument->doc, pParams);
+  result = xsltApplyStylesheet(xstylesheet, rdocument->doc, (const char**)pParams);
   
   if (!result)
     rb_raise(eXSLTError, "Transformation failed");

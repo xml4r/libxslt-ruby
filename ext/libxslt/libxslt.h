@@ -26,6 +26,6 @@
 #endif
 
 extern VALUE cXSLT;
-extern eXSLTError;
+extern VALUE eXSLTError;
 
 #endif
