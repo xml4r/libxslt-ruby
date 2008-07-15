@@ -90,7 +90,7 @@ class TestStylesheet < Test::Unit::TestCase
       GC.start
       
       rdoc = stylesheet.apply(doc)
-      assert_equal(6011, rdoc.to_s.length)
+      assert_equal(5993, rdoc.to_s.length)
     end
   end
       

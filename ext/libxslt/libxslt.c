@@ -38,7 +38,7 @@ void
 Init_libxslt_ruby(void) {
   LIBXML_TEST_VERSION;
   
-  cLibXSLT = rb_define_module("XSLT");
+  cLibXSLT = rb_define_module("LibXSLT");
 
   rb_define_const(cLibXSLT, "MAX_DEPTH", INT2NUM(xsltMaxDepth));
   rb_define_const(cLibXSLT, "MAX_SORT", INT2NUM(XSLT_MAX_SORT));
