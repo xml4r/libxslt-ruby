@@ -16,10 +16,10 @@ VALUE eXSLTError;
  *
  * Using the bindings is straightforward:
  *
- *  stylesheet_doc = LibXML::Document.file('stylesheet_file')
- *  stylesheet = LibXSLT::Stylesheet.new(stylesheet_doc)
+ *  stylesheet_doc = XML::Document.file('stylesheet_file')
+ *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
  *
- *  xml_doc = LibXML::Document.file('xml_file')
+ *  xml_doc = XML::Document.file('xml_file')
  *  result = stylesheet.apply(xml_doc)
  * 
  *
