@@ -13,7 +13,7 @@ FILES = FileList[
   'LICENSE',
   'setup.rb',
   'doc/**/*',
-  'lib/*',
+  'lib/**/*',
   'ext/**/*',
   'mingw/*.rake',
   'mingw/*.dll',
