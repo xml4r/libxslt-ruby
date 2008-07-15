@@ -6,11 +6,11 @@
 #include "ruby_xslt_stylesheet.h"
 
 /*
- * Document-class: XSLT::Stylesheet
+ * Document-class: LibXSLT::Stylesheet
  * 
- * The XSLT::Stylesheet represents a XSL stylesheet that
+ * The LibXSLT::Stylesheet represents a XSL stylesheet that
  * can be used to transform an XML document.  For usage information
- * refer to XSLT::Stylesheet#apply
+ * refer to LibXSLT::Stylesheet#apply
  *
 */
 
@@ -37,7 +37,7 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
                           
 
 /* call-seq:
- *    XSLT::Stylesheet.new(document) -> XSLT::Stylesheet
+ *    LibXSLT::Stylesheet.new(document) -> LibXSLT::Stylesheet
  * 
  * Creates a new XSLT stylesheet based on the specified document.
  * For memory management reasons, a copy of the specified document
@@ -45,7 +45,7 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
  * and use it multiple times.
  *
  *  stylesheet_doc = LibXML::Document.file('stylesheet_file')
- *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
+ *  stylesheet = LibXSLT::Stylesheet.new(stylesheet_doc)
  *
  */
 VALUE
@@ -108,15 +108,13 @@ ruby_xslt_coerce_params(VALUE params) {
  * This method may be invoked multiple times.
  *
  * Params:
- * 
- * document = An instance of an LibXML::Document
- * params = An optional hash table that specifies the values
- *          for xsl:param values embedded in the stylesheet.
+ * *  document - An instance of an LibXML::Document
+ * *  params - An optional hash table that specifies the values for xsl:param values embedded in the stylesheet.
  *
  * Example:
  * 
  *  stylesheet_doc = LibXML::Document.file('stylesheet_file')
- *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
+ *  stylesheet = LibXSLT::Stylesheet.new(stylesheet_doc)
  *
  *  xml_doc = LibXML::Document.file('xml_file')
  *  result = stylesheet.apply(xml_doc)
@@ -267,13 +265,13 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
 
 
 #ifdef RDOC_NEVER_DEFINED
-  cXSLT = rb_define_module("XSLT");
-  cXSLTStylesheet = rb_define_class_under(cXSLT, "Stylesheet", rb_cObject);
+  cLibXSLT = rb_define_module("XSLT");
+  cXSLTStylesheet = rb_define_class_under(cLibXSLT, "Stylesheet", rb_cObject);
 #endif
 
 void
 ruby_init_xslt_stylesheet(void) {
-  cXSLTStylesheet = rb_define_class_under(cXSLT, "Stylesheet", rb_cObject);
+  cXSLTStylesheet = rb_define_class_under(cLibXSLT, "Stylesheet", rb_cObject);
   rb_define_alloc_func(cXSLTStylesheet, ruby_xslt_stylesheet_alloc);
   rb_define_method(cXSLTStylesheet, "initialize", ruby_xslt_stylesheet_initialize, 1);
   rb_define_method(cXSLTStylesheet, "apply", ruby_xslt_stylesheet_apply, -1);

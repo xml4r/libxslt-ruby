@@ -5,7 +5,7 @@
 #include "libxslt.h"
 #include "libxml/xmlversion.h"
 
-VALUE cXSLT;
+VALUE cLibXSLT;
 VALUE eXSLTError;
 
 /*
@@ -17,7 +17,7 @@ VALUE eXSLTError;
  * Using the bindings is straightforward:
  *
  *  stylesheet_doc = LibXML::Document.file('stylesheet_file')
- *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
+ *  stylesheet = LibXSLT::Stylesheet.new(stylesheet_doc)
  *
  *  xml_doc = LibXML::Document.file('xml_file')
  *  result = stylesheet.apply(xml_doc)
@@ -26,7 +26,7 @@ VALUE eXSLTError;
 */
 
 #ifdef RDOC_NEVER_DEFINED
-  cXSLT = rb_define_module("XSLT");
+  cLibXSLT = rb_define_module("XSLT");
 #endif
 
 
@@ -38,24 +38,24 @@ void
 Init_libxslt_ruby(void) {
   LIBXML_TEST_VERSION;
   
-  cXSLT = rb_define_module("XSLT");
+  cLibXSLT = rb_define_module("XSLT");
 
-  rb_define_const(cXSLT, "MAX_DEPTH", INT2NUM(xsltMaxDepth));
-  rb_define_const(cXSLT, "MAX_SORT", INT2NUM(XSLT_MAX_SORT));
-  rb_define_const(cXSLT, "ENGINE_VERSION", rb_str_new2(xsltEngineVersion));
-  rb_define_const(cXSLT, "LIBXSLT_VERSION", INT2NUM(xsltLibxsltVersion));
-  rb_define_const(cXSLT, "LIBXML_VERSION", INT2NUM(xsltLibxmlVersion));
-  rb_define_const(cXSLT, "XSLT_NAMESPACE", rb_str_new2((const char*)XSLT_NAMESPACE));
-  rb_define_const(cXSLT, "DEFAULT_VENDOR", rb_str_new2(XSLT_DEFAULT_VENDOR));
-  rb_define_const(cXSLT, "DEFAULT_VERSION", rb_str_new2(XSLT_DEFAULT_VERSION));
-  rb_define_const(cXSLT, "DEFAULT_URL", rb_str_new2(XSLT_DEFAULT_URL));
-  rb_define_const(cXSLT, "NAMESPACE_LIBXSLT", rb_str_new2((const char*)XSLT_LIBXSLT_NAMESPACE));
-  rb_define_const(cXSLT, "NAMESPACE_NORM_SAXON", rb_str_new2((const char*)XSLT_NORM_SAXON_NAMESPACE));
-  rb_define_const(cXSLT, "NAMESPACE_SAXON", rb_str_new2((const char*)XSLT_SAXON_NAMESPACE));
-  rb_define_const(cXSLT, "NAMESPACE_XT", rb_str_new2((const char*)XSLT_XT_NAMESPACE));
-  rb_define_const(cXSLT, "NAMESPACE_XALAN", rb_str_new2((const char*)XSLT_XALAN_NAMESPACE));
+  rb_define_const(cLibXSLT, "MAX_DEPTH", INT2NUM(xsltMaxDepth));
+  rb_define_const(cLibXSLT, "MAX_SORT", INT2NUM(XSLT_MAX_SORT));
+  rb_define_const(cLibXSLT, "ENGINE_VERSION", rb_str_new2(xsltEngineVersion));
+  rb_define_const(cLibXSLT, "LIBXSLT_VERSION", INT2NUM(xsltLibxsltVersion));
+  rb_define_const(cLibXSLT, "LIBXML_VERSION", INT2NUM(xsltLibxmlVersion));
+  rb_define_const(cLibXSLT, "XSLT_NAMESPACE", rb_str_new2((const char*)XSLT_NAMESPACE));
+  rb_define_const(cLibXSLT, "DEFAULT_VENDOR", rb_str_new2(XSLT_DEFAULT_VENDOR));
+  rb_define_const(cLibXSLT, "DEFAULT_VERSION", rb_str_new2(XSLT_DEFAULT_VERSION));
+  rb_define_const(cLibXSLT, "DEFAULT_URL", rb_str_new2(XSLT_DEFAULT_URL));
+  rb_define_const(cLibXSLT, "NAMESPACE_LIBXSLT", rb_str_new2((const char*)XSLT_LIBXSLT_NAMESPACE));
+  rb_define_const(cLibXSLT, "NAMESPACE_NORM_SAXON", rb_str_new2((const char*)XSLT_NORM_SAXON_NAMESPACE));
+  rb_define_const(cLibXSLT, "NAMESPACE_SAXON", rb_str_new2((const char*)XSLT_SAXON_NAMESPACE));
+  rb_define_const(cLibXSLT, "NAMESPACE_XT", rb_str_new2((const char*)XSLT_XT_NAMESPACE));
+  rb_define_const(cLibXSLT, "NAMESPACE_XALAN", rb_str_new2((const char*)XSLT_XALAN_NAMESPACE));
 
-  eXSLTError = rb_define_class_under(cXSLT, "XSLTError", rb_eRuntimeError);
+  eXSLTError = rb_define_class_under(cLibXSLT, "XSLTError", rb_eRuntimeError);
 
   ruby_init_xslt_stylesheet();
   ruby_init_xslt_transform_context();

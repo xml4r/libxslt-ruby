@@ -5,7 +5,7 @@ class TestStylesheet < Test::Unit::TestCase
   def setup
     filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
     doc = LibXML::Document.file(filename)
-    @stylesheet = XSLT::Stylesheet.new(doc)
+    @stylesheet = LibXSLT::Stylesheet.new(doc)
   end
   
   def tear_down
@@ -18,7 +18,7 @@ class TestStylesheet < Test::Unit::TestCase
   end
       
   def test_class
-    assert_instance_of(XSLT::Stylesheet, @stylesheet)
+    assert_instance_of(LibXSLT::Stylesheet, @stylesheet)
   end
 
   def test_apply
@@ -40,7 +40,7 @@ class TestStylesheet < Test::Unit::TestCase
     sdoc = LibXML::Document.file(filename)
     
     filename = File.join(File.dirname(__FILE__), 'files/params.xml')
-    stylesheet = XSLT::Stylesheet.new(sdoc)
+    stylesheet = LibXSLT::Stylesheet.new(sdoc)
     doc = LibXML::Document.file(filename)
     
     # Start with no params
@@ -72,7 +72,7 @@ class TestStylesheet < Test::Unit::TestCase
     10.times do 
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
       sdoc = LibXML::Document.file(filename)
-      stylesheet = XSLT::Stylesheet.new(sdoc)
+      stylesheet = LibXSLT::Stylesheet.new(sdoc)
       
       stylesheet = nil
       GC.start
@@ -84,7 +84,7 @@ class TestStylesheet < Test::Unit::TestCase
     10.times do 
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
       sdoc = LibXML::Document.file(filename)
-      stylesheet = XSLT::Stylesheet.new(sdoc)
+      stylesheet = LibXSLT::Stylesheet.new(sdoc)
       
       sdoc = nil
       GC.start
@@ -98,7 +98,7 @@ class TestStylesheet < Test::Unit::TestCase
     10.times do 
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
       sdoc = LibXML::Document.file(filename)
-      stylesheet = XSLT::Stylesheet.new(sdoc)
+      stylesheet = LibXSLT::Stylesheet.new(sdoc)
       
       rdoc = stylesheet.apply(doc)
       rdoc = nil

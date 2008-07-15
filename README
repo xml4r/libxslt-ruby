@@ -117,7 +117,7 @@ We can easily transform the XML with the following ruby code:
   
   # Create a new XSL Transform
   stylesheet_doc = LibXML::Document.file('files/fuzface.xsl')
-  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
+  stylesheet = LibXSLT::Stylesheet.new(stylesheet_doc)
 
   # Transform a xml document
   xml_doc = LibXML::Document.file('files/fuzface.xml')

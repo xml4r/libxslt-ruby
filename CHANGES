@@ -1,6 +1,17 @@
 == 0.7.0 / 2008-07-10 Charlie Savage
 
-* Ability to reuse the same stylesheet multile times
+* Moved to LibXSLT namespace (old XML::XSLT namespace still works)
+
+* Fix memory errors when reusing a stylehseet
+
+* Added support for setting xsl::param values
+
+* Updated RDocs.
+
+
+== 0.7.0 / 2008-07-10 Charlie Savage
+
+* Ability to reuse the same stylesheet multiple times
 
 * Simpler api
 
