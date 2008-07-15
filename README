@@ -116,11 +116,11 @@ We can easily transform the XML with the following ruby code:
   require 'libxslt'
   
   # Create a new XSL Transform
-  stylesheet_doc = XML::Document.file('files/fuzface.xsl')
+  stylesheet_doc = LibXML::Document.file('files/fuzface.xsl')
   stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
 
   # Transform a xml document
-  xml_doc = XML::Document.file('files/fuzface.xml')
+  xml_doc = LibXML::Document.file('files/fuzface.xml')
   result = stylesheet.apply(xml_doc)
    
 You can then print, save or manipulate the returned document.

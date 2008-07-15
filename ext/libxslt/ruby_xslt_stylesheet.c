@@ -44,7 +44,7 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
  * will be made, so its best to create a single copy of a stylesheet
  * and use it multiple times.
  *
- *  stylesheet_doc = XML::Document.file('stylesheet_file')
+ *  stylesheet_doc = LibXML::Document.file('stylesheet_file')
  *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
  *
  */
@@ -55,7 +55,7 @@ ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
   xsltStylesheetPtr xstylesheet;
 
   if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
-    rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
+    rb_raise(rb_eTypeError, "Must pass in an LibXML::Document instance.");
     
   /* NOTE!! Since the stylesheet own the specified document, the easiest 
   *  thing to do from a memory standpoint is too copy it and not expose
@@ -102,23 +102,23 @@ ruby_xslt_coerce_params(VALUE params) {
    
 
 /* call-seq: 
- *   stylesheet.apply(document, {params}) -> XML::Document
+ *   stylesheet.apply(document, {params}) -> LibXML::Document
  * 
  * Apply this stylesheet transformation to the provided document.
  * This method may be invoked multiple times.
  *
  * Params:
  * 
- * document = An instance of an XML::Document
+ * document = An instance of an LibXML::Document
  * params = An optional hash table that specifies the values
  *          for xsl:param values embedded in the stylesheet.
  *
  * Example:
  * 
- *  stylesheet_doc = XML::Document.file('stylesheet_file')
+ *  stylesheet_doc = LibXML::Document.file('stylesheet_file')
  *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
  *
- *  xml_doc = XML::Document.file('xml_file')
+ *  xml_doc = LibXML::Document.file('xml_file')
  *  result = stylesheet.apply(xml_doc)
  *  result = stylesheet.apply(xml_doc, {:foo => 'bar'})
  */
@@ -139,7 +139,7 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   document = argv[0];
   
   if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
-    rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
+    rb_raise(rb_eTypeError, "Must pass in an LibXML::Document instance.");
 
   /* Make sure params is a flat array */
   params = (argc == 2 ? argv[1]: Qnil);

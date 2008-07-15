@@ -4,7 +4,7 @@ require 'test/unit'
 class TestStylesheet < Test::Unit::TestCase
   def setup
     filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-    doc = XML::Document.file(filename)
+    doc = LibXML::Document.file(filename)
     @stylesheet = XSLT::Stylesheet.new(doc)
   end
   
@@ -14,7 +14,7 @@ class TestStylesheet < Test::Unit::TestCase
   
   def doc
     filename = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
-    XML::Document.file(filename)
+    LibXML::Document.file(filename)
   end
       
   def test_class
@@ -23,7 +23,7 @@ class TestStylesheet < Test::Unit::TestCase
 
   def test_apply
     result = @stylesheet.apply(doc)
-    assert_instance_of(XML::Document, result)
+    assert_instance_of(LibXML::Document, result)
     
     paragraphs = result.find('//p')
     assert_equal(11, paragraphs.length)
@@ -37,11 +37,11 @@ class TestStylesheet < Test::Unit::TestCase
   
   def test_params
     filename = File.join(File.dirname(__FILE__), 'files/params.xsl')
-    sdoc = XML::Document.file(filename)
+    sdoc = LibXML::Document.file(filename)
     
     filename = File.join(File.dirname(__FILE__), 'files/params.xml')
     stylesheet = XSLT::Stylesheet.new(sdoc)
-    doc = XML::Document.file(filename)
+    doc = LibXML::Document.file(filename)
     
     # Start with no params
     result = stylesheet.apply(doc)
@@ -71,7 +71,7 @@ class TestStylesheet < Test::Unit::TestCase
   def test_doc_ownership
     10.times do 
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-      sdoc = XML::Document.file(filename)
+      sdoc = LibXML::Document.file(filename)
       stylesheet = XSLT::Stylesheet.new(sdoc)
       
       stylesheet = nil
@@ -83,7 +83,7 @@ class TestStylesheet < Test::Unit::TestCase
   def test_stylesheet_ownership
     10.times do 
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-      sdoc = XML::Document.file(filename)
+      sdoc = LibXML::Document.file(filename)
       stylesheet = XSLT::Stylesheet.new(sdoc)
       
       sdoc = nil
@@ -97,7 +97,7 @@ class TestStylesheet < Test::Unit::TestCase
   def test_result_ownership
     10.times do 
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-      sdoc = XML::Document.file(filename)
+      sdoc = LibXML::Document.file(filename)
       stylesheet = XSLT::Stylesheet.new(sdoc)
       
       rdoc = stylesheet.apply(doc)
