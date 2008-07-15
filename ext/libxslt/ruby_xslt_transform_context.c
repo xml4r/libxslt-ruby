@@ -53,7 +53,7 @@ ruby_xslt_transform_context_new3(VALUE xslt) {
 }
 
 #ifdef RDOC_NEVER_DEFINED
-  cLibXSLT = rb_define_module("XSLT");
+  cLibXSLT = rb_define_module("LibXSLT");
   cXSLTTransformContext = rb_define_class_under(cLibXSLT, "TransformContext", rb_cObject);
 #endif
 

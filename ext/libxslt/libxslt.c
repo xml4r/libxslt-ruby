@@ -9,7 +9,7 @@ VALUE cLibXSLT;
 VALUE eXSLTError;
 
 /*
- * Document-class: XSLT
+ * Document-class: LibXSLT
  * 
  * The libxslt gem provides Ruby language bindings for GNOME's Libxslt
  * toolkit. It is free software, released under the MIT License.

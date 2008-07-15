@@ -265,7 +265,7 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
 
 
 #ifdef RDOC_NEVER_DEFINED
-  cLibXSLT = rb_define_module("XSLT");
+  cLibXSLT = rb_define_module("LibXSLT");
   cXSLTStylesheet = rb_define_class_under(cLibXSLT, "Stylesheet", rb_cObject);
 #endif
 
