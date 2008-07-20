@@ -5,8 +5,6 @@ require 'rake/rdoctask'
 require 'rake/testtask'
 require 'date'
 
-SO_NAME = "libxslt_ruby.so"
-
 # ------- Default Package ----------
 FILES = FileList[
   'README',
@@ -15,9 +13,7 @@ FILES = FileList[
   'doc/**/*',
   'lib/**/*',
   'ext/**/*',
-  'mingw/*.rake',
-  'mingw/*.dll',
-  'mingw/*.so',
+  'mingw/Rakefile',
   'tests/**/*',
   'vc/*.sln',
   'vc/*.vcproj'
@@ -44,7 +40,7 @@ default_spec = Gem::Specification.new do |spec|
   
   spec.author = "Charlie Savage"
   spec.email = "libxml-devel@rubyforge.org"
-  spec.add_dependency('libxml-ruby','>=0.8.0')
+  spec.add_dependency('libxml-ruby','>=0.8.2')
   spec.platform = Gem::Platform::RUBY
   spec.require_paths = ["lib", "ext/libxslt"] 
  
@@ -67,15 +63,15 @@ Rake::GemPackageTask.new(default_spec) do |pkg|
   pkg.need_zip = true
 end
 
-
 # ------- Windows Package ----------
-libraries = [SO_NAME]
+binaries = (FileList['mingw/*.so',
+                     'mingw/*.dll']).pathmap('%f')
 
 # Windows specification
 win_spec = default_spec.clone
 win_spec.extensions = []
 win_spec.platform = Gem::Platform::CURRENT
-win_spec.files += libraries.map {|lib_name| "lib/#{lib_name}"}
+win_spec.files += binaries.map {|binary_name| "lib/#{File.basename(binary_name)}"}
 
 desc "Create Windows Gem"
 task :create_win32_gem do
@@ -83,9 +79,9 @@ task :create_win32_gem do
   # since there are no dependencies of msvcr80.dll
   current_dir = File.expand_path(File.dirname(__FILE__))
 
-  libraries.each do |file_name|
-    source = File.join(current_dir, 'mingw', file_name)
-    target = File.join(current_dir, 'lib', file_name)
+  binaries.each do |filename|
+    source = File.join(current_dir, 'mingw', filename)
+    target = File.join(current_dir, 'lib', filename)
     cp(source, target)
   end
   
@@ -95,8 +91,8 @@ task :create_win32_gem do
   mv(gem_file, "admin/pkg/#{gem_file}")
 
   # Remove win extension from top level directory  
-  libraries.each do |file_name|
-    target = File.join(current_dir, 'lib', file_name)
+  binaries.each do |filename|
+    target = File.join(current_dir, 'lib', filename)
     rm(target)
   end
 end
