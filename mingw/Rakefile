@@ -13,6 +13,8 @@ RUBY_LIB_DIR = Config::CONFIG["libdir"]
 RUBY_SHARED_LIB = Config::CONFIG["LIBRUBY"]
 RUBY_SHARED_DLL = RUBY_SHARED_LIB.gsub(/lib$/, 'dll')
 
+EXTENSION_NAME = "libxslt_ruby.#{Config::CONFIG['DLEXT']}"
+
 gem_specs = Gem::SourceIndex.from_installed_gems.search('libxml-ruby')
 LIBXML_RUBY_DIR = gem_specs.sort_by {|spec| spec.version}.reverse.first.full_gem_path
     
@@ -35,6 +37,6 @@ SRC.each do |srcfile|
 end
 
 file "libxslt" => OBJ do
-  command = "libtool --mode=link gcc -shared -o libxslt_ruby.so -L/usr/local/lib -lxml2 -lxslt #{LIBXML_RUBY_DIR}/lib/libxml_ruby.so #{OBJ} #{RUBY_BIN_DIR}/#{RUBY_SHARED_DLL}" 
+  command = "gcc -shared -o #{EXTENSION_NAME} -L#{LIBXML_RUBY_DIR}/lib -L/usr/local/lib #{OBJ} -lxml_ruby -lxslt -lxml2 #{RUBY_BIN_DIR}/#{RUBY_SHARED_DLL}" 
   sh "sh -c '#{command}'" 
 end
