@@ -9,7 +9,7 @@
 
 * Support for libxml-ruby 0.8.2
 
-* Improved Windows support - libxml-ruby should now work out of the box.
+* Improved Windows support - libxslt-ruby should now work out of the box.
 
 == 0.8.0 / 2008-07-10 Charlie Savage
 
