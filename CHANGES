@@ -1,12 +1,12 @@
 == 0.8.0 / 2008-07-10 Charlie Savage
 
-* Moved to LibXSLT namespace (old XML::XSLT namespace still works)
-
 * Fix memory errors when reusing a stylehseet
 
 * Added support for setting xsl::param values
 
 * Updated RDocs.
+
+* Moved to LibXSLT namespace
 
 
 == 0.7.0 / 2008-07-10 Charlie Savage
