@@ -1,3 +1,16 @@
+== 0.8.2 / 2008-07-21 Charlie Savage
+
+* To use LibXSLT you can either require 'xslt' or require 'libxslt'. 
+  The differences is that require 'xslt' mixes the LibXML and 
+  LIBXSLT modules into the global namespace, thereby allowing 
+  you to write code such as:
+    stylesheet = XSLT::Stylesheet.new(XML::Document.new).  Note that 
+  this is different from 0.8.0 release and may require updating your code.
+
+* Support for libxml-ruby 0.8.2
+
+* Improved Windows support - libxml-ruby should now work out of the box.
+
 == 0.8.0 / 2008-07-10 Charlie Savage
 
 * Fix memory errors when reusing a stylehseet
@@ -28,7 +41,7 @@
 
 * Windows support (both lots of memory fixes and binaries)
 
-* New libxslt.rb ruby wrapper, so programs can simply say require 'libxslt' 
+* New libxslt.rb ruby wrapper, so programs can simply say require 'xslt' 
 
 
 == 0.5.0 / 2006-02-27 Ross Bamford <rosco at roscopeco.co.uk>

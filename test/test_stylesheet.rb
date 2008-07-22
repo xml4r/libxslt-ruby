@@ -1,4 +1,4 @@
-require 'libxslt'
+require 'xslt'
 require 'test/unit'
 
 class TestStylesheet < Test::Unit::TestCase

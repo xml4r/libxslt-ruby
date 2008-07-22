@@ -64,14 +64,14 @@ Rake::GemPackageTask.new(default_spec) do |pkg|
 end
 
 # ------- Windows Package ----------
-binaries = (FileList['mingw/*.so',
-                     'mingw/*.dll']).pathmap('%f')
+binaries = (FileList['ext/mingw/*.so',
+                     'ext/mingw/*.dll'])
 
 # Windows specification
 win_spec = default_spec.clone
 win_spec.extensions = []
 win_spec.platform = Gem::Platform::CURRENT
-win_spec.files += binaries.map {|binary_name| "lib/#{File.basename(binary_name)}"}
+win_spec.files += binaries.map {|binaryname| "lib/#{File.basename(binaryname)}"}
 
 desc "Create Windows Gem"
 task :create_win32_gem do
@@ -79,20 +79,19 @@ task :create_win32_gem do
   # since there are no dependencies of msvcr80.dll
   current_dir = File.expand_path(File.dirname(__FILE__))
 
-  binaries.each do |filename|
-    source = File.join(current_dir, 'mingw', filename)
-    target = File.join(current_dir, 'lib', filename)
-    cp(source, target)
+  binaries.each do |binaryname|
+    target = File.join(current_dir, 'lib', File.basename(binaryname))
+    cp(binaryname, target)
   end
-  
+
   # Create the gem, then move it to pkg
   Gem::Builder.new(win_spec).build
   gem_file = "#{win_spec.name}-#{win_spec.version}-#{win_spec.platform}.gem"
   mv(gem_file, "admin/pkg/#{gem_file}")
 
   # Remove win extension from top level directory  
-  binaries.each do |filename|
-    target = File.join(current_dir, 'lib', filename)
+  binaries.each do |binaryname|
+    target = File.join(current_dir, 'lib', File.basename(binaryname))
     rm(target)
   end
 end

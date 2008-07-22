@@ -38,11 +38,9 @@ The easiest way to install libxslt-ruby is via Ruby Gems.  To install:
 
 If you are running Windows, make sure to install the Win32 RubyGem which 
 includes an already built binary file.  The binary is built against
-libxml2 version 2.6.32, iconv version 1.12 and libxslt version 1.1.24.
+libxml2 version 2.6.32, iconv version 1.11 and libxslt version 1.1.24.
 Binaries for libxml2 and iconv are provided in the libxml-ruby bindings,
 while a binary for libxslt is provided in the libxslt-ruby bindings. 
-These binaries should be put either in the libxslt/lib directory 
-or on the Windows path.
 
 The Windows binaries are biult with MingW.  The gem also includes 
 a Microsoft VC++ 2005 solution.  If you wish to run a debug version
@@ -51,7 +49,31 @@ you use VC++.
 
 
 == USAGE
- 
+
+For in-depth information about using libxslt-ruby please refer
+to its online Rdoc documentation.  
+
+All libxslt classes are in the LibXSLT::XSLT module. The simplest
+way to use libxslt is to require 'xslt'.  This will mixin the 
+LibXML and LibXSLT modules into the global namespace, allowing you to 
+write code like this: 
+
+require 'xslt'
+document = XML::Document.new
+stylesheett = XSLT::Stylesheet.new(document)
+
+If you prefer not to add the LibXSLT module to the global namepace, then
+write your code like this:
+
+require 'libxslt'
+
+class MyClass
+  def some_method
+    document = LibXML::XML::Document.new
+    stylesheett = LibXSLT::XSLT::Stylesheet.new(document)
+  end
+end
+
 Given an XML file like:
 
   <?xml version="1.0" encoding="UTF-8"?>
@@ -113,7 +135,7 @@ And an XSLT file like this:
 
 We can easily transform the XML with the following ruby code:
 
-  require 'libxslt'
+  require 'xslt'
   
   # Create a new XSL Transform
   stylesheet_doc = XML::Document.file('files/fuzface.xsl')

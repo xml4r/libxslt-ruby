@@ -23,7 +23,7 @@ CLOBBER.include('libxslt.so')
 
 task :default => "libxslt"
 
-SRC = FileList['../ext/libxslt/*.c']
+SRC = FileList['libxslt/*.c']
 OBJ = SRC.collect do |file_name|
   File.basename(file_name).ext('o')
 end
