@@ -7,16 +7,18 @@ require 'date'
 
 # ------- Default Package ----------
 FILES = FileList[
+  'Rakefile',
   'README',
   'LICENSE',
   'setup.rb',
   'doc/**/*',
   'lib/**/*',
-  'ext/**/*',
-  'mingw/Rakefile',
-  'tests/**/*',
-  'vc/*.sln',
-  'vc/*.vcproj'
+  'ext/libxslt/*.h',
+  'ext/libxslt/*.c',
+  'ext/mingw/Rakefile',
+  'ext/vc/*.sln',
+  'ext/vc/*.vcproj',
+  'tests/**/*'
 ]
 
 # Default GEM Specification
