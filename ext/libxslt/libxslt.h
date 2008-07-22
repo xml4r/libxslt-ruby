@@ -26,6 +26,7 @@
 #endif
 
 extern VALUE cLibXSLT;
+extern VALUE cXSLT;
 extern VALUE eXSLTError;
 
 #endif

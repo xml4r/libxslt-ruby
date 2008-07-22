@@ -4,28 +4,28 @@
 
 module XML 
   module XSLT 
-    MAX_DEPTH            = LibXSLT::MAX_DEPTH
-    MAX_SORT             = LibXSLT::MAX_SORT
-    ENGINE_VERSION       = LibXSLT::ENGINE_VERSION
-    LIBXSLT_VERSION      = LibXSLT::LIBXSLT_VERSION
-    LIBXML_VERSION       = LibXSLT::LIBXML_VERSION
-    XSLT_NAMESPACE       = LibXSLT::XSLT_NAMESPACE
-    DEFAULT_VENDOR       = LibXSLT::DEFAULT_VENDOR
-    DEFAULT_VERSION      = LibXSLT::DEFAULT_VERSION
-    DEFAULT_URL          = LibXSLT::DEFAULT_URL
-    NAMESPACE_LIBXSLT    = LibXSLT::NAMESPACE_LIBXSLT
-    NAMESPACE_NORM_SAXON = LibXSLT::NAMESPACE_NORM_SAXON
-    NAMESPACE_SAXON      = LibXSLT::NAMESPACE_SAXON
-    NAMESPACE_XT         = LibXSLT::NAMESPACE_XT
-    NAMESPACE_XALAN      = LibXSLT::NAMESPACE_XALAN
+    MAX_DEPTH            = LibXSLT::XSLT::MAX_DEPTH
+    MAX_SORT             = LibXSLT::XSLT::MAX_SORT
+    ENGINE_VERSION       = LibXSLT::XSLT::ENGINE_VERSION
+    LIBXSLT_VERSION      = LibXSLT::XSLT::LIBXSLT_VERSION
+    LIBXML_VERSION       = LibXSLT::XSLT::LIBXML_VERSION
+    XSLT_NAMESPACE       = LibXSLT::XSLT::XSLT_NAMESPACE
+    DEFAULT_VENDOR       = LibXSLT::XSLT::DEFAULT_VENDOR
+    DEFAULT_VERSION      = LibXSLT::XSLT::DEFAULT_VERSION
+    DEFAULT_URL          = LibXSLT::XSLT::DEFAULT_URL
+    NAMESPACE_LIBXSLT    = LibXSLT::XSLT::NAMESPACE_LIBXSLT
+    NAMESPACE_NORM_SAXON = LibXSLT::XSLT::NAMESPACE_NORM_SAXON
+    NAMESPACE_SAXON      = LibXSLT::XSLT::NAMESPACE_SAXON
+    NAMESPACE_XT         = LibXSLT::XSLT::NAMESPACE_XT
+    NAMESPACE_XALAN      = LibXSLT::XSLT::NAMESPACE_XALAN
     
     def self.new
       Stylesheet.new(nil)
     end
     
     def self.file(filename)
-      doc = LibXML::Document.file(filename)
-      stylesheet = LibXSLT::Stylesheet.new(doc)
+      doc = XML::Document.file(filename)
+      stylesheet = LibXSLT::XSLT::Stylesheet.new(doc)
       
       result = Stylesheet.new(stylesheet)
       result.filename = filename
@@ -40,7 +40,7 @@ module XML
       end
       
       def filename=(value)
-        @doc = LibXML::Document.file(value)
+        @doc = XML::Document.file(value)
         @filename = value
       end
       

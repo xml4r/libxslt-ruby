@@ -6,11 +6,11 @@
 #include "ruby_xslt_stylesheet.h"
 
 /*
- * Document-class: LibXSLT::Stylesheet
+ * Document-class: LibXSLT::XSLT::Stylesheet
  * 
- * The LibXSLT::Stylesheet represents a XSL stylesheet that
+ * The XSLT::Stylesheet represents a XSL stylesheet that
  * can be used to transform an XML document.  For usage information
- * refer to LibXSLT::Stylesheet#apply
+ * refer to XSLT::Stylesheet#apply
  *
 */
 
@@ -37,7 +37,7 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
                           
 
 /* call-seq:
- *    LibXSLT::Stylesheet.new(document) -> LibXSLT::Stylesheet
+ *    XSLT::Stylesheet.new(document) -> XSLT::Stylesheet
  * 
  * Creates a new XSLT stylesheet based on the specified document.
  * For memory management reasons, a copy of the specified document
@@ -55,7 +55,7 @@ ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
   xsltStylesheetPtr xstylesheet;
 
   if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
-    rb_raise(rb_eTypeError, "Must pass in an LibXML::Document instance.");
+    rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
     
   /* NOTE!! Since the stylesheet own the specified document, the easiest 
   *  thing to do from a memory standpoint is too copy it and not expose
@@ -102,13 +102,13 @@ ruby_xslt_coerce_params(VALUE params) {
    
 
 /* call-seq: 
- *   stylesheet.apply(document, {params}) -> LibXML::Document
+ *   stylesheet.apply(document, {params}) -> XML::Document
  * 
  * Apply this stylesheet transformation to the provided document.
  * This method may be invoked multiple times.
  *
  * Params:
- * *  document - An instance of an LibXML::Document
+ * *  document - An instance of an XML::Document
  * *  params - An optional hash table that specifies the values for xsl:param values embedded in the stylesheet.
  *
  * Example:
@@ -137,7 +137,7 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   document = argv[0];
   
   if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
-    rb_raise(rb_eTypeError, "Must pass in an LibXML::Document instance.");
+    rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
 
   /* Make sure params is a flat array */
   params = (argc == 2 ? argv[1]: Qnil);
@@ -266,12 +266,12 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
 
 #ifdef RDOC_NEVER_DEFINED
   cLibXSLT = rb_define_module("LibXSLT");
-  cXSLTStylesheet = rb_define_class_under(cLibXSLT, "Stylesheet", rb_cObject);
+  cXSLT = rb_define_module_under(cLibXSLT, "XSLT");
 #endif
 
 void
 ruby_init_xslt_stylesheet(void) {
-  cXSLTStylesheet = rb_define_class_under(cLibXSLT, "Stylesheet", rb_cObject);
+  cXSLTStylesheet = rb_define_class_under(cXSLT, "Stylesheet", rb_cObject);
   rb_define_alloc_func(cXSLTStylesheet, ruby_xslt_stylesheet_alloc);
   rb_define_method(cXSLTStylesheet, "initialize", ruby_xslt_stylesheet_initialize, 1);
   rb_define_method(cXSLTStylesheet, "apply", ruby_xslt_stylesheet_apply, -1);
