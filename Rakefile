@@ -18,7 +18,7 @@ FILES = FileList[
   'ext/mingw/Rakefile',
   'ext/vc/*.sln',
   'ext/vc/*.vcproj',
-  'tests/**/*'
+  'test/**/*'
 ]
 
 # Default GEM Specification

@@ -61,4 +61,7 @@ Init_libxslt_ruby(void) {
 
   ruby_init_xslt_stylesheet();
   ruby_init_xslt_transform_context();
+
+  /* Now load exslt. */
+ // exsltRegisterAll();
 }
