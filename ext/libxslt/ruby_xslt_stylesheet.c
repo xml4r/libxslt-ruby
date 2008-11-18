@@ -50,7 +50,7 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
  */
 VALUE
 ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
-  ruby_xml_document_t *rdocument;
+  xmlDocPtr xdoc;
   xmlDocPtr xcopy;
   xsltStylesheetPtr xstylesheet;
 
@@ -65,8 +65,8 @@ ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
   *  has to be updated to always check and see if the document is 
   *  still valid.  That's all doable, but seems like a pain, so 
   *  just copy the document for now. */
-  Data_Get_Struct(document, ruby_xml_document_t, rdocument);
-  xcopy = xmlCopyDoc(rdocument->doc, 1);
+  Data_Get_Struct(document, xmlDoc, xdoc);
+  xcopy = xmlCopyDoc(xdoc, 1);
   xstylesheet = xsltParseStylesheetDoc(xcopy);
   xstylesheet->_private = (void *)self;
   DATA_PTR(self) = xstylesheet;
@@ -122,7 +122,7 @@ ruby_xslt_coerce_params(VALUE params) {
  */
 VALUE
 ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
-  ruby_xml_document_t *rdocument;
+  xmlDocPtr xdoc;
   xsltStylesheetPtr xstylesheet;
   xmlDocPtr result;
   VALUE document;
@@ -145,10 +145,10 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   rb_funcall(params, rb_intern("flatten!"), 0);
   pParams = ruby_xslt_coerce_params(params);
   
-  Data_Get_Struct(document, ruby_xml_document_t, rdocument);
+  Data_Get_Struct(document, xmlDoc, xdoc);
   Data_Get_Struct(self, xsltStylesheet, xstylesheet);
   
-  result = xsltApplyStylesheet(xstylesheet, rdocument->doc, (const char**)pParams);
+  result = xsltApplyStylesheet(xstylesheet, xdoc, (const char**)pParams);
   
   if (!result)
     rb_raise(eXSLTError, "Transformation failed");
