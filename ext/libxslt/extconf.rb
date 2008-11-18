@@ -85,6 +85,24 @@ need libxslt.
 EOL
 end
 
+unless (have_library('exslt','exsltLibexsltVersion') or
+        find_library('exslt', 'exsltLibexsltVersion', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
+       (have_header('exslt.h') or
+        find_header('exslt.h',
+                    '/opt/include/libexslt',
+                    '/usr/local/include/libexslt',
+                    '/usr/include/libexslt'))
+  crash(<<EOL)
+need libexslt.
+
+        Install the library or try one of the following options to extconf.rb:
+
+        --with-exslt-dir=/path/to/libexslt
+        --with-exslt-lib=/path/to/libexslt/lib
+        --with-exslt-include=/path/to/libexslt/include
+EOL
+end
+
 unless have_header('libxml/ruby_libxml.h') and
        have_header('libxml/ruby_xml_document.h')
   crash(<<EOL)
