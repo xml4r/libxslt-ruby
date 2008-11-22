@@ -16,7 +16,7 @@
 
 VALUE cXSLTStylesheet;
 
-VALUE
+static VALUE
 ruby_xslt_stylesheet_document_klass() {
   VALUE mXML = rb_const_get(rb_cObject, rb_intern("XML"));
   return rb_const_get(mXML, rb_intern("Document"));
@@ -28,7 +28,7 @@ ruby_xslt_stylesheet_free(xsltStylesheetPtr xstylesheet) {
   xsltFreeStylesheet(xstylesheet);
 }
 
-VALUE
+static VALUE
 ruby_xslt_stylesheet_alloc(VALUE klass) {
   return Data_Wrap_Struct(cXSLTStylesheet,
                           NULL, ruby_xslt_stylesheet_free,
@@ -48,7 +48,7 @@ ruby_xslt_stylesheet_alloc(VALUE klass) {
  *  stylesheet = XSLT::Stylesheet.new(stylesheet_doc)
  *
  */
-VALUE
+static VALUE
 ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
   xmlDocPtr xdoc;
   xmlDocPtr xcopy;
@@ -120,7 +120,7 @@ ruby_xslt_coerce_params(VALUE params) {
  *  result = stylesheet.apply(xml_doc)
  *  result = stylesheet.apply(xml_doc, {:foo => 'bar'})
  */
-VALUE
+static VALUE
 ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   xmlDocPtr xdoc;
   xsltStylesheetPtr xstylesheet;
@@ -160,7 +160,7 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   }
   ruby_xfree(pParams);
     
-  return ruby_xml_document_wrap(result);
+  return rxml_document_wrap(result);
 }
 
 
@@ -179,7 +179,7 @@ ruby_xslt_stylesheet_debug(int argc, VALUE *argv, VALUE self) {
   OpenFile *fptr;
   VALUE io;
   FILE *out;
-  ruby_xml_document_t *parsed;
+  rxml_document_t *parsed;
   ruby_xslt_stylesheet *xss;
 
   Data_Get_Struct(self, ruby_xslt_stylesheet, xss);
@@ -199,7 +199,7 @@ ruby_xslt_stylesheet_debug(int argc, VALUE *argv, VALUE self) {
     rb_raise(rb_eArgError, "wrong number of arguments (0 or 1)");
   }
 
-  Data_Get_Struct(xss->parsed, ruby_xml_document_t, parsed);
+  Data_Get_Struct(xss->parsed, rxml_document_t, parsed);
   if (parsed->doc == NULL)
     return(Qnil);
 
@@ -230,7 +230,7 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
   OpenFile *fptr;
   VALUE io;
   FILE *out;
-  ruby_xml_document_t *parsed;
+  rxml_document_t *parsed;
   ruby_xslt_stylesheet *xss;
   int bytes;
 
@@ -251,7 +251,7 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
     rb_raise(rb_eArgError, "wrong number of arguments (0 or 1)");
   }
 
-  Data_Get_Struct(xss->parsed, ruby_xml_document_t, parsed);
+  Data_Get_Struct(xss->parsed, rxml_document_t, parsed);
   if (parsed->doc == NULL)
     return(Qnil);
 

@@ -26,7 +26,7 @@ ruby_xslt_transform_context_mark(ruby_xslt_transform_context *rxtc) {
 }
 
 
-VALUE
+static VALUE
 ruby_xslt_transform_context_new(VALUE class, VALUE xslt,
 				      xsltTransformContextPtr ctxt) {
   ruby_xslt_transform_context *rxtc;
@@ -41,13 +41,13 @@ ruby_xslt_transform_context_new(VALUE class, VALUE xslt,
 }
 
 
-VALUE
+static VALUE
 ruby_xslt_transform_context_new2(VALUE class, VALUE xslt) {
   return(ruby_xslt_transform_context_new(class, xslt, NULL));
 }
 
 
-VALUE
+static VALUE
 ruby_xslt_transform_context_new3(VALUE xslt) {
   return(ruby_xslt_transform_context_new2(cXSLTTransformContext, xslt));
 }
