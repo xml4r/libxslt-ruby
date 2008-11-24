@@ -24,7 +24,6 @@ ruby_xslt_stylesheet_document_klass() {
 
 void
 ruby_xslt_stylesheet_free(xsltStylesheetPtr xstylesheet) {
-
   xsltFreeStylesheet(xstylesheet);
 }
 

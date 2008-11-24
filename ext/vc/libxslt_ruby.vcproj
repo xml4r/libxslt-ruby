@@ -193,10 +193,6 @@
 				RelativePath="..\libxslt\ruby_xslt_stylesheet.c"
 				>
 			</File>
-			<File
-				RelativePath="..\libxslt\ruby_xslt_transform_context.c"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -209,10 +205,6 @@
 			</File>
 			<File
 				RelativePath="..\libxslt\ruby_xslt_stylesheet.h"
-				>
-			</File>
-			<File
-				RelativePath="..\libxslt\ruby_xslt_transform_context.h"
 				>
 			</File>
 			<File

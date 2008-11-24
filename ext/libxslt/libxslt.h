@@ -17,7 +17,6 @@
 #include <libexslt/exslt.h>
 
 #include "ruby_xslt_stylesheet.h"
-#include "ruby_xslt_transform_context.h"
 
 #include "version.h"
 

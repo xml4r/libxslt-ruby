@@ -60,7 +60,6 @@ Init_libxslt_ruby(void) {
   eXSLTError = rb_define_class_under(cLibXSLT, "XSLTError", rb_eRuntimeError);
 
   ruby_init_xslt_stylesheet();
-  ruby_init_xslt_transform_context();
 
   /* Now load exslt. */
   exsltRegisterAll();
