@@ -8,6 +8,7 @@ require 'date'
 # ------- Default Package ----------
 FILES = FileList[
   'Rakefile',
+  'CHANGES',
   'README',
   'LICENSE',
   'setup.rb',

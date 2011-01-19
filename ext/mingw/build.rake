@@ -11,7 +11,7 @@ RUBY_INCLUDE_DIR = Config::CONFIG["archdir"]
 RUBY_BIN_DIR = Config::CONFIG["bindir"]
 RUBY_LIB_DIR = Config::CONFIG["libdir"]
 RUBY_SHARED_LIB = Config::CONFIG["LIBRUBY"]
-RUBY_SHARED_DLL = RUBY_SHARED_LIB.gsub(/lib$/, 'dll')
+RUBY_SHARED_DLL = RUBY_SHARED_LIB.gsub(/^lib/,'').gsub(/lib$/, 'dll').gsub(/\.a$/, '')
 
 EXTENSION_NAME = "libxslt_ruby.#{Config::CONFIG['DLEXT']}"
 
@@ -31,12 +31,12 @@ end
 SRC.each do |srcfile|
   objfile = File.basename(srcfile).ext('o')
   file objfile => srcfile do
-    command = "gcc -c -fPIC -O2 -Wall -o #{objfile} -I/usr/local/include -I../../rlibxml/ext #{srcfile} -I#{LIBXML_RUBY_DIR}/ext -I#{RUBY_INCLUDE_DIR}"
+    command = "gcc -c -fPIC -O2 -Wall -o #{objfile} -I/usr/local/include/libxml2 -I../../libxml-ruby/ext #{srcfile} -I#{LIBXML_RUBY_DIR}/ext -I#{RUBY_INCLUDE_DIR}"
     sh "sh -c '#{command}'"
   end
 end
 
 file "libxslt" => OBJ do
-  command = "gcc -shared -o #{EXTENSION_NAME} -L#{LIBXML_RUBY_DIR}/lib -L/usr/local/lib #{OBJ} -lxml_ruby -lexslt -lxslt -lxml2 #{RUBY_BIN_DIR}/#{RUBY_SHARED_DLL}"
+  command = "gcc -shared -Wl,--enable-auto-import -o #{EXTENSION_NAME} -L#{LIBXML_RUBY_DIR}/lib -L/usr/local/lib #{OBJ} -lxml_ruby -lexslt -lxslt -lxml2 #{RUBY_BIN_DIR}/#{RUBY_SHARED_DLL}"
   sh "sh -c '#{command}'"
 end

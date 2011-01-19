@@ -20,9 +20,9 @@
 
 #include "version.h"
 
-#if ((RUBY_LIBXML_VER_MAJ != RUBY_LIBXSLT_VER_MAJ) || (RUBY_LIBXML_VER_MIN != RUBY_LIBXSLT_VER_MIN))
+/*#if ((RUBY_LIBXML_VER_MAJ != RUBY_LIBXSLT_VER_MAJ) || (RUBY_LIBXML_VER_MIN != RUBY_LIBXSLT_VER_MIN))
 #error "Incompatible LibXML-Ruby headers - please install same major/micro version"
-#endif
+#endif*/
 
 extern VALUE cLibXSLT;
 extern VALUE cXSLT;

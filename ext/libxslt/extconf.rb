@@ -28,10 +28,13 @@ gem_specs = gem_specs.sort_by {|spec| spec.version}.reverse
 libxml_ruby_path = gem_specs.first.full_gem_path
 
 $INCFLAGS += " -I#{libxml_ruby_path}/ext"
+$LIBPATH.push("#{libxml_ruby_path}/lib")
 
 # Directories
 dir_config('xml2')
 dir_config('xslt')
+dir_config('exslt')
+dir_config('libxml-ruby')
 
 unless have_library('m', 'atan')
   # try again for gcc 4.0
@@ -115,6 +118,15 @@ need headers for libxml-ruby.
         If you checked libxslt-ruby out from CVS, you will need to
         obtain the headers from CVS (using the same version tag if
         applicable) and place them in directory 'ext/xml/libxml-ruby'.
+EOL
+end
+
+# This doens't actually work - means libxslt can't find libxml...
+ unless (have_library('xml_ruby', 'rxml_document_wrap') or
+        have_library(':libxml_ruby.so', 'rxml_document_wrap'))
+  crash(<<EOL)
+  need libxml-ruby
+        Install libxml-ruby first.
 EOL
 end
 
