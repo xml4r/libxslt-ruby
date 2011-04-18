@@ -85,7 +85,7 @@ ruby_xslt_coerce_params(VALUE params) {
   result = ALLOC_N(char *, length + 2);
 
   for (i=0; i<length; i++) {
-    VALUE str = rb_String(RARRAY_PTR(params));
+    VALUE str = rb_String(RARRAY_PTR(params)[i]);
     int strLen = RSTRING_LEN(str);
     result[i] = ALLOC_N(char, strLen + 1);
     memset(result[i], 0, strLen + 1);
