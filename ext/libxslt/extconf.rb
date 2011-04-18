@@ -1,7 +1,5 @@
 #!/usr/local/bin/ruby -w
 
-# $Id: extconf.rb 43 2007-12-07 12:38:59Z transami $
-#
 # See the LICENSE file for copyright and distribution information
 
 require 'mkmf'
@@ -123,18 +121,25 @@ libxml_ruby_path = gem_specs.first.full_gem_path
 
 $INCFLAGS += " -I#{libxml_ruby_path}/ext"
 
-RUBY_VERSION =~ /(\d+.\d+)/
-$LIBPATH << library = File.join(libxml_ruby_path, "lib")
-$LIBPATH << library = File.join(libxml_ruby_path, "lib", $1)
-
-headers = ['iconv.h', 'libxml/ruby_libxml.h']
-unless have_library('xml_ruby', 'Init_libxml_ruby', headers) or
-       have_library(':libxml_ruby.so', 'Init_libxml_ruby', headers)
+unless have_header('libxml/ruby_libxml.h') 
   crash(<<-EOL)
-    Need libxml-ruby
-    Please install libxml-ruby or specify the path to the gem via:
-      --with-libxml-ruby=/path/to/libxml-ruby gem
+    Need headers for libxml-ruby.
   EOL
+end
+
+if RUBY_PLATFORM.match(/win32|mingw32/)
+  RUBY_VERSION =~ /(\d+.\d+)/
+  $LIBPATH << File.join(libxml_ruby_path, "lib")
+  $LIBPATH << File.join(libxml_ruby_path, "lib", $1)
+
+  headers = ['iconv.h', 'libxml/ruby_libxml.h']
+  unless have_library(':libxml_ruby.so', 'Init_libxml_ruby', headers)
+    crash(<<-EOL)
+      Need libxml-ruby
+      Please install libxml-ruby or specify the path to the gem via:
+        --with-libxml-ruby=/path/to/libxml-ruby gem
+    EOL
+  end
 end
 
 create_header()
