@@ -65,3 +65,9 @@ Rake::RDocTask.new("rdoc") do |rdoc|
                           'README',
                           'LICENSE')
 end
+
+# Test Task
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.verbose = true
+end
