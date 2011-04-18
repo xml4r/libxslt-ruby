@@ -1,13 +1,19 @@
-# First make sure libxml is loaded
+# encoding: UTF-8
+
+# First make sure dl is loaded, we use that
+# to access the libxml bindings
+require 'dl'
+
+# Next load the libxml bindings
 require 'libxml'
 
-# Now if running on Windows, then add the current directory to the PATH
-# for the current process so it can find the pre-built libxml2 and 
-# iconv2 shared libraries (dlls).
-if RUBY_PLATFORM.match(/mswin/i)
-  ENV['PATH'] += ";#{File.dirname(__FILE__)}"
+# Load the C-based binding.
+begin
+  RUBY_VERSION =~ /(\d+.\d+)/
+  require "#{$1}/libxslt_ruby"
+rescue LoadError
+  require "libxslt_ruby"
 end
 
-require 'libxslt_ruby'
-
+# And add support for deprecated functions
 require 'libxslt/deprecated'

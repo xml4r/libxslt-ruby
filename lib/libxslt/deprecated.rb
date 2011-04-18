@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # :enddoc:
 # These classes provide provide backwards compatibility with 
 # versions of libxslt-ruby prior to version 0.7.0

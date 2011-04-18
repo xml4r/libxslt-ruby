@@ -1,5 +1,6 @@
-require 'xslt'
+# encoding: UTF-8
 require 'test/unit'
+require 'test_helper'
 
 class TestDeprecated < Test::Unit::TestCase
   def setup()

@@ -1,5 +1,6 @@
-require 'xslt'
+# encoding: UTF-8
 require 'test/unit'
+require 'test_helper'
 
 class TextLibXslt < Test::Unit::TestCase
   def test_constants

@@ -5,6 +5,7 @@
 # See the LICENSE file for copyright and distribution information
 
 require 'mkmf'
+require 'rubygems'
 
 $preload = nil
 $LIBPATH.push(Config::CONFIG['libdir'])
@@ -14,45 +15,26 @@ def crash(str)
   exit 1
 end
 
-require 'rubygems'
-gem_specs = Gem::SourceIndex.from_installed_gems.search('libxml-ruby')
-if gem_specs.empty? 
-  crash(<<EOL)
-libxml-ruby bindings must be installed
-EOL
-end
-
-# Sort by version, newest first
-gem_specs = gem_specs.sort_by {|spec| spec.version}.reverse
-
-libxml_ruby_path = gem_specs.first.full_gem_path
-
-$INCFLAGS += " -I#{libxml_ruby_path}/ext"
-$LIBPATH.push("#{libxml_ruby_path}/lib")
-
 # Directories
+dir_config('iconv')
+dir_config('zlib')
 dir_config('xml2')
 dir_config('xslt')
 dir_config('exslt')
 dir_config('libxml-ruby')
 
-unless have_library('m', 'atan')
-  # try again for gcc 4.0
-  saveflags = $CFLAGS
-  $CFLAGS += ' -fno-builtin'
-  unless have_library('m', 'atan')
-    crash('need libm')
-  end
-  $CFLAGS = saveflags
-end
-
-unless have_library("z", "inflate")
-  crash("need zlib")
+# First get zlib
+unless have_library('z', 'inflate') or
+       have_library('zlib', 'inflate') or
+       have_library('zlib1', 'inflate') or
+       have_library('libz', 'inflate')
+  crash('need zlib')
 else
   $defs.push('-DHAVE_ZLIB_H')
 end
 
 unless (have_library('xml2', 'xmlXPtrNewRange') or
+        have_library('libxml2', 'xmlXPtrNewRange') or
         find_library('xml2', 'xmlXPtrNewRange', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
        (have_header('libxml/xmlversion.h') or
         find_header('libxml/xmlversion.h',
@@ -71,6 +53,7 @@ EOL
 end
 
 unless (have_library('xslt','xsltApplyStylesheet') or
+        have_library('libxslt','xsltApplyStylesheet') or
         find_library('xslt', 'xsltApplyStylesheet', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
        (have_header('xslt.h') or
         find_header('xslt.h',
@@ -88,8 +71,9 @@ need libxslt.
 EOL
 end
 
-unless (have_library('exslt','exsltLibexsltVersion') or
-        find_library('exslt', 'exsltLibexsltVersion', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
+unless (have_library('exslt','exsltRegisterAll') or
+        have_library('libexslt','exsltRegisterAll') or
+        find_library('exslt', 'exsltRegisterAll', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
        (have_header('exslt.h') or
         find_header('exslt.h',
                     '/opt/include/libexslt',
@@ -106,6 +90,20 @@ need libexslt.
 EOL
 end
 
+# Figure out where libxml-ruby is installed
+gem_specs = Gem.source_index.find_name('libxml-ruby')
+if gem_specs.empty?
+  crash(<<EOL)
+libxml-ruby bindings must be installed
+EOL
+end
+
+gem_specs = gem_specs.sort_by {|spec| spec.version}.reverse
+libxml_ruby_path = gem_specs.first.full_gem_path
+
+$INCFLAGS += " -I#{libxml_ruby_path}/ext"
+$LIBPATH.push("#{libxml_ruby_path}/lib")
+
 unless have_header('libxml/ruby_libxml.h') and
        have_header('libxml/ruby_xml_document.h')
   crash(<<EOL)
@@ -121,9 +119,8 @@ need headers for libxml-ruby.
 EOL
 end
 
-# This doens't actually work - means libxslt can't find libxml...
- unless (have_library('xml_ruby', 'rxml_document_wrap') or
-        have_library(':libxml_ruby.so', 'rxml_document_wrap'))
+unless (have_library('xml_ruby', 'rxml_document_wrap') or
+        have_library('libxml_ruby', 'rxml_document_wrap'))
   crash(<<EOL)
   need libxml-ruby
         Install libxml-ruby first.

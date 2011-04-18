@@ -1,5 +1,6 @@
-require 'xslt'
+# encoding: UTF-8
 require 'test/unit'
+require 'test_helper'
 
 class TestStylesheet < Test::Unit::TestCase
   def setup
@@ -72,11 +73,8 @@ class TestStylesheet < Test::Unit::TestCase
     10.times do 
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
       sdoc = XML::Document.file(filename)
-      stylesheet = XSLT::Stylesheet.new(sdoc)
-      
-      stylesheet = nil
       GC.start
-      assert_equal(156, sdoc.to_s.length)
+      assert_equal(173, sdoc.to_s.length)
     end
   end 
      
@@ -90,7 +88,7 @@ class TestStylesheet < Test::Unit::TestCase
       GC.start
       
       rdoc = stylesheet.apply(doc)
-      assert_equal(5993, rdoc.to_s.length)
+      assert_equal(5963, rdoc.to_s.length)
     end
   end
       
