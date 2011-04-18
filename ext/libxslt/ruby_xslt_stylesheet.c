@@ -81,15 +81,15 @@ ruby_xslt_coerce_params(VALUE params) {
   size_t length;
   size_t i;
 
-  length = RARRAY(params)->len;
+  length = RARRAY_LEN(params);
   result = ALLOC_N(char *, length + 2);
 
   for (i=0; i<length; i++) {
-    VALUE str = rb_String(RARRAY(params)->ptr[i]);
-    int strLen = RSTRING(str)->len;
+    VALUE str = rb_String(RARRAY_PTR(params));
+    int strLen = RSTRING_LEN(str);
     result[i] = ALLOC_N(char, strLen + 1);
     memset(result[i], 0, strLen + 1);
-    strncpy(result[i], RSTRING(str)->ptr, strLen);
+    strncpy(result[i], RSTRING_PTR(str), strLen);
   }
   
   /* Null terminate the array - need to empty elements */
@@ -154,7 +154,7 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
   
   /* Free allocated array of *chars.  Note we don't have to
      free the last array item since its set to NULL. */
-  for (i=0; i<(RARRAY(params)->len); i++) {
+  for (i=0; i<RARRAY_LEN(params); i++) {
     ruby_xfree(pParams[i]);
   }
   ruby_xfree(pParams);
