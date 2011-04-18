@@ -8,15 +8,14 @@ FILES = FileList[
   'LICENSE',
   'Rakefile',
   'README',
-  'libxml-ruby.gemspec',
+  'libxslt-ruby.gemspec',
   'setup.rb',
   'doc/**/*',
-  'lib/**/*',
+  'lib/**/*.rb',
   'ext/libxslt/*.h',
   'ext/libxslt/*.c',
-  'ext/mingw/Rakefile',
   'ext/vc/*.sln',
-  'ext/vc/*.vcproj',
+  'ext/vc/*.vcxproj',
   'test/**/*'
 ]
 
