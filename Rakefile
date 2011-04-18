@@ -20,6 +20,8 @@ Rake::ExtensionTask.new do |ext|
   ext.ext_dir = "ext/libxslt"
   ext.lib_dir = "lib/#{RUBY_VERSION.sub(/\.\d$/, '')}"
   ext.config_options << "--with-xml2-include=C:/MinGW/local/include/libxml2"
+  ext.config_options << "--with-xslt-include=C:/MinGW/local/include/libxslt"
+  ext.config_options << "--with-exslt-include=C:/MinGW/local/include/libexslt"
 end
 
 # Setup generic gem
