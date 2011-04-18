@@ -5,9 +5,11 @@
 # See the LICENSE file for copyright and distribution information
 
 require 'mkmf'
-require 'rubygems'
+require 'rbconfig'
 
+require 'rubygems'
 $preload = nil
+$INCFLAGS << " -I/usr/local/include"
 $LIBPATH.push(Config::CONFIG['libdir'])
 
 def crash(str)
@@ -33,6 +35,26 @@ else
   $defs.push('-DHAVE_ZLIB_H')
 end
 
+unless have_library('iconv','iconv_open') or
+       have_library('iconv','libiconv_open') or
+       have_library('libiconv', 'libiconv_open') or
+       have_library('libiconv', 'iconv_open') or
+       have_library('c','iconv_open') or
+       have_library('recode','iconv_open') or
+       have_library('iconv')
+  crash(<<-EOL)
+need libiconv.
+
+Install the libiconv or try passing one of the following options
+to extconf.rb:
+
+  --with-iconv-dir=/path/to/iconv
+  --with-iconv-lib=/path/to/iconv/lib
+  --with-iconv-include=/path/to/iconv/include
+EOL
+end
+
+
 unless (have_library('xml2', 'xmlXPtrNewRange') or
         have_library('libxml2', 'xmlXPtrNewRange') or
         find_library('xml2', 'xmlXPtrNewRange', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
@@ -41,7 +63,7 @@ unless (have_library('xml2', 'xmlXPtrNewRange') or
                     '/opt/include/libxml2',
                     '/usr/local/include/libxml2',
                     '/usr/include/libxml2'))
-  crash(<<EOL)
+  crash(<<-EOL)
 need libxml2.
 
         Install the library or try one of the following options to extconf.rb:
@@ -60,7 +82,7 @@ unless (have_library('xslt','xsltApplyStylesheet') or
                     '/opt/include/libxslt',
                     '/usr/local/include/libxslt',
                     '/usr/include/libxslt'))
-  crash(<<EOL)
+  crash(<<-EOL)
 need libxslt.
 
         Install the library or try one of the following options to extconf.rb:
@@ -79,52 +101,40 @@ unless (have_library('exslt','exsltRegisterAll') or
                     '/opt/include/libexslt',
                     '/usr/local/include/libexslt',
                     '/usr/include/libexslt'))
-  crash(<<EOL)
-need libexslt.
-
+  crash(<<-EOL)
+    Need libexslt.
         Install the library or try one of the following options to extconf.rb:
-
         --with-exslt-dir=/path/to/libexslt
         --with-exslt-lib=/path/to/libexslt/lib
         --with-exslt-include=/path/to/libexslt/include
-EOL
+   EOL
 end
 
 # Figure out where libxml-ruby is installed
 gem_specs = Gem.source_index.find_name('libxml-ruby')
 if gem_specs.empty?
-  crash(<<EOL)
-libxml-ruby bindings must be installed
-EOL
+  crash(<<-EOL)
+    libxml-ruby bindings must be installed
+  EOL
 end
 
 gem_specs = gem_specs.sort_by {|spec| spec.version}.reverse
 libxml_ruby_path = gem_specs.first.full_gem_path
 
 $INCFLAGS += " -I#{libxml_ruby_path}/ext"
-$LIBPATH.push("#{libxml_ruby_path}/lib")
 
-unless have_header('libxml/ruby_libxml.h') and
-       have_header('libxml/ruby_xml_document.h')
-  crash(<<EOL)
-need headers for libxml-ruby.
+RUBY_VERSION =~ /(\d+.\d+)/
+$LIBPATH << library = File.join(libxml_ruby_path, "lib")
+$LIBPATH << library = File.join(libxml_ruby_path, "lib", $1)
 
-        If you downloaded a release, this is a bug - please inform
-        libxml-devel@rubyforge.org including the release version and
-        download URL you obtained it from.
-
-        If you checked libxslt-ruby out from CVS, you will need to
-        obtain the headers from CVS (using the same version tag if
-        applicable) and place them in directory 'ext/xml/libxml-ruby'.
-EOL
-end
-
-unless (have_library('xml_ruby', 'rxml_document_wrap') or
-        have_library('libxml_ruby', 'rxml_document_wrap'))
-  crash(<<EOL)
-  need libxml-ruby
-        Install libxml-ruby first.
-EOL
+headers = ['iconv.h', 'libxml/ruby_libxml.h']
+unless have_library('xml_ruby', 'Init_libxml_ruby', headers) or
+       have_library(':libxml_ruby.so', 'Init_libxml_ruby', headers)
+  crash(<<-EOL)
+    Need libxml-ruby
+    Please install libxml-ruby or specify the path to the gem via:
+      --with-libxml-ruby=/path/to/libxml-ruby gem
+  EOL
 end
 
 create_header()
