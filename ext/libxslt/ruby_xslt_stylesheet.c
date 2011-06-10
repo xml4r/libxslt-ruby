@@ -16,12 +16,6 @@
 
 VALUE cXSLTStylesheet;
 
-static VALUE
-ruby_xslt_stylesheet_document_klass() {
-  VALUE mXML = rb_const_get(rb_cObject, rb_intern("XML"));
-  return rb_const_get(mXML, rb_intern("Document"));
-}
-
 void
 ruby_xslt_stylesheet_free(xsltStylesheetPtr xstylesheet) {
   xsltFreeStylesheet(xstylesheet);
@@ -53,7 +47,7 @@ ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
   xmlDocPtr xcopy;
   xsltStylesheetPtr xstylesheet;
 
-  if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
+  if (!rb_obj_is_kind_of(document, cXMLDocument))
     rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
     
   /* NOTE!! Since the stylesheet own the specified document, the easiest 
@@ -135,7 +129,7 @@ ruby_xslt_stylesheet_apply(int argc, VALUE *argv, VALUE self) {
     
   document = argv[0];
   
-  if (!rb_obj_is_kind_of(document, ruby_xslt_stylesheet_document_klass()))
+  if (!rb_obj_is_kind_of(document, cXMLDocument))
     rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
 
   /* Make sure params is a flat array */

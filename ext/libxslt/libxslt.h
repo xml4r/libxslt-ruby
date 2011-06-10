@@ -27,5 +27,6 @@
 extern VALUE cLibXSLT;
 extern VALUE cXSLT;
 extern VALUE eXSLTError;
+extern VALUE cXMLDocument;
 
 #endif
