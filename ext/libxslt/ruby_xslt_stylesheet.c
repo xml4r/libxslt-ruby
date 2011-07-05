@@ -3,7 +3,6 @@
 /* See the LICENSE file for copyright and distribution information. */
 
 #include "libxslt.h"
-#include "ruby_xslt_stylesheet.h"
 
 /*
  * Document-class: LibXSLT::XSLT::Stylesheet
