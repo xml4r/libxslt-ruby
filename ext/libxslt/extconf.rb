@@ -108,23 +108,19 @@ unless (have_library('exslt','exsltRegisterAll') or
    EOL
 end
 
-# Figure out where libxml-ruby is installed
-gem_specs = Gem.source_index.find_name('libxml-ruby')
-if gem_specs.empty?
-  crash(<<-EOL)
-    libxml-ruby bindings must be installed
-  EOL
-end
+unless find_header(libxml_ruby_h = 'libxml/ruby_libxml.h')
+  # Figure out where libxml-ruby is installed
+  unless gem_spec = Gem::Specification.find_by_name('libxml-ruby')
+    crash(<<-EOL)
+      libxml-ruby bindings must be installed
+    EOL
+  end
 
-gem_specs = gem_specs.sort_by {|spec| spec.version}.reverse
-libxml_ruby_path = gem_specs.first.full_gem_path
-
-$INCFLAGS += " -I#{libxml_ruby_path}/ext"
-
-unless have_header('libxml/ruby_libxml.h') 
-  crash(<<-EOL)
-    Need headers for libxml-ruby.
-  EOL
+  unless find_header(libxml_ruby_h, "#{gem_spec.full_gem_path}/ext")
+    crash(<<-EOL)
+      Need headers for libxml-ruby.
+    EOL
+  end
 end
 
 if RUBY_PLATFORM.match(/win32|mingw32/)
