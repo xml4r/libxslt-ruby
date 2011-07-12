@@ -24,7 +24,7 @@ VALUE eXSLTError;
  *  result = stylesheet.apply(xml_doc)
  * 
  *
-*/
+ */
 
 #ifdef RDOC_NEVER_DEFINED
   cLibXSLT = rb_define_module("XSLT");

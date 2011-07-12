@@ -12,7 +12,7 @@
  * can be used to transform an XML document.  For usage information
  * refer to XSLT::Stylesheet#apply
  *
-*/
+ */
 
 VALUE cXSLTStylesheet;
 
@@ -57,20 +57,20 @@ ruby_xslt_stylesheet_initialize(VALUE self, VALUE document) {
     rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
     
   /* NOTE!! Since the stylesheet own the specified document, the easiest 
-  *  thing to do from a memory standpoint is too copy it and not expose
-  *  the copy to Ruby.  The other solution is expose a memory management
-  *  API on the document object for taking ownership of the document
-  *  and specifying when it has been freed.  Then the document class
-  *  has to be updated to always check and see if the document is 
-  *  still valid.  That's all doable, but seems like a pain, so 
-  *  just copy the document for now. */
+   * thing to do from a memory standpoint is too copy it and not expose
+   * the copy to Ruby.  The other solution is expose a memory management
+   * API on the document object for taking ownership of the document
+   * and specifying when it has been freed.  Then the document class
+   * has to be updated to always check and see if the document is 
+   * still valid.  That's all doable, but seems like a pain, so 
+   * just copy the document for now. */
   Data_Get_Struct(document, xmlDoc, xdoc);
   xcopy = xmlCopyDoc(xdoc, 1);
   xstylesheet = xsltParseStylesheetDoc(xcopy);
   xstylesheet->_private = (void *)self;
   DATA_PTR(self) = xstylesheet;
   
-  /* Save a reference to the document as an attribute accessable to ruby*/
+  /* Save a reference to the document as an attribute accessable to ruby */
   return self;
 }
 
@@ -214,8 +214,8 @@ ruby_xslt_stylesheet_debug(int argc, VALUE *argv, VALUE self) {
 }
 */
 
-// TODO should this automatically apply the sheet if not already,
-//      given that we're unlikely to do much else with it?
+/* TODO should this automatically apply the sheet if not already,
+       given that we're unlikely to do much else with it? */
 
 /* call-seq: 
  *   sheet.print(to = $stdout) => number_of_bytes
