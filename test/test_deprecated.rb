@@ -6,17 +6,17 @@ class TestDeprecated < Test::Unit::TestCase
   def setup()
     xsl_file = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
     xml_file = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
-    
+
     @xslt = XML::XSLT.file(xsl_file)
     @xslt.doc = XML::Document.file(xml_file)
     @stylesheet = @xslt.parse
   end
-  
+
   def tear_down()
     @xslt = nil
     @stylesheet = nil
   end
-  
+
   def test_constants
     assert_instance_of(Fixnum, XML::XSLT::MAX_DEPTH)
     assert_instance_of(Fixnum, XML::XSLT::MAX_SORT)
@@ -33,15 +33,15 @@ class TestDeprecated < Test::Unit::TestCase
     assert_instance_of(String, XML::XSLT::NAMESPACE_XALAN)
     assert_instance_of(String, XML::XSLT::NAMESPACE_NORM_SAXON)
   end
-  
+
   def test_new
     xslt = XML::XSLT.new
     assert_instance_of(XML::XSLT::Stylesheet, xslt)
-    
+
     xslt.filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
     assert_instance_of(String, xslt.filename)
   end
-  
+
   def test_file_type
     assert_instance_of(XML::XSLT::Stylesheet, @xslt)
   end
@@ -49,21 +49,21 @@ class TestDeprecated < Test::Unit::TestCase
   def test_doc
     xsl_file = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
     xml_file = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
-    
+
     xslt = XML::XSLT.file(xsl_file)
     xslt.doc = XML::Document.file(xml_file)
     assert_instance_of(XML::Document, xslt.doc)
   end
-  
+
   def test_parse
     xsl_file = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
     xml_file = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
-    
+
     xslt = XML::XSLT.file(xsl_file)
     stylesheet = xslt.parse
     assert_instance_of(XML::XSLT::Stylesheet, stylesheet)
   end
-  
+
   def test_parse
     assert_instance_of(XML::XSLT::Stylesheet, @stylesheet)
   end
@@ -80,18 +80,18 @@ class TestDeprecated < Test::Unit::TestCase
   ensure
     File.unlink(file) if file && File.exist?(file)
   end
-  
+
   def test_print_invalid
     @stylesheet.apply
     @stylesheet.print
   end
-  
+
   def test_save_invalid
     assert_raises(ArgumentError) do
       @stylesheet.save("str")
     end
   end
-  
+
   def test_print_invalid
     assert_raises(ArgumentError) do
       @stylesheet.print
