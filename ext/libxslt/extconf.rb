@@ -23,6 +23,9 @@ dir_config('xslt')
 dir_config('exslt')
 dir_config('libxml-ruby')
 
+# Ruby 1.9 has ruby/io.h instead of rubyio.h
+have_header('ruby/io.h')
+
 # First get zlib
 unless have_library('z', 'inflate') or
        have_library('zlib', 'inflate') or
