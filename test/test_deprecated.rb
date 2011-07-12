@@ -76,7 +76,9 @@ class TestDeprecated < Test::Unit::TestCase
 
   def test_save
     @stylesheet.apply
-    @stylesheet.save("text.xml")
+    @stylesheet.save(file = 'text.xml')
+  ensure
+    File.unlink(file) if file && File.exist?(file)
   end
   
   def test_print_invalid
