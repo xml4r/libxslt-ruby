@@ -9,14 +9,18 @@
 #include <rubyio.h>
 #include <libxml/parser.h>
 #include <libxml/debugXML.h>
+#include <libxml/ruby_libxml.h>
+
 #include <libxslt/extra.h>
 #include <libxslt/xslt.h>
 #include <libxslt/xsltInternals.h>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
+
 #include <libexslt/exslt.h>
 
 #include "ruby_xslt_stylesheet.h"
+#include "ruby_exslt.h"
 
 #include "version.h"
 
@@ -27,5 +31,6 @@
 extern VALUE cLibXSLT;
 extern VALUE cXSLT;
 extern VALUE eXSLTError;
+extern VALUE cXMLDocument;
 
 #endif
