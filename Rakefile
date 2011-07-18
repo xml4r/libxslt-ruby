@@ -3,7 +3,7 @@
 require "rubygems"
 require "rake/extensiontask"
 require "rake/testtask"
-require 'hanna/rdoctask'
+require 'rdoc/task'
 require "grancher/task"
 require "yaml"
 
@@ -25,7 +25,7 @@ Rake::ExtensionTask.new do |ext|
 end
 
 # Setup generic gem
-Rake::GemPackageTask.new(spec) do |pkg|
+Gem::PackageTask.new(spec) do |pkg|
   pkg.package_dir = 'pkg'
   pkg.need_tar    = false
 end
@@ -44,7 +44,7 @@ if RUBY_PLATFORM.match(/win32|mingw32/)
   win_spec.extensions = nil
 
   # Rake task to build the windows package
-  Rake::GemPackageTask.new(win_spec) do |pkg|
+  Gem::PackageTask.new(win_spec) do |pkg|
     pkg.package_dir = 'pkg'
     pkg.need_tar = false
   end
@@ -52,11 +52,11 @@ end
 
 # RDoc Task
 desc "Generate rdoc documentation"
-Rake::RDocTask.new("rdoc") do |rdoc|
+RDoc::Task.new("rdoc") do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title    = "libxml-xslt"
   # Show source inline with line numbers
-  rdoc.options << "--inline-source" << "--line-numbers"
+  rdoc.options << "--line-numbers"
   # Make the readme file the start page for the generated html
   rdoc.options << '--main' << 'README'
   rdoc.rdoc_files.include('doc/*.rdoc',
@@ -70,5 +70,6 @@ end
 # Test Task
 Rake::TestTask.new do |t|
   t.libs << "test"
+  t.test_files = FileList['test/test*.rb'].exclude('test/test_suite.rb')
   t.verbose = true
 end

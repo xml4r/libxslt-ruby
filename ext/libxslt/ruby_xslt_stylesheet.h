@@ -5,10 +5,6 @@
 #ifndef __RUBY_LIBXSLT_STYLESHEET__
 #define __RUBY_LIBXSLT_STYLESHEET__
 
-// Includes from libxml-ruby
-#include <libxml/ruby_libxml.h>
-#include <libxml/ruby_xml_document.h>
-
 extern VALUE cXSLTStylesheet;
 
 void ruby_init_xslt_stylesheet(void);

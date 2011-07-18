@@ -42,6 +42,9 @@ Init_libxslt_ruby(void) {
   cLibXSLT = rb_define_module("LibXSLT");
   cXSLT = rb_define_module_under(cLibXSLT, "XSLT");
 
+  cXMLDocument = rb_const_get(rb_const_get(rb_const_get(rb_cObject,
+    rb_intern("LibXML")), rb_intern("XML")), rb_intern("Document"));
+
   rb_define_const(cXSLT, "MAX_DEPTH", INT2NUM(xsltMaxDepth));
   rb_define_const(cXSLT, "MAX_SORT", INT2NUM(XSLT_MAX_SORT));
   rb_define_const(cXSLT, "ENGINE_VERSION", rb_str_new2(xsltEngineVersion));
@@ -60,6 +63,7 @@ Init_libxslt_ruby(void) {
   eXSLTError = rb_define_class_under(cLibXSLT, "XSLTError", rb_eRuntimeError);
 
   ruby_init_xslt_stylesheet();
+  ruby_init_exslt();
 
   /* Now load exslt. */
   exsltRegisterAll();
