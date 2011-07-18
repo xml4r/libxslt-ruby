@@ -8,7 +8,7 @@ toolkit. It is free software, released under the MIT License.
 
 == Requirements
 
-libxslt-ruby requires Ruby 1.8.4 or higher.  It is dependent on 
+libxslt-ruby requires Ruby 1.8.4 or higher.  It is dependent on
 the following libraries to function properly:
 
 * libm      (math routines: very standard)
@@ -24,7 +24,7 @@ includes an already built extension.
 
 !!!NOTE!!!  The libxml-ruby and libxslt-ruby bindings must absolutely, positively,
 without a doubt share the same libxml2 library.  This is because libxslt modifies
-XML documents created by libxml2.  If there are two copies of libxml2 on your 
+XML documents created by libxml2.  If there are two copies of libxml2 on your
 system, then when XML documents allocated in copy #1 are manipulated by copy #2,
 a segmentation fault will occur.  So make sure that your system has only one copy of libxml2
 installed.
@@ -36,13 +36,13 @@ The easiest way to install libxslt-ruby is via Ruby Gems.  To install:
 
 <tt>gem install libxslt-ruby</tt>
 
-If you are running Windows, make sure to install the Win32 RubyGem which 
+If you are running Windows, make sure to install the Win32 RubyGem which
 includes an already built binary file.  The binary is built against
 libxml2 version 2.6.32, iconv version 1.11 and libxslt version 1.1.24.
 Binaries for libxml2 and iconv are provided in the libxml-ruby bindings,
-while a binary for libxslt is provided in the libxslt-ruby bindings. 
+while a binary for libxslt is provided in the libxslt-ruby bindings.
 
-The Windows binaries are biult with MingW.  The gem also includes 
+The Windows binaries are biult with MingW.  The gem also includes
 a Microsoft VC++ 2005 solution.  If you wish to run a debug version
 of libxml-ruby on Windows, then it is highly recommended
 you use VC++.
@@ -51,12 +51,12 @@ you use VC++.
 == USAGE
 
 For in-depth information about using libxslt-ruby please refer
-to its online Rdoc documentation.  
+to its online Rdoc documentation.
 
 All libxslt classes are in the LibXSLT::XSLT module. The simplest
-way to use libxslt is to require 'xslt'.  This will mixin the 
-LibXML and LibXSLT modules into the global namespace, allowing you to 
-write code like this: 
+way to use libxslt is to require 'xslt'.  This will mixin the
+LibXML and LibXSLT modules into the global namespace, allowing you to
+write code like this:
 
 require 'xslt'
 document = XML::Document.new
@@ -78,10 +78,10 @@ Given an XML file like:
 
   <?xml version="1.0" encoding="UTF-8"?>
   <?xml-stylesheet href="fuzface.xsl" type="text/xsl"?>
-  
+
   <commentary>
     <meta>
-      <author>       
+      <author>
         <first_name>Sean</first_name>
         <last_name>Chittenden</last_name>
         <email>sean@chittenden.org</email>
@@ -91,7 +91,7 @@ Given an XML file like:
       <id>$Id$</id>     <title>Fuzface...</title>
       <subtitle>The Internet's a big place and here's some proof...</subtitle>
     </meta>
-  
+
     <body>
       <para>
         I think it's a tragedy that I'm going to start off my new
@@ -111,21 +111,21 @@ And an XSLT file like this:
       <xsl:element name="head">
         <xsl:element name="title">Ramblings - <xsl:value-of select="commentary/meta/title" /> - <xsl:value-of select="commentary/meta/subtitle" /></xsl:element>
       </xsl:element>
-  
+
       <xsl:element name="body">
         <xsl:element name="h1"><xsl:value-of select="commentary/meta/title" /></xsl:element>
         <xsl:element name="h3"><xsl:value-of select="commentary/meta/subtitle" /></xsl:element>
         By: <xsl:value-of select="commentary/meta/author/first_name" /> <xsl:value-of select="commentary/meta/author/last_name" /><xsl:element name="br" />
         Date: <xsl:value-of select="commentary/meta/date" /><xsl:element name="br" />
-  
+
         <xsl:for-each select="./commentary/body">
           <xsl:apply-templates />
         </xsl:for-each>
-  
+
       </xsl:element>
     </xsl:element>
   </xsl:template>
-  
+
   <xsl:template match="para">
     <xsl:element name="p">
       <xsl:value-of select="." />
@@ -136,7 +136,7 @@ And an XSLT file like this:
 We can easily transform the XML with the following ruby code:
 
   require 'xslt'
-  
+
   # Create a new XSL Transform
   stylesheet_doc = XML::Document.file('files/fuzface.xsl')
   stylesheet = LibXSLT::Stylesheet.new(stylesheet_doc)
@@ -144,7 +144,7 @@ We can easily transform the XML with the following ruby code:
   # Transform a xml document
   xml_doc = XML::Document.file('files/fuzface.xml')
   result = stylesheet.apply(xml_doc)
-   
+
 You can then print, save or manipulate the returned document.
 
 == License

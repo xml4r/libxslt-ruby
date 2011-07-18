@@ -1,11 +1,11 @@
 # encoding: UTF-8
 # :enddoc:
-# These classes provide provide backwards compatibility with 
+# These classes provide provide backwards compatibility with
 # versions of libxslt-ruby prior to version 0.7.0
 
 module LibXML
   module XML
-    module XSLT 
+    module XSLT
       MAX_DEPTH            = LibXSLT::XSLT::MAX_DEPTH
       MAX_SORT             = LibXSLT::XSLT::MAX_SORT
       ENGINE_VERSION       = LibXSLT::XSLT::ENGINE_VERSION
