@@ -11,7 +11,7 @@ VALUE eXSLTError;
 
 /*
  * Document-class: LibXSLT::XSLT
- * 
+ *
  * The libxslt gem provides Ruby language bindings for GNOME's Libxslt
  * toolkit. It is free software, released under the MIT License.
  *
@@ -22,9 +22,8 @@ VALUE eXSLTError;
  *
  *  xml_doc = XML::Document.file('xml_file')
  *  result = stylesheet.apply(xml_doc)
- * 
  *
-*/
+ */
 
 #ifdef RDOC_NEVER_DEFINED
   cLibXSLT = rb_define_module("XSLT");
@@ -32,13 +31,13 @@ VALUE eXSLTError;
 
 
 #if defined(_WIN32)
-__declspec(dllexport) 
+__declspec(dllexport)
 #endif
 
 void
 Init_libxslt_ruby(void) {
   LIBXML_TEST_VERSION;
-  
+
   cLibXSLT = rb_define_module("LibXSLT");
   cXSLT = rb_define_module_under(cLibXSLT, "XSLT");
 

@@ -8,5 +8,9 @@ lib = File.expand_path(File.join(root, 'lib'))
 
 $LOAD_PATH << lib
 
-require 'xslt'
-
+begin
+  require 'xslt'
+rescue LoadError
+  require 'rubygems'
+  require 'xslt'
+end

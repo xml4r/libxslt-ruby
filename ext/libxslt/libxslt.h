@@ -6,7 +6,12 @@
 #define __RUBY_LIBXSLT_H__
 
 #include <ruby.h>
+#if HAVE_RUBY_IO_H
+#include <ruby/io.h>
+#else
 #include <rubyio.h>
+#endif
+
 #include <libxml/parser.h>
 #include <libxml/debugXML.h>
 #include <libxslt/extra.h>
