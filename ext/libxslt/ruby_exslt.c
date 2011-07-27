@@ -137,6 +137,11 @@ ruby_xslt_registered_module_function_p(VALUE class, VALUE namespace, VALUE name)
 
 void
 ruby_init_exslt() {
+  /* [HACK] Enclosing classes/modules for RDoc:
+   *   cLibXSLT = rb_define_module("LibXSLT");
+   *   cXSLT = rb_define_module_under(cLibXSLT, "XSLT");
+   */
+
   rb_define_singleton_method(cXSLT, "register_module_function", ruby_xslt_register_module_function, 2);
   rb_define_singleton_method(cXSLT, "unregister_module_function", ruby_xslt_unregister_module_function, 2);
   rb_define_singleton_method(cXSLT, "registered_module_function?", ruby_xslt_registered_module_function_p, 2);
