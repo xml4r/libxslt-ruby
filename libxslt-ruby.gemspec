@@ -7,7 +7,7 @@ FILES = FileList[
   'CHANGES',
   'LICENSE',
   'Rakefile',
-  'README',
+  'README.rdoc',
   'libxslt-ruby.gemspec',
   'setup.rb',
   'doc/**/*',
