@@ -2,3 +2,6 @@ tmp
 /doc
 /nbproject
 /ext/vc/Debug
+
+/ext/libxslt/Makefile
+/ext/libxslt/extconf.h
