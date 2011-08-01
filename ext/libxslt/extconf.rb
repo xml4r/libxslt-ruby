@@ -21,7 +21,6 @@ dir_config('zlib')
 dir_config('xml2')
 dir_config('xslt')
 dir_config('exslt')
-dir_config('libxml-ruby')
 
 # Ruby 1.9 has ruby/io.h instead of rubyio.h
 have_header('ruby/io.h')
@@ -111,35 +110,48 @@ unless (have_library('exslt','exsltRegisterAll') or
    EOL
 end
 
-unless find_header(libxml_ruby_h = 'libxml/ruby_libxml.h')
-  # Figure out where libxml-ruby is installed
-  unless gem_spec = Gem::Specification.find_by_name('libxml-ruby')
-    crash(<<-EOL)
-      libxml-ruby bindings must be installed
-    EOL
-  end
-
-  unless find_header(libxml_ruby_h, "#{gem_spec.full_gem_path}/ext")
-    crash(<<-EOL)
-      Need headers for libxml-ruby.
-    EOL
-  end
+# Figure out where libxml-ruby is installed
+unless gem_spec = Gem::Specification.find_by_name('libxml-ruby')
+  crash(<<-EOL)
+    libxml-ruby bindings must be installed
+  EOL
 end
 
-if RUBY_PLATFORM.match(/win32|mingw32/)
-  RUBY_VERSION =~ /(\d+.\d+)/
-  $LIBPATH << File.join(libxml_ruby_path, "lib")
-  $LIBPATH << File.join(libxml_ruby_path, "lib", $1)
-
-  headers = ['iconv.h', 'libxml/ruby_libxml.h']
-  unless have_library(':libxml_ruby.so', 'Init_libxml_ruby', headers)
-    crash(<<-EOL)
-      Need libxml-ruby
-      Please install libxml-ruby or specify the path to the gem via:
-        --with-libxml-ruby=/path/to/libxml-ruby gem
-    EOL
-  end
+unless find_header("ruby_libxml.h", "#{gem_spec.full_gem_path}/ext/libxml")
+  crash(<<-EOL)
+    Need headers for libxml-ruby.
+  EOL
 end
+
+
+RUBY_VERSION =~ /(\d+.\d+)/
+minor_version = $1
+headers = ['iconv.h', 'libxml/ruby_libxml.h']
+paths = ["#{gem_spec.full_gem_path}/lib", "#{gem_spec.full_gem_path}/lib/#{minor_version}"]
+
+unless find_library("xml_ruby", "Init_libxml_ruby", *paths) or
+       find_library(":libxml_ruby.so", "Init_libxml_ruby", *paths)
+  crash(<<-EOL)
+    Need libxml-ruby
+    Please install libxml-ruby or specify the path to the gem via:
+      --with-libxml-ruby=/path/to/libxml-ruby gem
+  EOL
+end
+
+#if RUBY_PLATFORM.match(/win32|mingw32/)
+#  RUBY_VERSION =~ /(\d+.\d+)/
+#  $LIBPATH << File.join(libxml_ruby_path, "lib")
+#  $LIBPATH << File.join(libxml_ruby_path, "lib", $1)
+#
+#  headers = ['iconv.h', 'libxml/ruby_libxml.h']
+#  unless have_library(':libxml_ruby.so', 'Init_libxml_ruby', headers)
+#    crash(<<-EOL)
+#      Need libxml-ruby
+#      Please install libxml-ruby or specify the path to the gem via:
+#        --with-libxml-ruby=/path/to/libxml-ruby gem
+    #EOL
+#  end
+#end
 
 create_header()
 create_makefile("libxslt_ruby")
