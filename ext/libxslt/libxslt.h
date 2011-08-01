@@ -14,7 +14,7 @@
 
 #include <libxml/parser.h>
 #include <libxml/debugXML.h>
-#include <libxml/ruby_libxml.h>
+#include <ruby_libxml.h>
 
 #include <libxslt/extra.h>
 #include <libxslt/xslt.h>
