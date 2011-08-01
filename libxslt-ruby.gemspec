@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.version = version
   spec.author = "Charlie Savage"
   spec.email = "libxml-devel@rubyforge.org"
-  spec.add_dependency('libxml-ruby','>=2.0.2')
+  spec.add_dependency('libxml-ruby','>=2.1.0')
   spec.platform = Gem::Platform::RUBY
   spec.require_paths = ["lib", "ext/libxslt"]
 
@@ -43,7 +43,7 @@ Gem::Specification.new do |spec|
   spec.files = FILES.to_a
   spec.test_files = Dir.glob("test/tc_*.rb")
 
-  spec.required_ruby_version = '>= 1.8.4'
+  spec.required_ruby_version = '>= 1.8.6'
   spec.date = DateTime.now
   spec.rubyforge_project = 'libxslt-ruby'
 end
