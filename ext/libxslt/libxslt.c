@@ -30,10 +30,6 @@ VALUE eXSLTError;
 #endif
 
 
-#if defined(_WIN32)
-__declspec(dllexport)
-#endif
-
 void
 Init_libxslt_ruby(void) {
   LIBXML_TEST_VERSION;
