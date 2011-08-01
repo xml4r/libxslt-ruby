@@ -1,3 +1,33 @@
+== 1.0.2 / 2011-07-31
+
+* Added support for extension function registration.  This was adapted from
+  Gregoire Lejeune's ruby-xslt library at https://github.com/glejeune/ruby-xslt (Jens Willie).
+
+* Update to work with libxml-ruby 2.1.0 and higher (Jens Willie).
+
+* Use ENV for rake compiler task configuration (Jens Willie)
+
+* Build fixes (Charlie Savage).
+
+* Switch to using def files to control library exports (Charlie Savage).
+
+
+== 1.0.1 / 2011-04-18 Charlie Savage
+
+* Modernize gem - add gemspec file, use rake-compiler
+
+* Fix Ruby 1.9.2 compile errors
+
+* Build fixes
+
+* Update tests scripts to make testing during development easier
+
+
+== 0.9.8 / 2011-01-18 Charlie Savage
+
+* Update build environment
+
+
 == 0.9.1 / 2008-11-24 Charlie Savage
 
 * Support libxml-ruby bindings 0.9.3 and above which has a changed
