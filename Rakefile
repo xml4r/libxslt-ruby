@@ -13,15 +13,21 @@ SO_NAME  = "libxslt_ruby"
 # Read the spec file
 spec = Gem::Specification.load("#{GEM_NAME}.gemspec")
 
-# Setup compile tasks
+# Setup compile tasks.  Configuration can be passed via EVN.
+# Example:
+#  rake compile with_xml2_include=C:/MinGW/local/include/libxml2
+#               with_xslt_include=C:/MinGW/local/include/libxslt
+#               with_exslt_include=C:/MinGW/local/include/libexslt
 Rake::ExtensionTask.new do |ext|
   ext.gem_spec = spec
   ext.name = SO_NAME
   ext.ext_dir = "ext/libxslt"
   ext.lib_dir = "lib/#{RUBY_VERSION.sub(/\.\d$/, '')}"
 
-  ENV.each { |key, val|
+  ENV.each do |key, val|
     next unless key =~ /\Awith_(\w+)\z/i
+    puts key
+    puts val
     opt = $1.downcase.tr('_', '-')
 
     if File.directory?(path = File.expand_path(val))
@@ -29,7 +35,7 @@ Rake::ExtensionTask.new do |ext|
     else
       warn "No such directory: #{opt}: #{path}"
     end
-  }
+  end
 end
 
 # Setup generic gem
@@ -47,6 +53,7 @@ if RUBY_PLATFORM.match(/win32|mingw32/)
   win_spec = spec.clone
   win_spec.platform = Gem::Platform::CURRENT
   win_spec.files += binaries.to_a
+  win_spec.instance_variable_set(:@cache_file, nil)
 
   # Unset extensions
   win_spec.extensions = nil
