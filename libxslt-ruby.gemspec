@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'rake'
+
 # Determine the current version of the software
 version = File.read('ext/libxslt/version.h').match(/\s*RUBY_LIBXSLT_VERSION\s*['"](\d.+)['"]/)[1]
 
