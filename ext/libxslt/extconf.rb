@@ -128,17 +128,20 @@ RUBY_VERSION =~ /(\d+.\d+)/
 minor_version = $1
 paths = ["#{gem_spec.full_gem_path}/lib", "#{gem_spec.full_gem_path}/lib/#{minor_version}"]
 
-# Hack to make sure ruby library is *after* xml_ruby library
-$LIBS += " #{$LIBRUBYARG_STATIC}"
-unless find_library("xml_ruby", "Init_libxml_ruby", *paths) or
-       find_library(":libxml_ruby.so", "Init_libxml_ruby", *paths)
-  crash(<<-EOL)
-    Need libxml-ruby
-    Please install libxml-ruby or specify the path to the gem via:
-      --with-libxml-ruby=/path/to/libxml-ruby gem
-  EOL
+# No need to link xml_ruby on OS X
+unless Config::CONFIG['host_os'].match(/darwin/)
+  # Hack to make sure ruby library is *after* xml_ruby library
+  $LIBS += " #{$LIBRUBYARG_STATIC}"
+  unless find_library("xml_ruby", "Init_libxml_ruby", *paths) or
+         find_library(":libxml_ruby.so", "Init_libxml_ruby", *paths)
+    crash(<<-EOL)
+      Need libxml-ruby
+      Please install libxml-ruby or specify the path to the gem via:
+        --with-libxml-ruby=/path/to/libxml-ruby gem
+    EOL
+  end
+  $LIBS.gsub!($LIBRUBYARG_STATIC,'')
 end
-$LIBS.gsub!($LIBRUBYARG_STATIC,'')
 
 create_header()
 create_makefile("libxslt_ruby")
