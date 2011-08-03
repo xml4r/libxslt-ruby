@@ -126,9 +126,10 @@ end
 
 RUBY_VERSION =~ /(\d+.\d+)/
 minor_version = $1
-headers = ['iconv.h', 'libxml/ruby_libxml.h']
 paths = ["#{gem_spec.full_gem_path}/lib", "#{gem_spec.full_gem_path}/lib/#{minor_version}"]
 
+# Hack to make sure ruby library is *after* xml_ruby library
+$LIBS += " #{$LIBRUBYARG_STATIC}"
 unless find_library("xml_ruby", "Init_libxml_ruby", *paths) or
        find_library(":libxml_ruby.so", "Init_libxml_ruby", *paths)
   crash(<<-EOL)
@@ -137,21 +138,7 @@ unless find_library("xml_ruby", "Init_libxml_ruby", *paths) or
       --with-libxml-ruby=/path/to/libxml-ruby gem
   EOL
 end
-
-#if RUBY_PLATFORM.match(/win32|mingw32/)
-#  RUBY_VERSION =~ /(\d+.\d+)/
-#  $LIBPATH << File.join(libxml_ruby_path, "lib")
-#  $LIBPATH << File.join(libxml_ruby_path, "lib", $1)
-#
-#  headers = ['iconv.h', 'libxml/ruby_libxml.h']
-#  unless have_library(':libxml_ruby.so', 'Init_libxml_ruby', headers)
-#    crash(<<-EOL)
-#      Need libxml-ruby
-#      Please install libxml-ruby or specify the path to the gem via:
-#        --with-libxml-ruby=/path/to/libxml-ruby gem
-    #EOL
-#  end
-#end
+$LIBS.gsub!($LIBRUBYARG_STATIC,'')
 
 create_header()
 create_makefile("libxslt_ruby")

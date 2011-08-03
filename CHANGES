@@ -1,4 +1,4 @@
-== 1.0.2 / 2011-07-31
+== 1.0.3 / 2011-07-31
 
 * Added support for extension function registration.  This was adapted from
   Gregoire Lejeune's ruby-xslt library at https://github.com/glejeune/ruby-xslt (Jens Willie).
