@@ -3,6 +3,7 @@
 /* Please see the LICENSE file for copyright and distribution information */
 
 #include <libxml/parser.h>
+#include <libxml/debugXML.h>
 
 #ifndef __RUBY_LIBXSLT_H__
 #define __RUBY_LIBXSLT_H__
@@ -14,7 +15,6 @@
 #include <rubyio.h>
 #endif
 
-#include <libxml/debugXML.h>
 #include <ruby_libxml.h>
 
 #include <libxslt/extra.h>
