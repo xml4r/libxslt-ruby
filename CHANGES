@@ -1,3 +1,13 @@
+== 1.0.6 / 2011-08-14
+
+* Fix compilation with Microsoft Visual Studio 2010 (Charlie Savage)
+
+
+== 1.0.5 / 2011-08-09
+
+* Fix Ruby 1.9.3-preview1 libxml 2.7.3 (OS X Lion) conflicting OnigUChar redefinition (Travis Warlick).
+
+
 == 1.0.4 / 2011-08-03
 
 * Don't link against libxml-ruby on OS X, as it is unnecessary and doesn't work
