@@ -5,8 +5,6 @@
 #ifndef __RUBY_LIBXSLT_STYLESHEET__
 #define __RUBY_LIBXSLT_STYLESHEET__
 
-extern VALUE cXSLTStylesheet;
-
 void ruby_init_xslt_stylesheet(void);
 
 #endif

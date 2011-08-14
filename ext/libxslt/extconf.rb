@@ -126,14 +126,24 @@ end
 
 RUBY_VERSION =~ /(\d+.\d+)/
 minor_version = $1
-paths = ["#{gem_spec.full_gem_path}/lib", "#{gem_spec.full_gem_path}/lib/#{minor_version}"]
+paths = ["#{gem_spec.full_gem_path}/lib", 
+         "#{gem_spec.full_gem_path}/lib/#{minor_version}",
+         "#{gem_spec.full_gem_path}/ext/libxml"]
 
 # No need to link xml_ruby on OS X
 unless Config::CONFIG['host_os'].match(/darwin/)
   # Hack to make sure ruby library is *after* xml_ruby library
   $LIBS += " #{$LIBRUBYARG_STATIC}"
-  unless find_library("xml_ruby", "Init_libxml_ruby", *paths) or
-         find_library(":libxml_ruby.so", "Init_libxml_ruby", *paths)
+
+  libraries = ["xml_ruby", # Linux
+               ":libxml_ruby.so",  # mingw
+               "libxml_ruby-#{Config::CONFIG["arch"]}"] # mswin
+
+  library = libraries.detect do |library|
+    find_library(library, "Init_libxml_ruby", *paths)
+  end
+
+  unless library
     crash(<<-EOL)
       Need libxml-ruby
       Please install libxml-ruby or specify the path to the gem via:

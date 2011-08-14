@@ -22,7 +22,8 @@ ruby_xslt_module_function_hash(VALUE namespace) {
 /* Helper method for xsltRegisterExtModuleFunction callback */
 static void
 ruby_xslt_module_function_callback(xmlXPathParserContextPtr ctxt, int nargs) {
-  VALUE callback, args[nargs];
+  VALUE callback;
+  VALUE* args = ALLOCA_N(VALUE, nargs);
   const xmlChar *namespace, *name;
   int i;
 
