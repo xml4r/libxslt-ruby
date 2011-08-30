@@ -4,7 +4,6 @@ require "rubygems"
 require "rake/extensiontask"
 require "rake/testtask"
 require 'rdoc/task'
-require "grancher/task"
 require "yaml"
 
 GEM_NAME = "libxslt-ruby"
