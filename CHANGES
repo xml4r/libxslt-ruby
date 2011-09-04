@@ -1,3 +1,7 @@
+== 1.0.8 / 2011-09-03 Charlie Savage
+
+* Don't depend on exported data from libxml-ruby, doesn't work with VC++.
+
 == 1.0.7 / 2011-08-29 Charlie Savage
 
 * Don't require 'rake' in the gemspec to avoid annoying Bundler bugs

@@ -23,12 +23,10 @@ Rake::ExtensionTask.new do |ext|
   ext.ext_dir = "ext/libxslt"
   ext.lib_dir = "lib/#{RUBY_VERSION.sub(/\.\d$/, '')}"
 
+
   ENV.each do |key, val|
     next unless key =~ /\Awith_(\w+)\z/i
-    puts key
-    puts val
     opt = $1.downcase.tr('_', '-')
-
     if File.directory?(path = File.expand_path(val))
       ext.config_options << "--with-#{opt}=#{path}"
     else

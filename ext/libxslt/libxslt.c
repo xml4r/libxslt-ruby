@@ -5,6 +5,7 @@
 #include "libxslt.h"
 #include "libxml/xmlversion.h"
 
+VALUE cXMLDocument;
 VALUE cLibXSLT;
 VALUE cXSLT;
 VALUE eXSLTError;
@@ -37,8 +38,9 @@ Init_libxslt_ruby(void) {
   cLibXSLT = rb_define_module("LibXSLT");
   cXSLT = rb_define_module_under(cLibXSLT, "XSLT");
 
-  cXMLDocument = rb_const_get(rb_const_get(rb_const_get(rb_cObject,
-    rb_intern("LibXML")), rb_intern("XML")), rb_intern("Document"));
+  cXMLDocument = rb_const_get(rb_const_get(rb_const_get(rb_cObject, rb_intern("LibXML")), 
+																	rb_intern("XML")), 
+																	rb_intern("Document"));
 
   rb_define_const(cXSLT, "MAX_DEPTH", INT2NUM(xsltMaxDepth));
   rb_define_const(cXSLT, "MAX_SORT", INT2NUM(XSLT_MAX_SORT));
