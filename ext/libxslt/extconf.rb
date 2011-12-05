@@ -133,7 +133,7 @@ paths = ["#{gem_spec.full_gem_path}/lib",
 # No need to link xml_ruby on OS X
 unless Config::CONFIG['host_os'].match(/darwin/)
   # Hack to make sure ruby library is *after* xml_ruby library
-  $LIBS += " #{$LIBRUBYARG_STATIC}"
+  $LIBS = "#{$LIBRUBYARG_STATIC} #{$LIBS}"
 
   libraries = ["xml_ruby", # Linux
                ":libxml_ruby.so",  # mingw
