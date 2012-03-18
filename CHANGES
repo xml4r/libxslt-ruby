@@ -1,3 +1,8 @@
+== 1.0.9 / 2012-03-17 Charlie Savage
+
+* Build fix for library inclusion order (Andrew Watts)
+* Add pkg directory to gitignore (Travis Warlick)
+
 == 1.0.8 / 2011-09-03 Charlie Savage
 
 * Don't depend on exported data from libxml-ruby, doesn't work with VC++.
@@ -124,7 +129,6 @@
 * Updated extconf to remove shell-script dependency
 
 * Fixed multiple symbol declarations for -fno-common
-
 
 == 0.4.0 / 2003-12-15 Martin Povolny <martin@solnet.cz>
 
