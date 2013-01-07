@@ -1,10 +1,6 @@
 # encoding: UTF-8
 
-# First make sure dl is loaded, we use that
-# to access the libxml bindings
-require 'dl'
-
-# Next load the libxml bindings
+# Load the libxml bindings
 require 'libxml'
 
 # Load the C-based binding.
