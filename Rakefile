@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 
-require "rubygems"
-require "rake/extensiontask"
-require "rake/testtask"
+require 'rubygems'
+require 'rake/extensiontask'
+require 'rake/testtask'
 require 'rdoc/task'
-require "yaml"
+require 'yaml'
 
-GEM_NAME = "libxslt-ruby"
-SO_NAME  = "libxslt_ruby"
+GEM_NAME = 'libxslt-ruby'
+SO_NAME  = 'libxslt_ruby'
 
 # Read the spec file
 spec = Gem::Specification.load("#{GEM_NAME}.gemspec")
@@ -23,10 +23,10 @@ Rake::ExtensionTask.new do |ext|
   ext.ext_dir = "ext/libxslt"
   ext.lib_dir = "lib/#{RUBY_VERSION.sub(/\.\d$/, '')}"
   
-  ext.config_options << "--with-zlib-dir=C:/MinGW/local"
-  ext.config_options << "--with-xml2-include=C:/MinGW/local/include/libxml2"
-  ext.config_options << "--with-xslt-include=C:/MinGW/local/include/libxslt"
-  ext.config_options << "--with-exslt-include=C:/MinGW/local/include/libexslt"
+  ext.config_options << "--with-zlib-dir=C:/MinGW64/local"
+  ext.config_options << "--with-xml2-include=C:/MinGW64/local/include/libxml2"
+  ext.config_options << "--with-xslt-include=C:/MinGW64/local/include/libxslt"
+  ext.config_options << "--with-exslt-include=C:/MinGW64/local/include/libexslt"
 
   ENV.each do |key, val|
     next unless key =~ /\Awith_(\w+)\z/i
