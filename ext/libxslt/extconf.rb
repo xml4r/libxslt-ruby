@@ -8,7 +8,7 @@ require 'rbconfig'
 require 'rubygems'
 $preload = nil
 $INCFLAGS << " -I/usr/local/include"
-$LIBPATH.push(Config::CONFIG['libdir'])
+$LIBPATH.push(RbConfig::CONFIG['libdir'])
 
 def crash(str)
   print(" extconf failure: %s\n", str)
@@ -131,19 +131,19 @@ paths = ["#{gem_spec.full_gem_path}/lib",
          "#{gem_spec.full_gem_path}/ext/libxml"]
 
 # No need to link xml_ruby on OS X
-unless Config::CONFIG['host_os'].match(/darwin/)
+unless RbConfig::CONFIG['host_os'].match(/darwin/)
   # Hack to make sure ruby library is *after* xml_ruby library
   $LIBS = "#{$LIBRUBYARG_STATIC} #{$LIBS}"
 
   libraries = ["xml_ruby", # Linux
                ":libxml_ruby.so",  # mingw
-               "libxml_ruby-#{Config::CONFIG["arch"]}"] # mswin
+               "libxml_ruby-#{RbConfig::CONFIG["arch"]}"] # mswin
 
-  library = libraries.detect do |library|
+  libxml_library = libraries.detect do |library|
     find_library(library, "Init_libxml_ruby", *paths)
   end
 
-  unless library
+  unless libxml_library
     crash(<<-EOL)
       Need libxml-ruby
       Please install libxml-ruby or specify the path to the gem via:
