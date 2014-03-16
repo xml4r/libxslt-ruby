@@ -1,6 +1,6 @@
 # encoding: UTF-8
 require 'test/unit'
-require './test_helper'
+require 'test_helper'
 
 class TestExslt < Test::Unit::TestCase
   def setup

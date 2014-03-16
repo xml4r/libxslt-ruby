@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require './test_helper'
+require 'test_helper'
 require 'test/unit'
 
 class TestDeprecated < Test::Unit::TestCase

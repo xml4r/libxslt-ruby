@@ -32,5 +32,6 @@
 
 extern VALUE cXSLT;
 extern VALUE eXSLTError;
+extern VALUE eXMLXSLTStylesheetRequireParsedDoc;
 
 #endif

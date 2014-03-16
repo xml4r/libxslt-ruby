@@ -9,6 +9,7 @@ VALUE cXMLDocument;
 VALUE cLibXSLT;
 VALUE cXSLT;
 VALUE eXSLTError;
+VALUE eXMLXSLTStylesheetRequireParsedDoc;
 
 /*
  * Document-class: LibXSLT::XSLT
@@ -58,6 +59,7 @@ Init_libxslt_ruby(void) {
   rb_define_const(cXSLT, "NAMESPACE_XALAN", rb_str_new2((const char*)XSLT_XALAN_NAMESPACE));
 
   eXSLTError = rb_define_class_under(cLibXSLT, "XSLTError", rb_eRuntimeError);
+  eXMLXSLTStylesheetRequireParsedDoc = rb_define_class_under(cLibXSLT, "ResultError", rb_eRuntimeError);
 
   ruby_init_xslt_stylesheet();
   ruby_init_exslt();

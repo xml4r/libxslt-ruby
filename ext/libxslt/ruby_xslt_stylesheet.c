@@ -3,7 +3,6 @@
 /* See the LICENSE file for copyright and distribution information. */
 
 #include "libxslt.h"
-
 /*
  * Document-class: LibXSLT::XSLT::Stylesheet
  *
@@ -254,6 +253,39 @@ ruby_xslt_stylesheet_print(int argc, VALUE *argv, VALUE self) {
   return(INT2NUM(bytes));
 }*/
 
+/* call-seq:
+ *   stylesheet.output(doc) => string
+ *
+ * Output an xml document, usually the result of an xslt
+ * transformation, and return the result as a string.  Output will be
+ * done according to the output specification in the xslt
+ * stylesheet. Note that this includes the encoding of the string.
+ */
+VALUE
+ruby_xslt_stylesheet_output(VALUE self, VALUE document) {
+// FIXME: set string encoding in ruby 1.9?
+  xmlDocPtr xdoc;
+  xsltStylesheetPtr xstylesheet;
+  xmlChar *result = NULL;
+  int len = 0, bytes = 0;
+  VALUE rresult;
+
+  if (!rb_obj_is_kind_of(document, cXMLDocument))
+    rb_raise(rb_eTypeError, "Must pass in an XML::Document instance.");
+
+  Data_Get_Struct(document, xmlDoc, xdoc);
+  Data_Get_Struct(self, xsltStylesheet, xstylesheet);
+
+  bytes = xsltSaveResultToString(&result, &len,
+				 xdoc, xstylesheet);
+  if ( bytes == -1 ) {
+    rb_raise(rb_eRuntimeError, "error dumping document");
+  }
+
+  rresult=rb_str_new((const char*)result,len);
+  xmlFree(result);
+  return rresult;
+}
 
 #ifdef RDOC_NEVER_DEFINED
   cLibXSLT = rb_define_module("LibXSLT");
@@ -266,4 +298,5 @@ ruby_init_xslt_stylesheet(void) {
   rb_define_alloc_func(cXSLTStylesheet, ruby_xslt_stylesheet_alloc);
   rb_define_method(cXSLTStylesheet, "initialize", ruby_xslt_stylesheet_initialize, 1);
   rb_define_method(cXSLTStylesheet, "apply", ruby_xslt_stylesheet_apply, -1);
+  rb_define_method(cXSLTStylesheet, "output", ruby_xslt_stylesheet_output, 1);
 }

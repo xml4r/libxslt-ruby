@@ -13,3 +13,4 @@ end
 
 # And add support for deprecated functions
 require 'libxslt/deprecated'
+require 'libxslt/stylesheet'
