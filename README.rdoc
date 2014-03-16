@@ -36,16 +36,12 @@ The easiest way to install libxslt-ruby is via Ruby Gems.  To install:
 
 <tt>gem install libxslt-ruby</tt>
 
-If you are running Windows, make sure to install the Win32 RubyGem which
+If you are running Windows, make sure to install the Mingw64 RubyGem which
 includes an already built binary file.  The binary is built against
-libxml2 version 2.6.32, iconv version 1.11 and libxslt version 1.1.24.
+libxml2 version 2.9.1, iconv version 1.14 and libxslt version 1.1.28.
 Binaries for libxml2 and iconv are provided in the libxml-ruby bindings,
-while a binary for libxslt is provided in the libxslt-ruby bindings.
-
-The Windows binaries are biult with MingW.  The gem also includes
-a Microsoft VC++ 2005 solution.  If you wish to run a debug version
-of libxml-ruby on Windows, then it is highly recommended
-you use VC++.
+while binaries for libxslt and libexslt areprovided in the
+libxslt-ruby bindings.
 
 
 == USAGE
