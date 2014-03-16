@@ -8,7 +8,7 @@ toolkit. It is free software, released under the MIT License.
 
 == Requirements
 
-libxslt-ruby requires Ruby 1.8.4 or higher.  It is dependent on
+libxslt-ruby requires Ruby 1.9.3 or higher.  It is dependent on
 the following libraries to function properly:
 
 * libm      (math routines: very standard)
@@ -35,18 +35,6 @@ installed.
 The easiest way to install libxslt-ruby is via Ruby Gems.  To install:
 
 <tt>gem install libxslt-ruby</tt>
-
-If you are running Windows, make sure to install the Win32 RubyGem which
-includes an already built binary file.  The binary is built against
-libxml2 version 2.6.32, iconv version 1.11 and libxslt version 1.1.24.
-Binaries for libxml2 and iconv are provided in the libxml-ruby bindings,
-while a binary for libxslt is provided in the libxslt-ruby bindings.
-
-The Windows binaries are biult with MingW.  The gem also includes
-a Microsoft VC++ 2005 solution.  If you wish to run a debug version
-of libxml-ruby on Windows, then it is highly recommended
-you use VC++.
-
 
 == USAGE
 
