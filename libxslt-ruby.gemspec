@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
                          'test/**/*'])
   spec.test_files = Dir.glob("test/test_*.rb")
   spec.add_development_dependency 'rake-compiler'
-  spec.required_ruby_version = '>= 1.9.3'
+  spec.required_ruby_version = '>= 1.8.7'
   spec.date = DateTime.now
   spec.rubyforge_project = 'libxslt-ruby'
 end
