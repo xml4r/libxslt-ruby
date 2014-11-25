@@ -130,8 +130,12 @@ paths = ["#{gem_spec.full_gem_path}/lib",
          "#{gem_spec.full_gem_path}/lib/#{minor_version}",
          "#{gem_spec.full_gem_path}/ext/libxml"]
 
+is_osx = RbConfig::CONFIG['host_os'].match(/darwin/)
+is_rbx = defined?(RUBY_ENGINE) && (RUBY_ENGINE == "rbx")
+
 # No need to link xml_ruby on OS X
-unless RbConfig::CONFIG['host_os'].match(/darwin/)
+# Also do not link on rubinius
+unless (is_osx or is_rbx)
   # Hack to make sure ruby library is *after* xml_ruby library
   $LIBS = "#{$LIBRUBYARG_STATIC} #{$LIBS}"
 
