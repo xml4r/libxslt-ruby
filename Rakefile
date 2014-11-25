@@ -74,12 +74,12 @@ RDoc::Task.new("rdoc") do |rdoc|
   # Show source inline with line numbers
   rdoc.options << "--line-numbers"
   # Make the readme file the start page for the generated html
-  rdoc.options << '--main' << 'README'
+  rdoc.options << '--main' << 'README.rdoc'
   rdoc.rdoc_files.include('doc/*.rdoc',
                           'ext/**/*.c',
                           'lib/**/*.rb',
                           'CHANGES',
-                          'README',
+                          'README.rdoc',
                           'LICENSE')
 end
 
