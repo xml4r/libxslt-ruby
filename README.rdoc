@@ -44,6 +44,16 @@ while binaries for libxslt and libexslt areprovided in the
 libxslt-ruby bindings.
 
 
+Installation from source:
+
+ruby ext/libxslt/extconf.rb
+make
+sudo make install
+
+gem build xslt-ruby.gemspec
+gem install xslt-ruby-1.1.1.gem
+
+
 == USAGE
 
 For in-depth information about using libxslt-ruby please refer
