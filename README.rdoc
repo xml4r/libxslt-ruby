@@ -50,8 +50,8 @@ ruby ext/libxslt/extconf.rb
 make
 sudo make install
 
-gem build xslt-ruby.gemspec
-gem install xslt-ruby-1.1.1.gem
+gem build libxslt-ruby.gemspec
+gem install libxslt-ruby-1.1.1.gem
 
 
 == USAGE
