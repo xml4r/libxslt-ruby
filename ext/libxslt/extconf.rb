@@ -126,12 +126,12 @@ end
 
 RUBY_VERSION =~ /(\d+.\d+)/
 minor_version = $1
-paths = ["#{gem_spec.full_gem_path}/lib", 
+paths = ["#{gem_spec.full_gem_path}/lib",
          "#{gem_spec.full_gem_path}/lib/#{minor_version}",
          "#{gem_spec.full_gem_path}/ext/libxml"]
 
 # No need to link xml_ruby on OS X
-unless RbConfig::CONFIG['host_os'].match(/darwin/)
+unless RbConfig::CONFIG['host_os'].match(/darwin|linux/)
   # Hack to make sure ruby library is *after* xml_ruby library
   $LIBS = "#{$LIBRUBYARG_STATIC} #{$LIBS}"
 
