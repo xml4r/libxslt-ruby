@@ -1,3 +1,10 @@
+== 1.2.0 / 2020-05-19 Charlie Savage
+
+* Remove deprecated functions (Charlie Savage)
+* Remove reference to unsupported constant that was removed from libxslt (Isabel Drost-Fromm)
+* Modernize tests (Charlie Savage)
+* Add travis.yml (Sophia Shao)
+
 == 1.1.1 / 2014-03-16 Charlie Savage
 
 * Adds output and transform methods that respect the <xsl:output> options in stylesheets (Rick Frankel)
