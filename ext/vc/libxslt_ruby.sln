@@ -1,26 +1,30 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libxslt_ruby", "libxslt_ruby.vcxproj", "{6DCFD1E6-224E-479C-BBD9-B6931DFCD02C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libxml_ruby", "..\..\..\libxml-ruby\ext\vc\libxml_ruby_18\libxml_ruby.vcxproj", "{0B65CD1D-EEB9-41AE-93BB-75496E504152}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6DCFD1E6-224E-479C-BBD9-B6931DFCD02C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{6DCFD1E6-224E-479C-BBD9-B6931DFCD02C}.Debug|Win32.Build.0 = Debug|Win32
+		{6DCFD1E6-224E-479C-BBD9-B6931DFCD02C}.Debug|x64.ActiveCfg = Debug|x64
+		{6DCFD1E6-224E-479C-BBD9-B6931DFCD02C}.Debug|x64.Build.0 = Debug|x64
 		{6DCFD1E6-224E-479C-BBD9-B6931DFCD02C}.Release|Win32.ActiveCfg = Release|Win32
 		{6DCFD1E6-224E-479C-BBD9-B6931DFCD02C}.Release|Win32.Build.0 = Release|Win32
-		{0B65CD1D-EEB9-41AE-93BB-75496E504152}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0B65CD1D-EEB9-41AE-93BB-75496E504152}.Debug|Win32.Build.0 = Debug|Win32
-		{0B65CD1D-EEB9-41AE-93BB-75496E504152}.Release|Win32.ActiveCfg = Release|Win32
-		{0B65CD1D-EEB9-41AE-93BB-75496E504152}.Release|Win32.Build.0 = Release|Win32
+		{6DCFD1E6-224E-479C-BBD9-B6931DFCD02C}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8DB8102F-FA0E-41BB-A576-68FA3F86A674}
 	EndGlobalSection
 EndGlobal
