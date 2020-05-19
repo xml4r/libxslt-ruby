@@ -1,8 +1,7 @@
 # encoding: UTF-8
-require 'test/unit'
-require 'test_helper'
+require_relative './test_helper'
 
-class TestExslt < Test::Unit::TestCase
+class TestExslt < Minitest::Test
   def setup
     @namespace = 'http://test.ext'
     @name = 'ext-func'
@@ -30,7 +29,7 @@ class TestExslt < Test::Unit::TestCase
   def test_register_repeated
     assert_equal     @func, LibXSLT::XSLT.register_module_function(@namespace, @name, &@func)
     assert_equal     @func, LibXSLT::XSLT.register_module_function(@namespace, @name, &@func)
-    assert_not_equal @func, LibXSLT::XSLT.register_module_function(@namespace, @name) { |*| }
+    refute_equal @func, LibXSLT::XSLT.register_module_function(@namespace, @name) { |*| }
   end
 
   def test_unregister
@@ -51,9 +50,9 @@ class TestExslt < Test::Unit::TestCase
   end
 
   def test_callback
-    doc = XML::Document.file(File.join(File.dirname(__FILE__), 'files/fuzface.xml'))
+    doc = LibXML::XML::Document.file(File.join(File.dirname(__FILE__), 'files/fuzface.xml'))
     xpath = '/commentary/meta/author/*'
-    stylesheet = XSLT::Stylesheet.new(XML::Document.string(<<-EOT))
+    stylesheet = LibXSLT::XSLT::Stylesheet.new(LibXML::XML::Document.string(<<-EOT))
 <?xml version="1.0" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ext="#{@namespace}">
   <xsl:template match="/">

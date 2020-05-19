@@ -1,12 +1,11 @@
 # encoding: UTF-8
-require 'test/unit'
-require 'test_helper'
+require_relative './test_helper'
 
-class TestStylesheet < Test::Unit::TestCase
+class TestStylesheet < Minitest::Test
   def setup
     filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-    doc = XML::Document.file(filename)
-    @stylesheet = XSLT::Stylesheet.new(doc)
+    doc = LibXML::XML::Document.file(filename)
+    @stylesheet = LibXSLT::XSLT::Stylesheet.new(doc)
   end
 
   def tear_down
@@ -15,16 +14,16 @@ class TestStylesheet < Test::Unit::TestCase
 
   def doc
     filename = File.join(File.dirname(__FILE__), 'files/fuzface.xml')
-    XML::Document.file(filename)
+    LibXML::XML::Document.file(filename)
   end
 
   def test_class
-    assert_instance_of(XSLT::Stylesheet, @stylesheet)
+    assert_instance_of(LibXSLT::XSLT::Stylesheet, @stylesheet)
   end
 
   def test_apply
     result = @stylesheet.apply(doc)
-    assert_instance_of(XML::Document, result)
+    assert_instance_of(LibXML::XML::Document, result)
 
     paragraphs = result.find('//p')
     assert_equal(11, paragraphs.length)
@@ -38,11 +37,11 @@ class TestStylesheet < Test::Unit::TestCase
 
   def test_params
     filename = File.join(File.dirname(__FILE__), 'files/params.xsl')
-    sdoc = XML::Document.file(filename)
+    sdoc = LibXML::XML::Document.file(filename)
 
     filename = File.join(File.dirname(__FILE__), 'files/params.xml')
-    stylesheet = XSLT::Stylesheet.new(sdoc)
-    doc = XML::Document.file(filename)
+    stylesheet = LibXSLT::XSLT::Stylesheet.new(sdoc)
+    doc = LibXML::XML::Document.file(filename)
 
     # Start with no params
     result = stylesheet.apply(doc)
@@ -72,7 +71,7 @@ class TestStylesheet < Test::Unit::TestCase
   def test_doc_ownership
     10.times do
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-      sdoc = XML::Document.file(filename)
+      sdoc = LibXML::XML::Document.file(filename)
       GC.start
       assert_equal(173, sdoc.to_s.length)
     end
@@ -81,8 +80,8 @@ class TestStylesheet < Test::Unit::TestCase
   def test_stylesheet_ownership
     10.times do
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-      sdoc = XML::Document.file(filename)
-      stylesheet = XSLT::Stylesheet.new(sdoc)
+      sdoc = LibXML::XML::Document.file(filename)
+      stylesheet = LibXSLT::XSLT::Stylesheet.new(sdoc)
 
       sdoc = nil
       GC.start
@@ -95,8 +94,8 @@ class TestStylesheet < Test::Unit::TestCase
   def test_result_ownership
     10.times do
       filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-      sdoc = XML::Document.file(filename)
-      stylesheet = XSLT::Stylesheet.new(sdoc)
+      sdoc = LibXML::XML::Document.file(filename)
+      stylesheet = LibXSLT::XSLT::Stylesheet.new(sdoc)
 
       rdoc = stylesheet.apply(doc)
       rdoc = nil
@@ -108,26 +107,26 @@ class TestStylesheet < Test::Unit::TestCase
   def test_stylesheet_string
     filename = File.join(File.dirname(__FILE__), 'files/params.xsl')
     style = File.open(filename).readline(nil)
-    stylesheet = XSLT::Stylesheet.string(style)
-    assert_instance_of(XSLT::Stylesheet, stylesheet)
+    stylesheet = LibXSLT::XSLT::Stylesheet.string(style)
+    assert_instance_of(LibXSLT::XSLT::Stylesheet, stylesheet)
   end
 
   def test_stylesheet_file
     filename = File.join(File.dirname(__FILE__), 'files/params.xsl')
-    stylesheet = XSLT::Stylesheet.file(filename)
-    assert_instance_of(XSLT::Stylesheet, stylesheet)
+    stylesheet = LibXSLT::XSLT::Stylesheet.file(filename)
+    assert_instance_of(LibXSLT::XSLT::Stylesheet, stylesheet)
   end
 
   def test_stylesheet_io
     filename = File.join(File.dirname(__FILE__), 'files/params.xsl')
-    stylesheet = XSLT::Stylesheet.io(File.open(filename))
-    assert_instance_of(XSLT::Stylesheet, stylesheet)
+    stylesheet = LibXSLT::XSLT::Stylesheet.io(File.open(filename))
+    assert_instance_of(LibXSLT::XSLT::Stylesheet, stylesheet)
   end
 
   def test_output
     filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-    sdoc = XML::Document.file(filename)
-    stylesheet = XSLT::Stylesheet.new(sdoc)
+    sdoc = LibXML::XML::Document.file(filename)
+    stylesheet = LibXSLT::XSLT::Stylesheet.new(sdoc)
 
     rdoc = stylesheet.apply(doc)
 
@@ -140,8 +139,8 @@ class TestStylesheet < Test::Unit::TestCase
 
   def test_transform
     filename = File.join(File.dirname(__FILE__), 'files/fuzface.xsl')
-    sdoc = XML::Document.file(filename)
-    stylesheet = XSLT::Stylesheet.new(sdoc)
+    sdoc = LibXML::XML::Document.file(filename)
+    stylesheet = LibXSLT::XSLT::Stylesheet.new(sdoc)
 
     xml = stylesheet.transform(doc)
 
@@ -161,18 +160,18 @@ class TestStylesheet < Test::Unit::TestCase
 </xsl:stylesheet>
 EOF
 
-    styledoc = LibXML::XML::Parser.string(style, :options => XSLT::Stylesheet::PARSE_OPTIONS).parse
-    stylesheet = XSLT::Stylesheet.new(styledoc)
+    styledoc = LibXML::XML::Parser.string(style, :options => LibXSLT::XSLT::Stylesheet::PARSE_OPTIONS).parse
+    stylesheet = LibXSLT::XSLT::Stylesheet.new(styledoc)
 
     xml = "<!DOCTYPE a [<!ENTITY bla 'fasel'>]><a>&bla;</a>"
-    doc = XML::Parser.string(xml, :options => XSLT::Stylesheet::PARSE_OPTIONS).parse
+    doc = LibXML::XML::Parser.string(xml, :options => LibXSLT::XSLT::Stylesheet::PARSE_OPTIONS).parse
 
     out = stylesheet.apply( doc )
     dump = stylesheet.output( out )
     assert_match( /<out>barfasel<\/out>/, dump)
 
     # no entity replacement in document
-    doc = XML::Parser.string(xml, :options => 0).parse
+    doc = LibXML::XML::Parser.string(xml, :options => 0).parse
     out = stylesheet.apply( doc )
     dump = stylesheet.output( out )
 
@@ -182,11 +181,11 @@ EOF
     # parse, will crash libxslt (segfault)
     # seems to be a libxslt problem; you should not do that anyway
     # styledoc = LibXML::XML::Parser.string(style, : options => 0).parse
-    # stylesheet = XSLT::Stylesheet.new(styledoc)
+    # stylesheet = LibXSLT::XSLT::Stylesheet.new(styledoc)
   end
 
   def test_cdatasection
-    doc = XML::Parser.string("<a/>").parse
+    doc = LibXML::XML::Parser.string("<a/>").parse
 
     style = <<EOF
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -196,8 +195,8 @@ EOF
 </xsl:stylesheet>
 EOF
 
-    styledoc = LibXML::XML::Parser.string(style, :options => XSLT::Stylesheet::PARSE_OPTIONS).parse
-    stylesheet = XSLT::Stylesheet.new(styledoc)
+    styledoc = LibXML::XML::Parser.string(style, :options => LibXSLT::XSLT::Stylesheet::PARSE_OPTIONS).parse
+    stylesheet = LibXSLT::XSLT::Stylesheet.new(styledoc)
 
     out = stylesheet.apply( doc )
     dump = stylesheet.output( out )
@@ -205,7 +204,7 @@ EOF
 
     # without propper parse options (result is wrong from an xml/xslt point of view)
     styledoc = LibXML::XML::Parser.string(style).parse
-    stylesheet = XSLT::Stylesheet.new(styledoc)
+    stylesheet = LibXSLT::XSLT::Stylesheet.new(styledoc)
 
     out = stylesheet.apply( doc )
     dump = stylesheet.output( out )
