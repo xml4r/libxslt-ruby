@@ -6,9 +6,6 @@ require 'mkmf'
 require 'rbconfig'
 
 require 'rubygems'
-$preload = nil
-$INCFLAGS << " -I/usr/local/include"
-$LIBPATH.push(RbConfig::CONFIG['libdir'])
 
 def crash(str)
   print(" extconf failure: %s\n", str)
@@ -16,8 +13,6 @@ def crash(str)
 end
 
 # Directories
-dir_config('iconv')
-dir_config('zlib')
 dir_config('xml2')
 dir_config('xslt')
 dir_config('exslt')
@@ -80,16 +75,12 @@ end
 # Figure out where libxml-ruby is installed
 unless gem_spec = Gem::Specification.find_by_name('libxml-ruby')
   crash(<<-EOL)
-    libxml-ruby bindings must be installed
+    libxml-ruby gem must be installed
   EOL
 end
 
-unless find_header("ruby_libxml.h", "#{gem_spec.full_gem_path}/ext/libxml")
-  crash(<<-EOL)
-    Need headers for libxml-ruby.
-  EOL
-end
-
+# Tell gcc where to find ruby_libxml.h
+$INCFLAGS << " -I\"#{gem_spec.full_gem_path}/ext/libxml\""
 
 RUBY_VERSION =~ /^(\d+.\d+)/
 minor_version = $1
@@ -99,9 +90,6 @@ paths = ["#{gem_spec.full_gem_path}/lib",
 
 # No need to link xml_ruby on OS X
 unless RbConfig::CONFIG['host_os'].match(/darwin|linux/)
-  # Hack to make sure ruby library is *after* xml_ruby library
-  $LIBS = "#{$LIBRUBYARG_STATIC} #{$LIBS}"
-
   libraries = ["xml_ruby", # Linux
                ":libxml_ruby.so",  # mingw
                "libxml_ruby-#{RbConfig::CONFIG["arch"]}"] # mswin
