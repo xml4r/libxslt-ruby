@@ -22,39 +22,6 @@ dir_config('xml2')
 dir_config('xslt')
 dir_config('exslt')
 
-# Ruby 1.9 has ruby/io.h instead of rubyio.h
-have_header('ruby/io.h')
-
-# First get zlib
-unless have_library('z', 'inflate') or
-       have_library('zlib', 'inflate') or
-       have_library('zlib1', 'inflate') or
-       have_library('libz', 'inflate')
-  crash('need zlib')
-else
-  $defs.push('-DHAVE_ZLIB_H')
-end
-
-unless have_library('iconv','iconv_open') or
-       have_library('iconv','libiconv_open') or
-       have_library('libiconv', 'libiconv_open') or
-       have_library('libiconv', 'iconv_open') or
-       have_library('c','iconv_open') or
-       have_library('recode','iconv_open') or
-       have_library('iconv')
-  crash(<<-EOL)
-need libiconv.
-
-Install the libiconv or try passing one of the following options
-to extconf.rb:
-
-  --with-iconv-dir=/path/to/iconv
-  --with-iconv-lib=/path/to/iconv/lib
-  --with-iconv-include=/path/to/iconv/include
-EOL
-end
-
-
 unless (have_library('xml2', 'xmlXPtrNewRange') or
         have_library('libxml2', 'xmlXPtrNewRange') or
         find_library('xml2', 'xmlXPtrNewRange', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
@@ -64,7 +31,7 @@ unless (have_library('xml2', 'xmlXPtrNewRange') or
                     '/usr/local/include/libxml2',
                     '/usr/include/libxml2'))
   crash(<<-EOL)
-need libxml2.
+Cannot find libxml2.
 
         Install the library or try one of the following options to extconf.rb:
 
@@ -124,7 +91,7 @@ unless find_header("ruby_libxml.h", "#{gem_spec.full_gem_path}/ext/libxml")
 end
 
 
-RUBY_VERSION =~ /(\d+.\d+)/
+RUBY_VERSION =~ /^(\d+.\d+)/
 minor_version = $1
 paths = ["#{gem_spec.full_gem_path}/lib",
          "#{gem_spec.full_gem_path}/lib/#{minor_version}",
