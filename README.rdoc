@@ -57,7 +57,7 @@ gem install libxslt-ruby-1.1.1.gem
 == USAGE
 
 For in-depth information about using libxslt-ruby please refer
-to its online Rdoc documentation.
+to its online documentation[http://xml4r.github.io/libxslt-ruby].
 
 All libxslt classes are in the LibXSLT::XSLT module. The simplest
 way to use libxslt is to require 'xslt'.  This will mixin the
@@ -162,9 +162,9 @@ See LICENSE for license information.
 RDoc comments are included - run 'rake doc' to generate documentation.
 You can find the latest documentation at:
 
-* http://libxsl.rubyforge.org/
+* http://xml4r.github.io/libxslt-ruby
 
 == MORE INFORMATION
 
-For more information please refer to the documentation.  If you have any
+For more information please refer to the documentation[http://xml4r.github.io/libxslt-ruby].  If you have any
 questions, please send email to libxml-devel@rubyforge.org.
