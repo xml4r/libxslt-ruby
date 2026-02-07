@@ -17,9 +17,9 @@ dir_config('xml2')
 dir_config('xslt')
 dir_config('exslt')
 
-unless (have_library('xml2', 'xmlXPtrNewRange') or
-        have_library('libxml2', 'xmlXPtrNewRange') or
-        find_library('xml2', 'xmlXPtrNewRange', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
+unless (have_library('xml2', 'xmlXPtrNewContext') or
+        have_library('libxml2', 'xmlXPtrNewContext') or
+        find_library('xml2', 'xmlXPtrNewContext', '/opt/lib', '/usr/local/lib', '/usr/lib')) and
        (have_header('libxml/xmlversion.h') or
         find_header('libxml/xmlversion.h',
                     '/opt/include/libxml2',
